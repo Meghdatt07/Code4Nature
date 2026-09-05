@@ -73,9 +73,9 @@ with tab2:
 with tab3:
     st.header("India Policy, AWD & Subsidy Context")
     st.write("""
-    **Alternate Wetting and Drying (AWD)** is a managed irrigation practice that reduces methane emissions from rice paddies by allowing the field to dry intermittently rather than keeping it cont[...]
+    **Alternate Wetting and Drying (AWD)** is a managed irrigation practice that reduces methane emissions from rice paddies by allowing the field to dry intermittently rather than keeping it continuously flooded.
     
     **Important Implementation Notes:**
-    * **Soil Moisture Model**: The current architecture yields a relative wetness proxy derived from SAR backscatter. Absolute soil moisture calculation necessitates field calibration with physica[...]
-    * **Market Separation**: This app maintains an explicit separation between global VCM observable pricing (which operates in USD) and India's domestic CCTS/CCC market which we intentionally do [...]
+    * **Soil Moisture Model**: The current architecture yields a relative wetness proxy derived from SAR backscatter. Absolute soil moisture calculation necessitates field calibration with physical sensors (e.g., ultrasonic Pani Pipes) and validation samples.
+    * **Market Separation**: This app maintains an explicit separation between global VCM observable pricing (which operates in USD) and India's domestic CCTS/CCC market which we intentionally do not fabricate spot prices for.
     """)
