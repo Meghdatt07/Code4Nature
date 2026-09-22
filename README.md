@@ -1,70 +1,95 @@
-# Code4Nature — CarbonAWD Streamlit App
+# Code4Nature — CarbonAWD Streamlit Application
 
-Code4Nature is a Streamlit demonstrator for rice **Alternate Wetting and Drying (AWD)**, Sentinel-1 SAR monitoring, carbon-market reference pricing, and farmer/FPO economics.
+CarbonAWD is the Code4Nature project demonstrator for rice **Alternate Wetting and Drying (AWD)**, field/SAR MRV, carbon-market scenario modelling, farm economics, and the farmer/FPO layer.
+
+## Interface
+
+The Streamlit dashboard now mirrors the supplied CarbonAWD HTML prototype:
+
+- dark CarbonAWD visual theme and data-flow hero
+- science/problem section
+- interactive farm map
+- clickable farm point and map navigation
+- polygon and rectangle farm-boundary drawing
+- automatic farm area calculation in hectares
+- selected farm geometry passed to the live Sentinel-1 SAR request
+- simulator fallback when Sentinel Hub credentials are not configured
+- AWD WET / DRYING / REWETTING telemetry simulator
+- 30-day water-depth chart
+- global agriculture carbon-market reference
+- voluntary carbon-token proxy
+- USD/INR live feed with fallback
+- Government ERF scenario vs live VCM proxy pricing
+- methane reduction, CO2e, carbon credits, gross revenue and farmer/company shares
+- policy, subsidy, FPO and India carbon-market context
 
 ## Streamlit deployment
 
-This repository is now structured to run **directly on Streamlit**.
+Deploy this repository directly on Streamlit Community Cloud.
 
-### 1. Deploy on Streamlit Community Cloud
+- Repository: `Meghdatt07/Code4Nature`
+- Branch: `main`
+- Recommended main file: `streamlit_app.py`
 
-1. Open Streamlit Community Cloud.
-2. Select **Deploy an app**.
-3. Choose this GitHub repository.
-4. Select the `main` branch.
-5. Set the main file path to:
-   `streamlit_app.py`
-6. Deploy.
+No FastAPI server and no `localhost:8000` dependency are required by the Streamlit dashboard.
 
-No separate FastAPI server and no `localhost:8000` connection are required.
+The repository also keeps `app/streamlit_app.py` runnable for deployments that were previously configured to use that path.
 
-## Optional: enable live Sentinel-1 mode
+## Optional live Sentinel-1 mode
 
-The app works without credentials by using a clearly labelled deterministic simulator.
-
-To enable live Sentinel Hub requests, add these secrets in the Streamlit app settings:
+Add these secrets in Streamlit Cloud:
 
 ```toml
 SH_CLIENT_ID = "your-sentinel-hub-client-id"
 SH_CLIENT_SECRET = "your-sentinel-hub-client-secret"
 ```
 
-**Do not put credentials in GitHub source files.**
+Do not commit credentials to GitHub.
+
+Without these secrets the farm map, simulator, calculator and dashboard remain usable.
 
 ## Local run
 
-Install dependencies:
-
 ```bash
 pip install -r requirements.txt
-```
-
-Run:
-
-```bash
 streamlit run streamlit_app.py
 ```
 
-## Important data notes
+For the legacy entry path:
 
-- The SAR output is a **relative wetness proxy**, not an absolute soil-moisture measurement.
-- A scientifically calibrated soil-moisture model requires field observations and validation.
-- The displayed global agriculture value is a market reference and the INR value is a conversion proxy.
-- The app does not invent an official Indian CCTS/CCC spot price.
+```bash
+streamlit run app/streamlit_app.py
+```
+
+## Calculation assumptions
+
+The supplied prototype uses 120 kg CH4 reduction per hectare per season, GWP-100 of methane = 28, 1 tCO2e represented as 1 carbon-credit unit for scenario modelling, and a Government ERF scenario price of USD 15/tCO2e. Farmer/FPO share is adjustable by the user.
+
+These are scenario assumptions from the supplied project materials, not a guarantee of credit issuance or a guaranteed market price.
+
+## Scientific and market caveats
+
+- SAR output is a relative wetness proxy, not absolute soil moisture.
+- Absolute soil-moisture estimation requires field calibration and validation.
+- The live VCM number is a proxy and is not a guaranteed sale price for a CarbonAWD project credit.
+- India VCM and the Indian compliance/CCTS market are shown separately.
+- A dashboard estimate is not itself a certified carbon credit.
 
 ## Repository structure
 
-```
+```text
 Code4Nature/
 ├── streamlit_app.py
 ├── requirements.txt
 ├── README.md
 ├── app/
 │   ├── __init__.py
+│   ├── dashboard.py
 │   ├── client.py
-│   └── components.py
+│   ├── components.py
+│   └── streamlit_app.py
 └── engine/
     └── main.py
 ```
 
-The legacy FastAPI backend is retained in `engine/main.py` for reference, but the Streamlit application no longer depends on it.
+`engine/main.py` remains only as a legacy/reference FastAPI backend.
