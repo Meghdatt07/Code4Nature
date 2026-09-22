@@ -1,6 +1,6 @@
 import streamlit as st
-from app.client import check_health, get_market_data, get_sar_data
-from app.components import display_market_data, display_sar_data
+from client import check_health, get_market_data, get_sar_data
+from components import display_market_data, display_sar_data
 
 st.set_page_config(
     page_title="CarbonAWD MRV",
