@@ -1,0 +1,5 @@
+from pydantic import BaseModel,Field
+class SimulationCreate(BaseModel):
+    farm_id:int; baseline_emission:float=Field(ge=0); project_emission:float|None=Field(default=None,ge=0); baseline_water:float=Field(ge=0); project_water:float|None=Field(default=None,ge=0); carbon_price:float=Field(gt=0); farmer_share:float=Field(ge=0,le=100); company_share:float=Field(ge=0,le=100); soil_type:str="Loam"; season:str="Kharif"; crop_duration_days:int=Field(default=120,ge=60,le=240); rainfall_assumption_mm:float=Field(default=450,ge=0,le=2000); management_type:str="Asterisk Climos Simulation"; reduction_percent:float=Field(default=41.6667,ge=0,le=70); fx_rate:float=Field(default=83.0,gt=0)
+class ScenarioCalculate(BaseModel):
+    area_hectares:float=Field(gt=0); baseline_water:float=Field(ge=0); baseline_emission:float=Field(ge=0); soil_type:str="Loam"; season:str="Kharif"; crop_duration_days:int=120; rainfall_assumption_mm:float=450; management_type:str="Asterisk Climos Simulation"; reduction_percent:float=41.6667; carbon_price:float=20; farmer_share:float=60; company_share:float=40; fx_rate:float=83
