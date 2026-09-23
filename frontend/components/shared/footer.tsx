@@ -1,1 +1,11 @@
-import Link from 'next/link'; export function Footer(){return <footer className="border-t border-white/10"><div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[1.4fr_.8fr_.8fr]"><div><div className="text-sm font-bold tracking-[.18em]">ASTERISK CLIMOS</div><p className="mt-3 max-w-md text-sm leading-6 text-white/40">Climate intelligence for low-emission rice farming. Prototype demonstration only.</p></div><div><div className="text-xs tracking-[.2em] text-white/25">PRODUCT</div><div className="mt-3 space-y-2 text-sm text-white/55"><Link className="block" href="/technology">Technology</Link><Link className="block" href="/simulator">Simulator</Link><Link className="block" href="/mrv">Digital MRV</Link><Link className="block" href="/carbon">Carbon economics</Link></div></div><div><div className="text-xs tracking-[.2em] text-white/25">COMPANY</div><div className="mt-3 space-y-2 text-sm text-white/55"><Link className="block" href="/research">Research</Link><Link className="block" href="/industry">Industry</Link><Link className="block" href="/about">About</Link><Link className="block" href="/contact">Partner with us</Link></div></div></div></footer>}
+import Link from 'next/link';
+export function Footer(){
+ return <footer className="site-footer">
+  <div className="footer-top cc-container">
+   <div><Link href="/" className="footer-brand">CODE<span>4</span>NATURE</Link><p>Climate intelligence for rice farming. Measuring water, methane and carbon value through field-level data.</p></div>
+   <div><small>EXPLORE</small><Link href="/climate-smart-rice">Climate-smart rice</Link><Link href="/technology">Our technology</Link><Link href="/simulator">Farm simulator</Link><Link href="/mrv">Digital MRV</Link></div>
+   <div><small>CLIMATE VALUE</small><Link href="/rice-carbon-credits">Rice carbon credits</Link><Link href="/carbon">Carbon economics</Link><Link href="/research">Science & research</Link><Link href="/contact">Partner with us</Link></div>
+  </div>
+  <div className="footer-bottom cc-container"><span>© {new Date().getFullYear()} Code4Nature</span><span>Built around evidence • designed for action</span></div>
+ </footer>
+}
