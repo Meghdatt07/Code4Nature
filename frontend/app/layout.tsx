@@ -2,6 +2,7 @@ import './globals.css';
 import { Navbar } from '@/components/shared/navbar';
 import { Footer } from '@/components/shared/footer';
 import { Disclaimer } from '@/components/shared/disclaimer';
+import { PageTransition } from '@/components/shared/page-transition';
 
 export const metadata={
  title:'Code4Nature — Rice Climate Intelligence',
@@ -9,5 +10,5 @@ export const metadata={
 };
 
 export default function RootLayout({children}:{children:React.ReactNode}){
- return <html lang="en"><body><Navbar/><Disclaimer/>{children}<Footer/></body></html>
+ return <html lang="en"><body><Navbar/><Disclaimer/><PageTransition>{children}</PageTransition><Footer/></body></html>
 }
