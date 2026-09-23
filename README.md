@@ -93,3 +93,15 @@ Code4Nature/
 ```
 
 `engine/main.py` remains only as a legacy/reference FastAPI backend.
+
+
+## New CarbonAWD website
+
+A separate interactive website is available in the website directory. It is based on the supplied CarbonAWD/Asterisk Climos MVP design and includes an interactive Leaflet farm map, movable farm marker, polygon/rectangle farm boundary selection, automatic farm-area calculation, AWD telemetry simulation, Sentinel-1 SAR simulator with an optional secure backend path, live FX and carbon-market proxy feeds, farmer/FPO and MRV/company economics, and India policy/FPO/carbon-market context.
+
+The site is deployed through GitHub Actions using .github/workflows/deploy-website.yml.
+
+### GitHub Pages
+
+Open Settings → Pages in the repository and set the source to GitHub Actions. After the workflow completes, GitHub Pages will publish the contents of website/.
+
