@@ -1,3 +1,8 @@
-import { ReactNode } from 'react'; import { DataBadge } from '@/components/shared/data-badge';
-export function PageFrame({eyebrow,title,description,children}:{eyebrow?:string;title:string;description?:string;children:ReactNode}){return <main className="min-h-screen"><header className="grid-bg border-b border-white/5"><div className="mx-auto max-w-7xl px-5 py-14 md:py-20"><div className="flex flex-wrap items-center gap-3"><DataBadge/>{eyebrow&&<span className="text-xs font-semibold tracking-[.22em] text-white/35">{eyebrow}</span>}</div><h1 className="mt-5 max-w-5xl text-4xl font-bold leading-tight md:text-6xl">{title}</h1>{description&&<p className="mt-5 max-w-3xl text-base leading-8 text-white/55 md:text-lg">{description}</p>}</div></header><div className="mx-auto max-w-7xl px-5 py-12 md:py-16">{children}</div></main>}
-export function PageKicker({children}:{children:ReactNode}){return <div className="text-xs font-bold tracking-[.22em] text-[#8bcfa6]">{children}</div>}
+import { ReactNode } from 'react';
+export function PageFrame({eyebrow,title,description,children}:{eyebrow?:string;title:string;description?:string;children:ReactNode}){
+ return <main className="cc-page">
+  <header className="cc-page-hero"><div className="cc-container"><div className="cc-kicker">{eyebrow||'CODE4NATURE'}</div><h1>{title}</h1>{description&&<p>{description}</p>}</div></header>
+  <div className="cc-page-body cc-container">{children}</div>
+ </main>
+}
+export function PageKicker({children}:{children:ReactNode}){return <div className="cc-kicker">{children}</div>}
