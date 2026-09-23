@@ -1,0 +1,4 @@
+export const ACRE_TO_SQM=4046.8564224; export const HA_TO_ACRE=2.47105381;
+export function demoWater(areaHa:number,baselineLPerAcre=4_960_000,optimizedLPerAcre=3_140_000){const acres=areaHa*HA_TO_ACRE;const baseline=acres*baselineLPerAcre;const project=acres*optimizedLPerAcre;return{baseline,project,saved:baseline-project,pct:baseline?((baseline-project)/baseline)*100:0}}
+export function demoEmission(areaHa:number,baseline=6,reductionPct=41.6666667){const b=areaHa*baseline;const p=b*(1-reductionPct/100);return{baseline:b,project:p,reduction:b-p}}
+export function revenue(credits:number,price:number,farmerPct:number){const gross=credits*price;return{gross,farmer:gross*farmerPct/100,company:gross*(1-farmerPct/100)}}
