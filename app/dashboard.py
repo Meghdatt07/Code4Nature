@@ -536,7 +536,7 @@ def run():
     )
 
     page = st.radio("PRODUCT", ["Overview", "Farm Intelligence", "Carbon Economics", "MRV & Evidence", "Policy / FPO"], horizontal=True, label_visibility="collapsed")
-    st.markdown("<div style="height:.4rem"></div>", unsafe_allow_html=True)
+    st.markdown('<div style="height:.4rem"></div>', unsafe_allow_html=True)
     render_hero()
     if page == "Overview":
         render_why()
