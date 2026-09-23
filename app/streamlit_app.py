@@ -1,6 +1,6 @@
 import streamlit as st
 
-from app.site_pages import (
+from site_pages import (
     about,
     carbon,
     climate_smart_rice,
