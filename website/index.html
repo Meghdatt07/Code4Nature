@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CarbonAWD | Rice MRV & Carbon Intelligence</title>
+<meta name="description" content="CarbonAWD — rice AWD, farm mapping, digital MRV and carbon economics.">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+</head><body>
+<nav class="nav"><div class="container nav-in"><a class="brand" href="#top">CARBON<span>AWD</span></a><div class="nav-links">
+<a href="#science">Science</a><a href="#mrv">Live MRV</a><a href="#market">Market</a><a href="#economics">Economics</a><a href="#policy">Policy</a><a class="nav-cta" href="#mrv">Select a farm</a>
+</div><button class="menu" id="menu">☰</button></div></nav>
+
+<header id="top" class="hero"><div class="container hero-grid"><section>
+<span class="pill">Code4Nature 2026 • Digital MRV demonstrator</span>
+<h1>Make rice water<br><span class="gradient">measurable carbon value.</span></h1>
+<p class="lead">CarbonAWD connects rice water management with field evidence, Sentinel‑1 SAR pathways, transparent emissions calculations and farmer/FPO economics.</p>
+<div class="actions"><a class="btn primary" href="#mrv">Open live farm lab →</a><a class="btn" href="#economics">Explore economics</a></div>
+<p class="small">Demonstrator only: simulated, indicative and reference values are labelled. A dashboard number is not itself a certified carbon credit.</p>
+</section><section class="glass flow"><div class="small">CarbonAWD data flow</div>
+<div class="flow-item"><b>01</b><div><strong>Farm telemetry</strong><div class="small">Water-level / field evidence</div></div></div>
+<div class="flow-item"><b>02</b><div><strong>Sentinel‑1 SAR</strong><div class="small">VV/VH → relative wetness proxy</div></div></div>
+<div class="flow-item"><b>03</b><div><strong>MRV engine</strong><div class="small">AWD state → methane → CO₂e</div></div></div>
+<div class="flow-item"><b>04</b><div><strong>Economics</strong><div class="small">Carbon value → farmer + MRV share</div></div></div></section></div></header>
+
+<section id="science" class="section"><div class="container"><div class="section-head"><span class="pill">THE PROBLEM</span><h2>Why does this exist?</h2><p>Continuous flooding can create anaerobic conditions associated with methane formation. AWD introduces dry-down periods. The challenge is proving the water regime and translating evidence into a transparent MRV scenario.</p></div>
+<div class="cards3"><article class="card"><div class="icon">💧</div><h3>Water regime</h3><p>Make WET, DRYING and REWETTING states visible instead of relying only on logbooks.</p></article>
+<article class="card"><div class="icon">🛰️</div><h3>Verification at scale</h3><p>Use field observations for calibration and remote sensing to extend coverage.</p></article>
+<article class="card"><div class="icon">₹</div><h3>Economic transparency</h3><p>Change acreage, abatement, price and farmer share and see USD/INR outcomes immediately.</p></article></div></div></section>
+
+<section id="mrv" class="section alt"><div class="container"><div class="section-head"><span class="pill">LIVE FARM / SAR LAB</span><h2>Move the farm. Draw the boundary. Query the satellite.</h2><p>Click the map to move the farm point, or use the drawing tools to outline the farm. The selected area is saved for the economics page.</p></div>
+<div class="map-layout"><div class="glass map-box"><div id="map"></div></div><div class="glass side">
+<div class="grid2"><label>Latitude<input id="lat" value="23.2135" type="number" step=".0001"></label><label>Longitude<input id="lon" value="72.6840" type="number" step=".0001"></label></div>
+<label>Farm area (ha)<input id="areaHa" value="10" type="number" min=".01" step=".1"></label>
+<div class="actions"><button id="moveBtn" class="btn primary">Move marker</button><button id="clearFarm" class="btn">Clear</button></div>
+<div class="kpis2"><div class="kpi"><span>Selected area</span><b id="mapArea">10.00 ha</b></div><div class="kpi"><span>SAR state</span><b id="sarState">SIMULATED</b></div><div class="kpi"><span>Wetness</span><b id="sarMoisture">—</b></div><div class="kpi"><span>VV / VH</span><b id="sarBackscatter">—</b></div></div>
+<button id="sarBtn" class="btn primary full">Fetch SAR</button><div class="small" style="margin-top:10px">Source: <b id="sarSource">—</b></div>
+<div class="note" id="sarNote">Browser-only deployment uses a deterministic simulator. Configure a secure backend through CARBONAWD_API_BASE for real Sentinel Hub requests.</div>
+</div></div>
+<div class="kpis4"><div class="kpi"><span>AWD status</span><b id="awdState">DRYING</b></div><div class="kpi"><span>Potential CH₄ reduction</span><b id="ch4Kpi">1,200 kg</b></div><div class="kpi"><span>Potential CO₂e</span><b id="co2Kpi">33.60 t</b></div><div class="kpi"><span>Boundary points</span><b id="pointCount">0</b></div></div>
+<div class="glass chart-card"><div class="chart-head"><div><span class="pill">30-DAY SIMULATOR</span><h3>Water regime timeline</h3></div><div><input id="depth" type="range" min="-20" max="8" step=".5" value="-7"><button id="telemetryBtn" class="btn">Classify</button><span id="depthValue" class="small">-7.0 cm</span></div></div><div class="chart"><canvas id="awdChart"></canvas></div></div>
+</div></section>
+
+<section id="market" class="section"><div class="container"><div class="section-head"><span class="pill">MARKET FEED</span><h2>Carbon prices: global + India</h2><p>Carbon is not one universal commodity price. The dashboard separates an agriculture reference, a voluntary carbon-token proxy and an India conversion proxy.</p></div>
+<div class="cards4"><article class="card"><div class="eyebrow">GLOBAL AGRICULTURE</div><div class="big" id="marketPrice">USD —</div><div class="small" id="marketInr">₹— / tCO₂e</div></article>
+<article class="card"><div class="eyebrow">VCM TOKEN PROXY</div><div class="big" id="bctPrice">USD —</div><div class="small">Toucan BCT / CoinGecko proxy</div></article>
+<article class="card"><div class="eyebrow">INDIA VCM PROXY</div><div class="big" id="indiaProxy">₹—</div><div class="small">Global agriculture reference × FX</div></article>
+<article class="card"><div class="eyebrow">INDIA ICM / CCC</div><div class="big">N/A</div><div class="small">No official spot price fabricated here.</div></article></div>
+<div class="small">FX: <span id="fxText">loading…</span> • Updated: <span id="marketUpdated">—</span></div></div></section>
+
+<section id="economics" class="section alt"><div class="container"><div class="section-head"><span class="pill">LIVE CALCULATOR</span><h2>Farmer + company economics</h2><p>Use the area selected on the map or adjust it directly. Values follow the supplied prototype scenario logic.</p></div>
+<div class="calc-layout"><div class="glass side">
+<div class="range-row"><div><span>Farm area</span><b id="areaLabel">10.0 ha</b></div><input id="areaRange" type="range" min=".5" max="50" step=".1" value="10"></div>
+<div class="range-row"><div><span>CH₄ reduction / ha / season</span><b id="abatementLabel">120 kg</b></div><input id="abatement" type="range" min="60" max="200" step="5" value="120"></div>
+<div class="range-row"><div><span>Farmer/FPO share</span><b id="shareLabel">65%</b></div><input id="share" type="range" min="50" max="100" value="65"></div>
+<label>Pricing model<select id="priceModel"><option value="erf">Government ERF scenario • USD 15/tCO₂e</option><option value="market">Live VCM proxy</option></select></label>
+<button id="refreshMarket" class="btn full" style="margin-top:12px">Refresh market feed</button><div id="selectedAreaHint" class="small">Map-selected area: 10.00 ha</div><div id="fxOut" class="small">1 USD ≈ ₹—</div>
+</div>
+<div class="glass side"><div class="results"><div class="result"><span>Methane reduced</span><b id="ch4Out">—</b></div><div class="result"><span>Potential credits</span><b id="creditOut">—</b></div><div class="result"><span>Gross value</span><b id="grossOut">—</b><small id="grossInr">₹—</small></div><div class="result em"><span>Farmer / FPO</span><b id="farmerOut">—</b><small id="farmerInr">₹—</small></div><div class="result blue"><span>MRV / Company</span><b id="companyOut">—</b><small id="companyInr">₹—</small></div><div class="result"><span>Price used</span><b id="priceLabel">—</b></div></div>
+<div class="formula">methane = area × abatement<br>CO₂e = methane × 28 / 1000<br>credits = CO₂e tonnes<br>gross = credits × price<br>farmer = gross × share<br>company = gross − farmer</div></div></div></div></section>
+
+<section id="policy" class="section"><div class="container"><div class="section-head"><span class="pill">INDIA ENABLEMENT</span><h2>Policy, subsidies & FPO layer</h2><p>The prototype keeps agricultural infrastructure/FPO support separate from carbon-credit methodology and certification.</p></div>
+<div class="cards2"><article class="card"><h3>Agriculture Infrastructure Fund</h3><p>Potential financing route for eligible agriculture infrastructure; check current official terms.</p><hr><h3>10,000 FPO ecosystem / SFAC</h3><p>FPO formation and convergence resources can support aggregation, training and project coordination.</p><hr><h3>FPO Equity Grant</h3><p>Potential support route for eligible Farmer Producer Companies, subject to scheme conditions.</p></article>
+<article class="card"><h3>Indian Carbon Market / CCTS</h3><p>Keep India's compliance framework separate from voluntary-market instruments.</p><hr><h3>Where CarbonAWD fits</h3><p><b>Farmer:</b> adopts AWD and supplies evidence.<br><b>FPO:</b> aggregates farms and coordinates MRV.<br><b>CarbonAWD:</b> manages digital evidence, calculations and economics.<br><b>Registry / VVB / buyer:</b> remains independent.</p></article></div></div></section>
+
+<footer class="footer"><div class="container">CarbonAWD • Code4Nature 2026 prototype • Built from the supplied CarbonAWD MVP design and project material.</div></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="app.js"></script>
+</body></html>
