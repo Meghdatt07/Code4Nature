@@ -1,12 +1,21 @@
 import streamlit as st
 
-from app.dashboard import (
-    init_state,
-    render_economics,
-    render_market,
-    render_mrv,
-    render_policy,
-)
+try:
+    from dashboard import (
+        init_state,
+        render_economics,
+        render_market,
+        render_mrv,
+        render_policy,
+    )
+except ImportError:
+    from app.dashboard import (
+        init_state,
+        render_economics,
+        render_market,
+        render_mrv,
+        render_policy,
+    )
 
 
 def inject_site_css():
