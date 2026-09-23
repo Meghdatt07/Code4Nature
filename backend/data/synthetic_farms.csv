@@ -1,0 +1,7 @@
+farm_id,state,district,latitude,longitude,area_hectares,area_acres,soil_type,season,crop_duration,baseline_water_liters,project_water_liters,baseline_emission_tco2e,project_emission_tco2e,water_saving_percent,emission_reduction_tco2e,carbon_price_usd,potential_credits,gross_value_usd,farmer_share,company_share,data_source
+IN-001,Telangana,Nalgonda,17.27033,79.29268,6.57,16.23,Silt Loam,Kharif,101,7083273,4727376,3.13,2.20,33.26,6.11,25,6.11,152.75,60,40,synthetic_demo
+IN-002,West Bengal,Bardhaman,23.25247,87.72022,1.39,3.43,Sandy Loam,Kharif,148,1663046,1116070,4.16,2.45,32.89,2.38,25,2.38,59.50,60,40,synthetic_demo
+IN-003,Punjab,Ludhiana,30.70111,75.78996,8.16,20.16,Sandy Loam,Rabi,138,8604049,5400762,6.49,4.42,37.23,16.89,20,16.89,337.80,60,40,synthetic_demo
+IN-004,Haryana,Karnal,29.71602,77.15470,3.01,7.44,Sandy Loam,Kharif,145,3141504,1991714,3.22,2.06,36.60,3.49,15,3.49,52.35,60,40,synthetic_demo
+IN-005,Odisha,Khordha,20.29606,85.82454,4.50,11.12,Loam,Kharif,120,4960000,3140000,6.00,3.50,36.69,11.25,20,11.25,225.00,60,40,synthetic_demo
+IN-006,Telangana,Hyderabad,17.38500,78.48670,10.00,24.71,Loam,Kharif,120,9920000,6280000,6.00,3.50,36.69,25.00,20,25.00,500.00,60,40,synthetic_demo
