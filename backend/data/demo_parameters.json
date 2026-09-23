@@ -1,0 +1,5 @@
+{
+  "model_version":"demo-v1.0",
+  "primary_demo":{"area_ha":10,"baseline_emission_tco2e_ha":6.0,"project_emission_tco2e_ha":3.5,"carbon_price_usd":20,"farmer_share":60,"company_share":40,"baseline_water_l_per_acre":4960000,"project_water_l_per_acre":3140000},
+  "provenance":"synthetic_demo"
+}
