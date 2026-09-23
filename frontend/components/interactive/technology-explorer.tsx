@@ -1,0 +1,10 @@
+'use client';
+import { useState } from 'react';
+import { Card } from '@/components/ui/card';
+const nodes = [
+  { key:'FIELD',title:'Field intelligence',text:'Farm geometry, water, soil, crop stage and field measurements form the prototype data layer.',future:'Field sensors and structured ground-truth collection.'},
+  { key:'REMOTE',title:'Remote sensing',text:'Satellite inputs are designed as a future provider interface for SAR, flooding status, NDVI and field history.',future:'Sentinel-1 / Sentinel-2 and other approved data providers.'},
+  { key:'MODEL',title:'Transparent models',text:'The current prototype uses deterministic water and emission equations instead of fabricated ML predictions.',future:'Field-calibrated process-based or ML models.'},
+  { key:'MRV',title:'Digital MRV',text:'Every output can carry source, data type, timestamp and model version metadata.',future:'Evidence workflows, QA/QC, validation and verification records.'},
+];
+export function TechnologyExplorer(){const[active,setActive]=useState('FIELD');const current=nodes.find(n=>n.key===active)!;return <div className="grid gap-5 lg:grid-cols-[.7fr_1.3fr]"><div className="space-y-2">{nodes.map(n=><button key={n.key} onClick={()=>setActive(n.key)} className={`w-full rounded-2xl border p-4 text-left transition ${active===n.key?'border-[#8bcfa6]/30 bg-[#8bcfa6]/10':'border-white/10 bg-white/[0.02] hover:bg-white/[0.04]'}`}><div className="text-[10px] tracking-[.2em] text-[#8bcfa6]">{n.key}</div><div className="mt-2 font-semibold">{n.title}</div></button>)}</div><Card className="min-h-[320px]"><div className="text-xs tracking-[.2em] text-white/30">ARCHITECTURE NODE</div><h3 className="mt-3 text-3xl font-bold">{current.title}</h3><p className="mt-5 max-w-2xl leading-8 text-white/55">{current.text}</p><div className="mt-8 rounded-2xl bg-black/15 p-5"><div className="text-xs text-white/30">FUTURE EXTENSION</div><div className="mt-2 font-medium text-white/80">{current.future}</div></div></Card></div>}
