@@ -1,0 +1,1 @@
+import { ReactNode } from 'react'; export function Card({children,className=''}:{children:ReactNode;className?:string}){return <div className={'glass rounded-3xl p-5 shadow-glow '+className}>{children}</div>}
