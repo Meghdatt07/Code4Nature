@@ -1,107 +1,55 @@
-# Code4Nature — CarbonAWD Streamlit Application
+# Code4Nature — CarbonAWD / Asterisk Climos MVP
 
-CarbonAWD is the Code4Nature project demonstrator for rice **Alternate Wetting and Drying (AWD)**, field/SAR MRV, carbon-market scenario modelling, farm economics, and the farmer/FPO layer.
+The repository now contains the full-stack Asterisk Climos MVP supplied for Code4Nature: a Next.js frontend, FastAPI simulation backend, optional PostgreSQL/PostGIS persistence, interactive farm mapping, transparent emissions/carbon calculations and demo report generation.
 
-## Interface
+## Primary web application
 
-The Streamlit dashboard now mirrors the supplied CarbonAWD HTML prototype:
+Frontend:
+\`frontend/\`
 
-- dark CarbonAWD visual theme and data-flow hero
-- science/problem section
-- interactive farm map
-- clickable farm point and map navigation
-- polygon and rectangle farm-boundary drawing
-- automatic farm area calculation in hectares
-- selected farm geometry passed to the live Sentinel-1 SAR request
-- simulator fallback when Sentinel Hub credentials are not configured
-- AWD WET / DRYING / REWETTING telemetry simulator
-- 30-day water-depth chart
-- global agriculture carbon-market reference
-- voluntary carbon-token proxy
-- USD/INR live feed with fallback
-- Government ERF scenario vs live VCM proxy pricing
-- methane reduction, CO2e, carbon credits, gross revenue and farmer/company shares
-- policy, subsidy, FPO and India carbon-market context
+Run locally:
+\`cd frontend && npm install && npm run dev\`
 
-## Streamlit deployment
+Open:
+\`http://localhost:3000\`
 
-Deploy this repository directly on Streamlit Community Cloud.
+Backend:
+\`backend/\`
 
-- Repository: `Meghdatt07/Code4Nature`
-- Branch: `main`
-- Recommended main file: `streamlit_app.py`
+Run locally:
+\`cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000\`
 
-No FastAPI server and no `localhost:8000` dependency are required by the Streamlit dashboard.
+For deployment, configure NEXT_PUBLIC_BACKEND_URL on the frontend to point to the deployed FastAPI service.
 
-The repository also keeps `app/streamlit_app.py` runnable for deployments that were previously configured to use that path.
+The main website includes:
+- farm-area simulation
+- interactive Leaflet farm map
+- water-use optimisation scenario
+- methane/CO2e simulation
+- potential carbon-credit quantity
+- carbon price scenario
+- farmer/FPO and company/MRV revenue split
+- Digital MRV section
+- farmer and company dashboard pages
+- research/context page
+- PDF demo report endpoint
+- provenance and synthetic-data disclaimers
 
-## Optional live Sentinel-1 mode
+## Docker
 
-Add these secrets in Streamlit Cloud:
+Run:
+\`docker compose up --build\`
 
-```toml
-SH_CLIENT_ID = "your-sentinel-hub-client-id"
-SH_CLIENT_SECRET = "your-sentinel-hub-client-secret"
-```
+This starts the PostgreSQL/PostGIS database, FastAPI backend and Next.js frontend.
 
-Do not commit credentials to GitHub.
+## GitHub automation
 
-Without these secrets the farm map, simulator, calculator and dashboard remain usable.
+GitHub Actions now validates the backend tests and runs the production Next.js build.
 
-## Local run
+## Streamlit compatibility
 
-```bash
-pip install -r requirements.txt
-streamlit run streamlit_app.py
-```
+The previous Streamlit implementation remains in the repository for compatibility. The Next.js application is the primary website for this uploaded MVP.
 
-For the legacy entry path:
+## Scientific limitation
 
-```bash
-streamlit run app/streamlit_app.py
-```
-
-## Calculation assumptions
-
-The supplied prototype uses 120 kg CH4 reduction per hectare per season, GWP-100 of methane = 28, 1 tCO2e represented as 1 carbon-credit unit for scenario modelling, and a Government ERF scenario price of USD 15/tCO2e. Farmer/FPO share is adjustable by the user.
-
-These are scenario assumptions from the supplied project materials, not a guarantee of credit issuance or a guaranteed market price.
-
-## Scientific and market caveats
-
-- SAR output is a relative wetness proxy, not absolute soil moisture.
-- Absolute soil-moisture estimation requires field calibration and validation.
-- The live VCM number is a proxy and is not a guaranteed sale price for a CarbonAWD project credit.
-- India VCM and the Indian compliance/CCTS market are shown separately.
-- A dashboard estimate is not itself a certified carbon credit.
-
-## Repository structure
-
-```text
-Code4Nature/
-├── streamlit_app.py
-├── requirements.txt
-├── README.md
-├── app/
-│   ├── __init__.py
-│   ├── dashboard.py
-│   ├── client.py
-│   ├── components.py
-│   └── streamlit_app.py
-└── engine/
-    └── main.py
-```
-
-`engine/main.py` remains only as a legacy/reference FastAPI backend.
-
-
-## New CarbonAWD website
-
-A separate interactive website is available in the website directory. It is based on the supplied CarbonAWD/Asterisk Climos MVP design and includes an interactive Leaflet farm map, movable farm marker, polygon/rectangle farm boundary selection, automatic farm-area calculation, AWD telemetry simulation, Sentinel-1 SAR simulator with an optional secure backend path, live FX and carbon-market proxy feeds, farmer/FPO and MRV/company economics, and India policy/FPO/carbon-market context.
-
-The site is deployed through GitHub Actions using .github/workflows/deploy-website.yml.
-
-### GitHub Pages
-
-Open Settings → Pages in the repository and set the source to GitHub Actions. After the workflow completes, GitHub Pages will publish the contents of website/.
-
+All model outputs supplied in the MVP are deterministic demonstration equations. They should not be represented as measured agronomic results or certified carbon credits. Project-specific methodology, MRV, validation, verification and evidence are required for real credit issuance.
