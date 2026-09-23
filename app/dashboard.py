@@ -166,8 +166,8 @@ def render_hero():
     st.markdown(
         """
         <div class="hero">
-          <div class="hero-kicker">REAL DATA PATH + SIMULATOR FALLBACK</div>
-          <div class="hero-title">Make rice water<br><span class="gradient">measurable carbon value.</span></div>
+          <div class="hero-kicker">CODE4NATURE / RICE CARBON INTELLIGENCE</div>
+          <div class="hero-title">Turn every rice field into<br><span class="gradient">measurable climate value.</span></div>
           <div class="hero-copy" style="max-width:820px;font-size:1.08rem;">
             Code4Nature combines farm mapping, water-management intelligence, Sentinel-1 SAR evidence
             and transparent methane / CO2e modelling to connect field actions with
@@ -521,7 +521,8 @@ def run():
     )
     init_state()
     _inject_css()
-    st.sidebar.markdown("## 🌾 CarbonAWD")
+    render_top_nav()
+    st.sidebar.markdown("## 🌾 Code4Nature")
     st.sidebar.caption("Rice carbon intelligence • Digital MRV")
     st.sidebar.markdown("---")
     status = check_health()
@@ -534,16 +535,21 @@ def run():
         "Overview → Farm Intelligence → Carbon Economics → MRV → Policy / FPO"
     )
 
+    page = st.radio("PRODUCT", ["Overview", "Farm Intelligence", "Carbon Economics", "MRV & Evidence", "Policy / FPO"], horizontal=True, label_visibility="collapsed")
+    st.markdown("<div style="height:.4rem"></div>", unsafe_allow_html=True)
     render_hero()
-    render_why()
+    if page == "Overview":
+        render_why()
+    elif page == "Farm Intelligence":
+        render_mrv()
+    elif page == "Carbon Economics":
+        render_market()
+        render_economics()
+    elif page == "MRV & Evidence":
+        render_mrv()
+    else:
+        render_policy()
     st.divider()
-    render_mrv()
-    st.divider()
-    render_market()
-    st.divider()
-    render_economics()
-    st.divider()
-    render_policy()
     st.markdown(
         """
         <div class="footer">
