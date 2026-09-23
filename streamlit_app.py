@@ -20,6 +20,25 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# Hard override the old dashboard palette at the application root.
+st.markdown("""
+<style>
+html, body, [data-testid="stAppViewContainer"], .stApp {
+    background: #f3efe4 !important;
+    color: #183126 !important;
+}
+[data-testid="stHeader"] {
+    background: rgba(243,239,228,.96) !important;
+}
+[data-testid="stSidebar"] { display:none !important; }
+[data-testid="stToolbar"] { display:none !important; }
+.block-container {
+    max-width: 1400px !important;
+    padding-top: 0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 pages = [
     st.Page(home, title="Home", icon=":material/home:", url_path="", default=True),
     st.Page(carbon, title="Rice carbon credits", icon=":material/eco:", url_path="rice-carbon-credits"),
