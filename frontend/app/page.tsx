@@ -1,20 +1,164 @@
 'use client';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight, Database, Droplets, FlaskConical, Satellite, ShieldCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { DataBadge } from '@/components/shared/data-badge';
 
-const destinations = [
-  ['/climate-smart-rice','Climate-smart rice','Explore the rice-water-methane problem and the AWD-style concept used in this prototype.'],
-  ['/technology','Our technology','Explore the field data, remote sensing, model and MRV architecture.'],
-  ['/simulator','Farm simulator','Draw a farm, change assumptions and run a complete illustrative calculation.'],
-  ['/mrv','Digital MRV','Inspect the evidence workflow and data-provenance model.'],
-  ['/rice-carbon-credits','Rice carbon credits','Explore the carbon-market pathway and an illustrative buyer-side volume scenario.'],['/carbon','Carbon economics','Explore potential credits, carbon-price scenarios and revenue allocation.'],
-  ['/research','Science & research','Read the scientific framing, references and limitations behind the prototype.'],
-];
-export default function Home(){return <main><section className="relative overflow-hidden"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:py-28 lg:grid-cols-[1.02fr_.98fr] lg:items-center"><div><div className="flex flex-wrap items-center gap-3"><DataBadge/><span className="text-xs tracking-[.2em] text-white/30">CLIMATE INTELLIGENCE / PROTOTYPE</span></div><h1 className="mt-6 max-w-5xl text-5xl font-bold leading-[1.02] md:text-7xl">Climate intelligence for <span className="gradient-text">low-emission rice farming.</span></h1><p className="mt-7 max-w-2xl text-lg leading-8 text-white/55">Asterisk Climos explores how field-level data, optimized water management, methane-reduction modelling and transparent carbon economics can connect a rice field to measurable climate value.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/simulator"><Button>Run Farm Simulation <ArrowRight size={16}/></Button></Link><Link href="/technology"><Button variant="outline">Explore Technology</Button></Link></div><div className="mt-10 grid max-w-xl grid-cols-3 gap-3"><Metric icon={Droplets} title="Water" value="Modelled"/><Metric icon={FlaskConical} title="Methane" value="Simulated"/><Metric icon={ShieldCheck} title="MRV" value="Traceable"/></div></div><div className="relative min-h-[480px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-[#103026] to-[#07130f] p-6 overflow-hidden"><div className="absolute inset-0 grid-bg opacity-30"/><div className="relative flex h-full flex-col justify-between"><div className="flex items-center justify-between"><span className="text-xs tracking-[.18em] text-white/30">FIELD SIGNAL</span><Satellite className="text-[#8bcfa6]" size={20}/></div><div className="relative mx-auto w-full max-w-[430px] py-8"><div className="grid grid-cols-7 gap-2 rounded-[2rem] border border-white/10 bg-[#173b2c] p-5 shadow-2xl">{Array.from({length:42}).map((_,i)=><motion.div key={i} animate={{opacity:[.2,.8,.2]}} transition={{duration:2+i%5,repeat:Infinity}} className="h-10 rounded-xl bg-white/[0.06]"/> )}</div><motion.div animate={{scale:[1,1.08,1],opacity:[.5,.9,.5]}} transition={{duration:3,repeat:Infinity}} className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#8bcfa6]/40 bg-[#8bcfa6]/10"/></div><div className="grid gap-3 sm:grid-cols-3"><Mini title="MAP" value="Field"/><Mini title="MODEL" value="Demo-v1"/><Mini title="VALUE" value="Potential"/></div></div></div></div></section><section className="mx-auto max-w-7xl px-5 py-10"><div className="mb-7 flex items-end justify-between gap-5"><div><div className="text-xs font-bold tracking-[.22em] text-[#8bcfa6]">EXPLORE THE PRODUCT</div><h2 className="mt-3 text-3xl font-bold md:text-4xl">Every major capability has its own page.</h2></div><Link href="/dashboard" className="hidden text-sm text-[#8bcfa6] md:block">Open workspaces →</Link></div><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{destinations.map(([href,title,copy],i)=><Link href={href} key={href}><motion.div whileHover={{y:-5}} className="h-full"><Card className="h-full"><div className="text-[10px] tracking-[.2em] text-[#8bcfa6]">0{i+1}</div><h3 className="mt-4 text-xl font-semibold">{title}</h3><p className="mt-3 leading-7 text-white/50">{copy}</p><div className="mt-6 flex items-center gap-2 text-sm text-[#8bcfa6]">Open page <ArrowRight size={15}/></div></Card></motion.div></Link>)}</div></section><section className="mx-auto max-w-7xl px-5 py-20"><Card className="overflow-hidden"><div className="grid gap-10 lg:grid-cols-[1.2fr_.8fr] lg:items-center"><div><div className="text-xs tracking-[.2em] text-[#8bcfa6]">THE THESIS</div><h2 className="mt-3 max-w-3xl text-3xl font-bold md:text-5xl">From field water to climate economics.</h2><p className="mt-5 max-w-3xl leading-8 text-white/50">MAP → MEASURE → MODEL → OPTIMIZE → REDUCE → VERIFY → VALUE</p></div><div className="grid gap-3 sm:grid-cols-3"><Node icon={Database} text="Field"/><Node icon={Satellite} text="Remote"/><Node icon={ShieldCheck} text="MRV"/></div></div></Card></section></main>}
-function Metric({icon:Icon,title,value}:any){return <div className="glass rounded-2xl p-4"><Icon size={17} className="text-[#8bcfa6]"/><div className="mt-4 text-xs text-white/30">{title}</div><div className="mt-1 font-semibold">{value}</div></div>}
-function Mini({title,value}:{title:string;value:string}){return <div className="rounded-2xl border border-white/10 bg-black/10 p-4"><div className="text-[10px] tracking-[.18em] text-white/30">{title}</div><div className="mt-2 text-sm font-semibold">{value}</div></div>}
-function Node({icon:Icon,text}:{icon:any;text:string}){return <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"><Icon size={18} className="text-[#8bcfa6]"/><div className="mt-4 font-semibold">{text}</div></div>}
+import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowDownRight, ArrowRight, Droplets, Leaf, MapPinned, Satellite, Sprout, Waves } from 'lucide-react';
+import { useRef } from 'react';
+
+const fade = { hidden: { opacity: 0, y: 35 }, visible: { opacity: 1, y: 0 } };
+
+export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const orbY = useTransform(scrollYProgress, [0, 1], [0, 180]);
+
+  return (
+    <main>
+      <section ref={heroRef} className="cc-hero">
+        <div className="cc-noise" />
+        <motion.div style={{ y: orbY }} className="cc-hero-orb orb-one" />
+        <motion.div style={{ y: orbY }} className="cc-hero-orb orb-two" />
+        <div className="cc-hero-inner">
+          <motion.div initial="hidden" animate="visible" variants={fade} transition={{ duration: .7 }} className="cc-eyebrow">
+            <span className="pulse-dot" /> CODE4NATURE / RICE CLIMATE INTELLIGENCE
+          </motion.div>
+          <motion.h1 initial="hidden" animate="visible" variants={fade} transition={{ duration: .8, delay: .08 }}>
+            Turn rice farming into
+            <span> measurable climate value.</span>
+          </motion.h1>
+          <motion.p initial="hidden" animate="visible" variants={fade} transition={{ duration: .8, delay: .16 }}>
+            Satellite intelligence, field data, methane modelling and digital MRV for climate-smart rice cultivation.
+            Explore a farm from the map, understand its water regime, quantify potential methane reduction and connect impact to carbon economics.
+          </motion.p>
+          <motion.div initial="hidden" animate="visible" variants={fade} transition={{ duration: .8, delay: .24 }} className="cc-hero-actions">
+            <Link href="/simulator" className="cc-btn cc-btn-dark">Start a farm journey <ArrowRight size={16}/></Link>
+            <Link href="/technology" className="cc-btn cc-btn-light">Explore our technology</Link>
+          </motion.div>
+          <div className="cc-hero-scroll"><span>Scroll to explore</span><ArrowDownRight size={17}/></div>
+        </div>
+
+        <div className="cc-field-stage">
+          <div className="satellite-label"><Satellite size={15}/> LIVE FIELD INTELLIGENCE</div>
+          <div className="rice-field">
+            {Array.from({ length: 36 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="rice-cell"
+                animate={{ opacity: [.38, .9, .5], scale: [1, 1.025, 1] }}
+                transition={{ duration: 2.8 + (i % 5) * .25, repeat: Infinity, delay: i * .035 }}
+              />
+            ))}
+            <motion.div className="scan-line" animate={{ x: ['-120%', '120%'] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'linear' }} />
+            <div className="field-pin"><MapPinned size={22}/><span>FIELD 042</span></div>
+          </div>
+          <div className="field-data">
+            <div><small>SOIL MOISTURE</small><strong>64%</strong></div>
+            <div><small>WATER REGIME</small><strong>AWD</strong></div>
+            <div><small>MRV STATUS</small><strong>TRACKED</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="cc-trust">
+        <div className="cc-container">
+          <p>ONE DIGITAL WORKFLOW FROM FIELD OBSERVATION TO CLIMATE VALUE</p>
+          <div className="trust-line"><span>FARMERS</span><i/> <span>FPOs</span><i/> <span>PROJECT DEVELOPERS</span><i/> <span>CARBON BUYERS</span><i/> <span>RESEARCHERS</span></div>
+        </div>
+      </section>
+
+      <section className="cc-section cc-light-section">
+        <div className="cc-container">
+          <motion.div whileInView="visible" viewport={{ once: true, amount: .2 }} initial="hidden" variants={fade} className="cc-section-heading">
+            <div className="cc-kicker">THE OPPORTUNITY</div>
+            <h2>Rice is essential.<br/><em>Its climate footprint is measurable.</em></h2>
+            <p>Waterlogged rice fields create conditions for methane generation. Code4Nature connects practical water-management decisions with field-level evidence and an auditable climate-impact workflow.</p>
+          </motion.div>
+          <div className="cc-three-grid">
+            <ImpactCard number="01" icon={<Waves/>} title="Water" copy="Track the water regime and model how irrigation choices change field conditions." href="/climate-smart-rice"/>
+            <ImpactCard number="02" icon={<Leaf/>} title="Methane" copy="Translate field conditions and cultivation practices into an illustrative methane-reduction pathway." href="/technology"/>
+            <ImpactCard number="03" icon={<Sprout/>} title="Carbon value" copy="Connect measured evidence, verification and carbon-market economics in one workflow." href="/rice-carbon-credits"/>
+          </div>
+        </div>
+      </section>
+
+      <section className="cc-dark-band">
+        <div className="cc-container">
+          <div className="cc-split">
+            <div>
+              <div className="cc-kicker">BUILT FOR THE FIELD</div>
+              <h2>From satellite signal<br/>to farm-level decision.</h2>
+            </div>
+            <p>Our product architecture combines geospatial intelligence, farm mapping, remote sensing, process-based modelling and digital evidence. The goal is not another dashboard — it is a traceable chain from what happens in a field to the climate value it may create.</p>
+          </div>
+          <div className="cc-process">
+            {[
+              ['01','ASSESS','Map the project area','/simulator'],
+              ['02','MONITOR','Observe practice adoption','/dashboard'],
+              ['03','MODEL','Estimate water & methane impact','/technology'],
+              ['04','VERIFY','Build digital evidence','/mrv'],
+              ['05','VALUE','Explore carbon economics','/carbon'],
+            ].map(([n,t,c,h],i)=><Link href={h} key={n} className="process-item">
+              <span>{n}</span><div><b>{t}</b><p>{c}</p></div><ArrowRight size={18}/>
+            </Link>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="cc-section">
+        <div className="cc-container">
+          <div className="cc-feature">
+            <div className="cc-feature-copy">
+              <div className="cc-kicker">DIGITAL MRV</div>
+              <h2>Every field gets a story the data can support.</h2>
+              <p>Draw a farm boundary, select an area and inspect a transparent chain of location, satellite-derived indicators, simulated outcomes and evidence status.</p>
+              <Link href="/mrv" className="cc-text-link">Explore digital MRV <ArrowRight size={16}/></Link>
+            </div>
+            <div className="mrv-visual">
+              <div className="mrv-map">
+                <div className="map-grid"/>
+                <div className="map-field field-a"/><div className="map-field field-b"/><div className="map-field field-c"/>
+                <motion.div className="map-radar" animate={{ scale: [0.65, 1.25], opacity: [0.65, 0] }} transition={{ duration: 3, repeat: Infinity }}/>
+                <div className="map-tag">SAR / FIELD 042</div>
+              </div>
+              <div className="mrv-list">
+                <span><b>✓</b> Farm boundary</span><span><b>✓</b> Water regime</span><span><b>✓</b> Practice evidence</span><span><b>○</b> Verification</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="cc-section cc-cream">
+        <div className="cc-container">
+          <div className="cc-section-heading compact">
+            <div className="cc-kicker">EXPLORE CODE4NATURE</div>
+            <h2>One platform.<br/><em>Multiple climate journeys.</em></h2>
+          </div>
+          <div className="cc-link-grid">
+            <Journey href="/climate-smart-rice" title="Climate-smart rice" tag="FARMING" text="Understand AWD, water management and methane reduction."/>
+            <Journey href="/technology" title="Our technology" tag="SCIENCE" text="Explore satellite, modelling, Geo-AI and field intelligence."/>
+            <Journey href="/simulator" title="Farm simulator" tag="INTERACTIVE" text="Select a field and run an illustrative climate-value scenario."/>
+            <Journey href="/rice-carbon-credits" title="Rice carbon credits" tag="MARKET" text="Follow the path from evidence to carbon-market value."/>
+            <Journey href="/research" title="Science & research" tag="KNOWLEDGE" text="Read assumptions, methods, limitations and references."/>
+            <Journey href="/contact" title="Partner with us" tag="ACTION" text="Start a conversation around farms, FPOs or climate finance."/>
+          </div>
+        </div>
+      </section>
+
+      <section className="cc-cta">
+        <div className="cc-container cta-inner">
+          <div className="cc-kicker">START YOUR CLIMATE JOURNEY</div>
+          <h2>Make the field<br/><span>measurable.</span></h2>
+          <Link href="/simulator" className="cc-btn cc-btn-light">Open the farm simulator <ArrowRight size={16}/></Link>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function ImpactCard({number,icon,title,copy,href}:{number:string;icon:React.ReactNode;title:string;copy:string;href:string}) {
+  return <Link href={href} className="impact-card"><div className="impact-top"><span>{number}</span>{icon}</div><h3>{title}</h3><p>{copy}</p><span className="cc-text-link">Explore <ArrowRight size={15}/></span></Link>
+}
+function Journey({href,title,tag,text}:{href:string;title:string;tag:string;text:string}) {
+  return <Link href={href} className="journey-card"><div><small>{tag}</small><h3>{title}</h3><p>{text}</p></div><ArrowRight size={18}/></Link>
+}
