@@ -35,7 +35,7 @@ def _inject_css():
         .stApp { background:#06110d; color:#e7f5ed; }
         [data-testid="stHeader"] { background:rgba(6,17,13,.85); }
         .block-container { max-width:1450px; padding-top:1.5rem; padding-bottom:3rem; }
-        .hero {
+        .top-nav { display:flex; justify-content:space-between; align-items:center; padding:.7rem 0 1.3rem; margin-bottom:.4rem; border-bottom:1px solid rgba(255,255,255,.06); }\n        .brand { font-weight:900; letter-spacing:.08em; font-size:1rem; }\n        .brand span { color:#6ee7b7; }\n        .brand small { margin-left:.7rem; color:#587267; font-size:.58rem; letter-spacing:.16em; }\n        .nav-status { color:#7e978c; font-size:.62rem; letter-spacing:.14em; }\n        .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#34d399; box-shadow:0 0 12px #34d399; margin-right:.4rem; }\n        .hero {
             background:
               radial-gradient(circle at 12% 20%,rgba(16,185,129,.20),transparent 35%),
               radial-gradient(circle at 86% 10%,rgba(59,130,246,.18),transparent 32%),
@@ -150,6 +150,18 @@ def init_state():
         st.session_state["telemetry"] = rows
 
 
+
+def render_top_nav():
+    st.markdown(
+        """
+        <div class="top-nav">
+          <div class="brand"><span>CODE4</span>NATURE <small>CLIMATE INTELLIGENCE</small></div>
+          <div class="nav-status"><span class="live-dot"></span> SYSTEM ONLINE</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 def render_hero():
     st.markdown(
         """
@@ -157,9 +169,9 @@ def render_hero():
           <div class="hero-kicker">REAL DATA PATH + SIMULATOR FALLBACK</div>
           <div class="hero-title">Make rice water<br><span class="gradient">measurable carbon value.</span></div>
           <div class="hero-copy" style="max-width:820px;font-size:1.08rem;">
-            CarbonAWD explains Alternate Wetting & Drying, combines ground telemetry
-            with Sentinel-1 SAR evidence, estimates methane and CO2e impact, and
-            translates the scenario into farmer/FPO and MRV-company economics.
+            Code4Nature combines farm mapping, water-management intelligence, Sentinel-1 SAR evidence
+            and transparent methane / CO2e modelling to connect field actions with
+            farmer/FPO economics and carbon-market value.
           </div>
           <div class="small-copy" style="margin-top:1rem;">
             Demonstrator only: dashboard estimates are simulated/indicative unless
@@ -510,7 +522,7 @@ def run():
     init_state()
     _inject_css()
     st.sidebar.markdown("## 🌾 CarbonAWD")
-    st.sidebar.caption("IIT Gandhinagar • Digital MRV demonstrator")
+    st.sidebar.caption("Rice carbon intelligence • Digital MRV")
     st.sidebar.markdown("---")
     status = check_health()
     if status.get("sentinel_hub_configured"):
@@ -519,7 +531,7 @@ def run():
         st.sidebar.info("Sentinel-1: SIMULATOR")
     st.sidebar.markdown(
         "**Prototype sections**\n\n"
-        "Science → Live Farm / SAR → Market → Economics → Policy / FPO"
+        "Overview → Farm Intelligence → Carbon Economics → MRV → Policy / FPO"
     )
 
     render_hero()
