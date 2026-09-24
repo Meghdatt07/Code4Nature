@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import folium
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 from folium.plugins import Draw
 from streamlit_folium import st_folium
 
@@ -278,7 +279,43 @@ def handle_map_result(map_data):
     st.session_state["lat"], st.session_state["lon"] = polygon_centroid(polygon)
 
 
-def render_mrv():
+def render_algorithmic_mrv_simulation():
+    html = r"""<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1425;color:#e8edf7;font-family:Arial,sans-serif}
+.wrap{padding:0 0 18px}.head{display:flex;justify-content:space-between;align-items:center;padding:4px 0 18px;border-bottom:1px solid #29354a}
+.title{font-size:25px;font-weight:800}.sub{font-size:15px;color:#91a0b8;margin-top:6px}.btn{background:#2864e6;color:#fff;border:0;border-radius:14px;padding:15px 23px;font-size:16px;font-weight:800;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:28px}.card{background:#101b2f;border:1px solid #2b3850;border-radius:18px;padding:28px;position:relative}.card.awd{border-color:#0a8b72}.badge{position:absolute;right:0;top:0;background:#11b98b;color:#04131a;padding:8px 16px;border-radius:0 0 0 14px;font-size:12px;font-weight:900}
+.card h3{font-size:14px;color:#c0c9d8;letter-spacing:.02em;margin:0 0 15px}.awd h3{color:#28d1a6}.chartbox{height:330px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.head{gap:15px;align-items:flex-start}.btn{width:100%}}
+</style></head><body><div class="wrap">
+<div class="head"><div><div class="title">MRV Algorithmic Simulation</div><div class="sub">Verra VM0051 Compliance View</div></div><button id="play" class="btn">▶ Execute 30-Day Model</button></div>
+<div class="grid">
+<div class="card"><h3>≋ &nbsp; BASELINE CONTROL (CONTINUOUS)</h3><div class="chartbox"><canvas id="baseline"></canvas></div></div>
+<div class="card awd"><div class="badge">CREDITS GENERATED</div><h3>⌁ &nbsp; AWD INTERVENTION</h3><div class="chartbox"><canvas id="awd"></canvas></div></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const days=Array.from({length:30},(_,i)=>"T+"+(i+1));
+const continuous={water:Array(30).fill(5),methane:Array(30).fill(2.4)};
+const awd={water:[5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7],methane:[2.4,2.2,1.8,1,0.4,.1,0,0,1.8,1.5,1,.5,.2,0,0,0,1.5,1.2,.8,.4,.1,0,0,0,1.2,.9,.5,.2,.1,0]};
+Chart.defaults.font.family="Arial";Chart.defaults.color="#95a3ba";
+const opts={responsive:true,maintainAspectRatio:false,animation:false,
+plugins:{legend:{position:"top",labels:{usePointStyle:true,boxWidth:6,font:{size:11}}}},
+scales:{x:{grid:{color:"rgba(255,255,255,.04)"}},y:{min:-20,max:10,title:{display:true,text:"Soil Water Level (cm)",color:"#718099"},grid:{color:c=>c.tick.value===0?"rgba(59,130,246,.55)":"rgba(255,255,255,.05)",lineWidth:c=>c.tick.value===0?2:1}},y1:{min:0,max:3,position:"right",title:{display:true,text:"CH4 Emissions (kg/ha/day)",color:"#718099"},grid:{drawOnChartArea:false}}}};
+function make(id,data,mColor,fillWater){
+return new Chart(document.getElementById(id),{type:"line",data:{labels:days,datasets:[
+{label:"Water Depth (cm)",data:[...data.water],borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,.10)",borderWidth:2,yAxisID:"y",fill:true,tension:.35,pointRadius:0},
+{label:"Methane (kg/ha/day)",data:[...data.methane],borderColor:mColor,backgroundColor:"transparent",borderWidth:2,borderDash:[4,4],yAxisID:"y1",tension:.35,pointRadius:0}]},options:opts})}
+let b=make("baseline",continuous,"#ff3b61"), a=make("awd",awd,"#10d39b");
+document.getElementById("play").onclick=()=>{b.data.datasets.forEach(d=>d.data=[]);a.data.datasets.forEach(d=>d.data=[]);b.update();a.update();let i=0,t=setInterval(()=>{if(i>=30){clearInterval(t);return}
+b.data.datasets[0].data.push(continuous.water[i]);b.data.datasets[1].data.push(continuous.methane[i]);a.data.datasets[0].data.push(awd.water[i]);a.data.datasets[1].data.push(awd.methane[i]);b.update();a.update();i++},100)}
+</script></body></html>"""
+    components.html(html, height=455, scrolling=False)
+
+
+def render_mrv_legacy_unused():
     st.markdown('<div class="section-kicker">LIVE FARM / SAR LAB</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Move the farm. Draw the boundary. Query the satellite.</div>', unsafe_allow_html=True)
     st.markdown(
@@ -371,6 +408,8 @@ def render_mrv():
         st.line_chart(chart_df[["Continuous flooding","AWD water depth (cm)"]], height=320)
 
 
+
+
 def render_market():
     st.markdown('<div class="section-kicker">MARKET FEED</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Carbon prices: global + India</div>', unsafe_allow_html=True)
@@ -414,6 +453,45 @@ def render_market():
 
 
 def render_economics():
+    st.markdown('<div class="section-kicker">SCALED PROJECT ECONOMICS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Scale the project and see the value split.</div>', unsafe_allow_html=True)
+    st.markdown('<p class="small-copy">The component below reproduces the supplied prototype economics interaction: acreage × abatement yield = credits; credits × price = gross revenue; revenue is split between FPOs/farmers and the platform MRV share.</p>', unsafe_allow_html=True)
+    html = r"""<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1425;color:#e8edf7;font-family:Arial,sans-serif}
+.panel{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;padding:6px 0}
+.left{padding:6px 0}.control{margin-bottom:31px}.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.lab{font-size:15px;font-weight:800;color:#92a0b7;letter-spacing:.02em}.val{font-size:18px;font-weight:800;color:#4892ff;font-family:monospace}.green{color:#22d69d}
+input[type=range]{appearance:none;width:100%;height:10px;border-radius:8px;background:#1e2a40;outline:none}input[type=range]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#347eea;cursor:pointer}input[type=range]::-moz-range-thumb{width:20px;height:20px;border:0;border-radius:50%;background:#347eea;cursor:pointer}
+.result{border:1px solid #32415a;border-radius:18px;background:#0d1729;padding:36px;box-shadow:inset 0 0 30px rgba(0,0,0,.12)}
+.item{padding:0 0 24px;margin-bottom:24px;border-bottom:1px solid #26344b}.item:last-child{border-bottom:0;margin:0;padding:0}.cap{font-size:13px;color:#8797af;font-weight:800;letter-spacing:.04em;margin-bottom:14px}.big{font-size:34px;font-weight:900;font-family:monospace}.money{font-size:25px;font-weight:900;font-family:monospace}.farmer .cap,.farmer .big{color:#25d8a1}.submoney{margin-left:16px;font-size:18px;color:#667792;font-family:monospace}.farmersub{color:#047b5c}.formula{margin-top:26px;padding:17px;background:#0c1628;border:1px solid #25344b;border-radius:12px;color:#9eacc0;font-family:monospace;font-size:12px;line-height:1.8}
+@media(max-width:850px){.panel{grid-template-columns:1fr;gap:25px}.result{padding:25px}}
+</style></head><body>
+<div class="panel"><div class="left">
+<div class="control"><div class="row"><span class="lab">PROJECT BOUNDARY</span><span class="val" id="acreV">1,000 Acres</span></div><input id="acres" type="range" min="1" max="10000" step="1" value="1000"></div>
+<div class="control"><div class="row"><span class="lab">ABATEMENT YIELD</span><span class="val" id="abatV">1.2 tCO2e</span></div><input id="abat" type="range" min=".5" max="2" step=".1" value="1.2"></div>
+<div class="control"><div class="row"><span class="lab">CARBON CREDIT PRICE (USD)</span><span class="val green" id="priceV">$20</span></div><input id="price" type="range" min="5" max="50" step="1" value="20"></div>
+<div class="control"><div class="row"><span class="lab">FPO PROFIT SPLIT</span><span class="val" id="shareV">65%</span></div><input id="share" type="range" min="50" max="100" step="1" value="65"></div>
+</div>
+<div class="result">
+<div class="item"><div class="cap">TOTAL CARBON CREDITS GENERATED</div><div class="big" id="credits">1,200 VCUs</div></div>
+<div class="item"><div class="cap">TOTAL GROSS REVENUE</div><div><span class="money" id="grossUsd">$24,000</span><span class="submoney" id="grossInr">₹20,04,000</span></div></div>
+<div class="item farmer"><div class="cap">DIRECT TO FARMERS (FPOS)</div><div><span class="big" id="farmerUsd">$15,600</span><span class="submoney farmersub" id="farmerInr">₹13,02,600</span></div></div>
+<div class="item"><div class="cap">PLATFORM MRV SHARE</div><div><span class="money" id="platformUsd">$8,400</span><span class="submoney" id="platformInr">₹7,01,400</span></div></div>
+</div></div>
+<div class="formula">credits = acres × abatement yield<br>gross revenue = credits × carbon credit price<br>FPO/farmer value = gross revenue × FPO split<br>platform MRV value = gross revenue − FPO/farmer value<br>INR values use prototype FX = ₹83.50 / USD</div>
+<script>
+const fx=83.5,fmtUSD=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}),fmtINR=new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0});
+const A=document.getElementById("acres"),B=document.getElementById("abat"),P=document.getElementById("price"),S=document.getElementById("share");
+function calc(){const a=+A.value,b=+B.value,p=+P.value,s=+S.value;const c=a*b,g=c*p,f=g*s/100,pl=g-f;
+document.getElementById("acreV").textContent=a.toLocaleString()+" Acres";document.getElementById("abatV").textContent=b.toFixed(1)+" tCO2e";document.getElementById("priceV").textContent="$"+p;document.getElementById("shareV").textContent=s+"%";document.getElementById("credits").textContent=c.toLocaleString()+" VCUs";document.getElementById("grossUsd").textContent=fmtUSD.format(g);document.getElementById("grossInr").textContent=fmtINR.format(g*fx);document.getElementById("farmerUsd").textContent=fmtUSD.format(f);document.getElementById("farmerInr").textContent=fmtINR.format(f*fx);document.getElementById("platformUsd").textContent=fmtUSD.format(pl);document.getElementById("platformInr").textContent=fmtINR.format(pl*fx)}
+[A,B,P,S].forEach(x=>x.addEventListener("input",calc));calc();
+</script></body></html>"""
+    components.html(html, height=520, scrolling=False)
+
+    st.markdown('<div class="section-kicker" style="margin-top:2rem">EXISTING FARM-LEVEL MODEL</div>', unsafe_allow_html=True)
+    st.markdown('<div class="small-copy" style="margin-bottom:.7rem">Detailed scenario using farm hectares, methane abatement and the market feed already connected to Code4Nature.</div>', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-kicker">LIVE CALCULATOR</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Farmer + company economics</div>', unsafe_allow_html=True)
     st.markdown(
@@ -465,6 +543,7 @@ def render_economics():
             """,
             unsafe_allow_html=True,
         )
+
 
 
 def render_policy():
