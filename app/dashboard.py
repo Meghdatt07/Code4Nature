@@ -458,17 +458,27 @@ def render_farm_simulator():
             st.rerun()
         area = st.number_input("Farm area (hectares)", min_value=0.01,
                                value=float(st.session_state["farm_area_ha"]),
-                               step=0.1, format="%.2f", key="sim_area")
+                               step=0.1, format="%.2f", key="sim_area",
+                               help="Hectare (ha) = a unit used to measure land area.")
+        st.caption("Farm area = total rice-growing land included in this scenario.")
         baseline_water = st.number_input("Baseline water use (million L/ha)",
                                          min_value=0.1, value=4.96, step=0.1,
-                                         key="sim_baseline_water")
+                                         key="sim_baseline_water",
+                                         help="Baseline = the reference water use before applying the simulated method.")
+        st.caption("Baseline water use = estimated water used per hectare before the intervention.")
         water_reduction = st.slider("Potential water reduction (%)", 0, 70, 36, 1,
-                                    key="sim_water_reduction")
+                                    key="sim_water_reduction",
+                                    help="Potential water reduction = the estimated percentage decrease in water use under the scenario.")
+        st.caption("Potential water reduction = how much less water the simulated method may use than the baseline.");
         baseline_emission = st.number_input("Baseline emissions (tCO2e/ha)",
                                             min_value=0.1, value=6.0, step=0.1,
-                                            key="sim_baseline_emission")
+                                            key="sim_baseline_emission",
+                                            help="tCO2e = tonnes of carbon-dioxide equivalent, a common unit for comparing greenhouse-gas impact.")
+        st.caption("Baseline emissions = estimated greenhouse-gas emissions before the simulated intervention.")
         emission_reduction = st.slider("Illustrative emission reduction (%)", 0, 70, 42, 1,
-                                       key="sim_emission_reduction")
+                                       key="sim_emission_reduction",
+                                       help="Illustrative emission reduction = the assumed percentage decrease used only for this scenario.")
+        st.caption("Illustrative emission reduction = the assumed percentage decrease in emissions for this simulation.")
     if st.button("Run Farm Simulation", type="primary", use_container_width=True, key="run_farm_sim"):
         baseline_total_water = area * baseline_water * 1_000_000
         project_total_water = baseline_total_water * (1 - water_reduction / 100.0)
@@ -488,12 +498,22 @@ def render_farm_simulator():
         r4.metric("Water reduction", f"{result['water_reduction']:.0f}%")
         with st.expander("Details"):
             st.markdown(
-                "**Farm area:** the total rice-growing area included in this simulation.  "
-                "**Water saved:** estimated water avoided compared with the selected baseline.  "
-                "**CO2e reduction:** estimated greenhouse-gas reduction expressed as tonnes of carbon-dioxide equivalent.  "
-                "**Water reduction:** the percentage decrease in simulated water use from the baseline.  "
-                "**Baseline emissions:** the assumed emissions level before the simulated intervention.  "
-                "**Emission reduction:** the assumed percentage decrease used to calculate the scenario outcome."
+                "**Farm area:** total rice-growing land included in the scenario.  
+
+"
+                "**Water saved:** estimated water avoided compared with the baseline.  
+
+"
+                "**CO2e reduction:** estimated greenhouse-gas reduction expressed in tonnes of CO2 equivalent.  
+
+"
+                "**Water reduction:** percentage decrease in simulated water use from the baseline.  
+
+"
+                "**Baseline emissions:** estimated emissions before the simulated intervention.  
+
+"
+                "**Emission reduction:** assumed percentage decrease used to calculate this scenario."
             )
             st.caption(
                 "These definitions explain the scenario outputs in simple terms; the values remain illustrative until supported by project-specific measurements."
