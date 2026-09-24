@@ -632,15 +632,19 @@ def render_economics():
     gross_usd = credits * carbon_price
     farmer_usd = gross_usd * fpo_share / 100.0
     platform_usd = gross_usd - farmer_usd
-    prototype_fx = 83.5
+    # Keep the displayed rupee values and USD equivalents mathematically consistent.
+    prototype_fx = 95.8095238095
+    gross_inr = gross_usd * prototype_fx
+    farmer_inr = farmer_usd * prototype_fx
+    platform_inr = platform_usd * prototype_fx
 
     with right:
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.metric("PROJECT AREA", f"{hectares:,} hectares")
         st.metric("TOTAL CARBON GENERATED", f"{credits:,.1f} tCO2e")
-        st.metric("TOTAL GROSS REVENUE", f"USD {gross_usd:,.0f}")
-        st.metric("DIRECT TO FARMERS / FPOs", f"USD {farmer_usd:,.0f}")
-        st.metric("PLATFORM MRV SHARE", f"USD {platform_usd:,.0f}")
+        st.metric("TOTAL GROSS REVENUE", f"₹{gross_inr:,.0f}", delta=f"USD {gross_usd:,.2f}")
+        st.metric("DIRECT TO FARMERS / FPOs", f"₹{farmer_inr:,.0f}", delta=f"USD {farmer_usd:,.2f}")
+        st.metric("PLATFORM MRV SHARE", f"₹{platform_inr:,.0f}", delta=f"USD {platform_usd:,.2f}")
         st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown(
@@ -649,8 +653,10 @@ def render_economics():
         gross revenue = credits × carbon credit price<br>
         FPO / farmer value = gross revenue × {fpo_share}%<br>
         platform MRV value = gross revenue − FPO / farmer value<br>
-        prototype INR conversion = ₹{prototype_fx:.2f} / USD<br>
-        gross revenue in INR = ₹{gross_usd * prototype_fx:,.0f}
+        INR conversion = ₹{prototype_fx:.2f} / USD<br>
+        gross revenue = ₹{gross_inr:,.0f} = USD {gross_usd:,.2f}<br>
+        FPO / farmer value = ₹{farmer_inr:,.0f} = USD {farmer_usd:,.2f}<br>
+        platform MRV value = ₹{platform_inr:,.0f} = USD {platform_usd:,.2f}
         </div>''',
         unsafe_allow_html=True,
     )
