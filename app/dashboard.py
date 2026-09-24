@@ -434,6 +434,67 @@ def render_mrv():
 
 
 
+def render_farm_simulator():
+    st.markdown('<div class="section-kicker">FARM SIMULATOR</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Explore a rice-field scenario before equipment-backed MRV.</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<p class="small-copy">Use this page for scenario modelling only. Select a farm, adjust the assumptions and calculate illustrative water and CO2e outcomes. No satellite retrieval or equipment measurement happens here.</p>',
+        unsafe_allow_html=True,
+    )
+    left, right = st.columns([1.65, 1])
+    with left:
+        map_data = st_folium(build_map(), width=None, height=560,
+                             returned_objects=["last_clicked", "last_active_drawing"],
+                             key="simulator_map")
+        handle_map_result(map_data)
+    with right:
+        preset = st.selectbox("Farm preset", list(PRESETS.keys()), key="sim_farm_preset")
+        if st.button("Use preset", use_container_width=True, key="sim_use_preset"):
+            lat, lon = PRESETS[preset]
+            st.session_state["lat"] = lat
+            st.session_state["lon"] = lon
+            st.session_state["farm_polygon"] = None
+            st.session_state["farm_area_ha"] = DEFAULT_HECTARES
+            st.rerun()
+        area = st.number_input("Farm area (hectares)", min_value=0.01,
+                               value=float(st.session_state["farm_area_ha"]),
+                               step=0.1, format="%.2f", key="sim_area")
+        baseline_water = st.number_input("Baseline water use (million L/ha)",
+                                         min_value=0.1, value=4.96, step=0.1,
+                                         key="sim_baseline_water")
+        water_reduction = st.slider("Potential water reduction (%)", 0, 70, 36, 1,
+                                    key="sim_water_reduction")
+        baseline_emission = st.number_input("Baseline emissions (tCO2e/ha)",
+                                            min_value=0.1, value=6.0, step=0.1,
+                                            key="sim_baseline_emission")
+        emission_reduction = st.slider("Illustrative emission reduction (%)", 0, 70, 42, 1,
+                                       key="sim_emission_reduction")
+    if st.button("Run Farm Simulation", type="primary", use_container_width=True, key="run_farm_sim"):
+        baseline_total_water = area * baseline_water * 1_000_000
+        project_total_water = baseline_total_water * (1 - water_reduction / 100.0)
+        st.session_state["farm_sim_result"] = {
+            "area": area,
+            "water_saved": baseline_total_water - project_total_water,
+            "water_reduction": water_reduction,
+            "reduction_tco2e": area * baseline_emission * (emission_reduction / 100.0),
+        }
+    result = st.session_state.get("farm_sim_result")
+    if result:
+        st.markdown("### Scenario result")
+        r1, r2, r3, r4 = st.columns(4)
+        r1.metric("Farm area", f"{result['area']:.2f} ha")
+        r2.metric("Water saved", f"{result['water_saved']/1_000_000:.2f}M L")
+        r3.metric("CO2e reduction", f"{result['reduction_tco2e']:.2f} tCO2e")
+        r4.metric("Water reduction", f"{result['water_reduction']:.0f}%")
+        st.markdown(
+            '<div class="formula"><b>Details:</b> baseline water × farm area gives the scenario baseline; the selected water-reduction rate gives project water use. Baseline emissions × farm area × selected emission-reduction rate gives the illustrative CO2e reduction.</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<div class="info-card" style="margin-top:1rem;"><b>Workflow distinction:</b><div class="small-copy" style="margin-top:.4rem;">Farm Simulator is for scenario modelling without equipment. Digital MRV is for SAR/evidence retrieval and field-level MRV data.</div></div>',
+            unsafe_allow_html=True,
+        )
+
 def render_market():
     st.markdown('<div class="section-kicker">MARKET FEED</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Carbon prices: global + India</div>', unsafe_allow_html=True)
