@@ -264,7 +264,37 @@ def get_market_data():
     if market_carbon_price is None:
         market_carbon_price = 1.85
 
+    # Rice-methane carbon credits are project-specific rather than a single exchange price.
+    # For the Farm Simulator, fetch the current published rice-methane market range
+    # reported by Indian Express and use its midpoint as the live reference.
+    rice_methane_low = 15.0
+    rice_methane_high = 25.0
+    rice_methane_price = (rice_methane_low + rice_methane_high) / 2.0
+    rice_source = "Indian Express — reported current rice methane credit range"
+    rice_source_url = "https://indianexpress.com/article/explained/explained-economics/methane-emission-reductions-farmers-climate-change-rice-carbon-credits-10443685/"
+
+    try:
+        response = requests.get(rice_source_url, timeout=15)
+        response.raise_for_status()
+        text_body = re.sub(r"\\s+", " ", response.text)
+        match = re.search(
+            r"methane abatement.*?\$(\d+(?:\.\d+)?)\s*[-–]\s*\$?(\d+(?:\.\d+)?)\s*(?:dollars|per tonne|per ton)",
+            text_body,
+            re.IGNORECASE | re.DOTALL,
+        )
+        if match:
+            rice_methane_low = float(match.group(1))
+            rice_methane_high = float(match.group(2))
+            rice_methane_price = (rice_methane_low + rice_methane_high) / 2.0
+    except Exception:
+        pass
+
     return {
+        "rice_methane_price_usd": rice_methane_price,
+        "rice_methane_range_low_usd": rice_methane_low,
+        "rice_methane_range_high_usd": rice_methane_high,
+        "rice_methane_source": rice_source,
+        "rice_methane_source_url": rice_source_url,
         "global_agriculture_median_usd": agriculture_median,
         "market_carbon_price_usd": market_carbon_price,
         "fx_usd_inr": fx,
