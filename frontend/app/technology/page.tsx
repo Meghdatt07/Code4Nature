@@ -47,7 +47,7 @@ export default function Technology() {
             </div>
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/20">
               <img src={gcImage} alt="Gas chromatograph laboratory instrument" className="h-[420px] w-full object-contain bg-[#06110d]"/>
-              <div className="px-5 py-4 text-xs text-white/45">Gas chromatograph reference image: Cyberwork 95, Wikimedia Commons, CC BY-SA 4.0.</div>
+              <div className="px-5 py-4 text-xs tracking-[.18em] font-bold text-[#8bcfa6]">GAS CHROMATOGRAPHY</div>
             </div>
           </div>
 
