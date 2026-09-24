@@ -1,7 +1,7 @@
 import streamlit as st
 
 try:
-    from .dashboard import init_state, render_economics, render_market, render_mrv, render_policy
+    from .dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_digital_mrv, render_farm_simulator
 except ImportError:
     from dashboard import init_state, render_economics, render_market, render_mrv, render_policy
 
@@ -186,8 +186,8 @@ def technology():
 
 def simulator():
     st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell(); init_state()
-    frame("FARM SIMULATOR","Move the farm. Draw the boundary.","Click a location, choose a preset or draw a polygon/rectangle. The selected geometry feeds the demonstration area and SAR workflow.")
-    render_mrv()
+    frame("FARM SIMULATOR","Estimate the opportunity before buying equipment.","Non-equipment users can model carbon-credit opportunity from farm area and current market pricing. After purchasing our equipment, move to Digital MRV.")
+    render_farm_simulator()
 
 def carbon():
     st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell(); init_state()
@@ -196,8 +196,8 @@ def carbon():
 
 def mrv():
     st.set_page_config(page_title="Digital MRV | Asterisk Climos", layout="wide"); shell(); init_state()
-    frame("DIGITAL MRV","Measure what is simulated—and what needs field evidence.","Monitor, report and verify are kept as separate steps.")
-    render_mrv()
+    frame("DIGITAL MRV","Equipment-backed field evidence.","This workflow is for farmers who have purchased our equipment and want field-specific MRV signals.")
+    render_digital_mrv()
 
 def policy():
     st.set_page_config(page_title="Policy & FPO | Asterisk Climos", layout="wide"); shell()
