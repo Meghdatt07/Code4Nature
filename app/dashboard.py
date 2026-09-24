@@ -373,7 +373,7 @@ def render_mrv():
             st.caption(f"Source: {sar.get('source','N/A')}")
             st.caption(sar.get("note",""))
 
-            with st.expander("Show behind-the-scenes calculation and technical terms"):
+            with st.expander("Details"):
                 if vv is not None:
                     vv_value = float(vv)
                     wetness_calc = max(0.0, min(100.0, 50.0 + (vv_value + 15.0) * 7.0))
