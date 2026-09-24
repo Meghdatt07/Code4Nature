@@ -3,7 +3,7 @@ import streamlit as st
 try:
     from .dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_digital_mrv, render_farm_simulator
 except ImportError:
-    from dashboard import init_state, render_economics, render_market, render_mrv, render_policy
+    from dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_digital_mrv, render_farm_simulator
 
 def inject_site_css():
     st.markdown("""<style>
