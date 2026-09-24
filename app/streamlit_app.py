@@ -2,7 +2,11 @@ import streamlit as st
 from site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology
 
 st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide", initial_sidebar_state="collapsed")
-st.markdown("""<style>html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important;color:#edf7f2!important}[data-testid="stHeader"]{background:rgba(7,18,15,.88)!important}[data-testid="stSidebar"]{display:none!important}.block-container{max-width:1400px!important}</style>""",unsafe_allow_html=True)
+st.markdown("""<style>html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important;color:#edf7f2!important}[data-testid="stHeader"]{background:rgba(7,18,15,.88)!important}[data-testid="stSidebar"]{display:none!important}.block-container{max-width:1400px!important}
+/* Hide Streamlit's automatic heading anchor/link icon. */
+[data-testid="stHeaderActionElements"],
+[data-testid="StyledLinkIconContainer"] { display:none !important; }
+</style>""",unsafe_allow_html=True)
 pages=[
 st.Page(home,title="Home",icon=":material/home:",url_path="",default=True),
 st.Page(climate_smart_rice,title="Climate-smart rice",icon=":material/water_drop:",url_path="climate-smart-rice"),
