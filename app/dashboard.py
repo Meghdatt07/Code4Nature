@@ -486,10 +486,18 @@ def render_farm_simulator():
         r2.metric("Water saved", f"{result['water_saved']/1_000_000:.2f}M L")
         r3.metric("CO2e reduction", f"{result['reduction_tco2e']:.2f} tCO2e")
         r4.metric("Water reduction", f"{result['water_reduction']:.0f}%")
-        st.markdown(
-            '<div class="formula"><b>Details:</b> baseline water × farm area gives the scenario baseline; the selected water-reduction rate gives project water use. Baseline emissions × farm area × selected emission-reduction rate gives the illustrative CO2e reduction.</div>',
-            unsafe_allow_html=True,
-        )
+        with st.expander("Details"):
+            st.markdown(
+                "**Farm area:** the total rice-growing area included in this simulation.  "
+                "**Water saved:** estimated water avoided compared with the selected baseline.  "
+                "**CO2e reduction:** estimated greenhouse-gas reduction expressed as tonnes of carbon-dioxide equivalent.  "
+                "**Water reduction:** the percentage decrease in simulated water use from the baseline.  "
+                "**Baseline emissions:** the assumed emissions level before the simulated intervention.  "
+                "**Emission reduction:** the assumed percentage decrease used to calculate the scenario outcome."
+            )
+            st.caption(
+                "These definitions explain the scenario outputs in simple terms; the values remain illustrative until supported by project-specific measurements."
+            )
         st.markdown(
             '<div class="info-card" style="margin-top:1rem;"><b>Workflow distinction:</b><div class="small-copy" style="margin-top:.4rem;">Farm Simulator is for scenario modelling without equipment. Digital MRV is for SAR/evidence retrieval and field-level MRV data.</div></div>',
             unsafe_allow_html=True,
