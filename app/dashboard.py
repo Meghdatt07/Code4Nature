@@ -436,9 +436,9 @@ def render_mrv():
 
 def render_farm_simulator():
     st.markdown('<div class="section-kicker">FARM SIMULATOR</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">See your carbon-credit opportunity in seconds.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">See your rice carbon-credit opportunity in seconds.</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">Enter only your farm area and crop. Code4Nature uses the current rice-focused scenario model and a live carbon-market reference to estimate the opportunity that may have been missed in past years and the potential value over the next five years.</p>',
+        '<p class="small-copy">Enter your farm land and crop. Code4Nature estimates potential methane-abatement credits using the current published rice-methane carbon price reference, then shows the value for past and future years.</p>',
         unsafe_allow_html=True,
     )
 
@@ -448,43 +448,60 @@ def render_farm_simulator():
         value=10.0,
         step=0.1,
         format="%.2f",
-        help="Enter the total land area where the crop is grown.",
         key="simple_farm_area",
+        help="Enter the total land area where the crop is grown.",
     )
     crop = st.selectbox(
         "Crop being grown",
         ["Rice", "Other crop"],
-        help="Code4Nature's current carbon model is designed for rice cultivation.",
         key="simple_crop_type",
+        help="The current methane-abatement model is intended for rice cultivation.",
     )
 
     if st.button("Calculate carbon opportunity", type="primary", use_container_width=True, key="simple_run_sim"):
         if crop != "Rice":
             st.warning(
-                "The current Code4Nature methane/carbon model is calibrated for rice cultivation. "
+                "The current Code4Nature methane-abatement model is designed for rice cultivation. "
                 "Choose Rice to generate the present estimate."
             )
             return
 
         market_data = get_market_data()
-        market_price = float(market_data.get("market_carbon_price_usd") or DEFAULT_VCM_PRICE_USD)
+        carbon_price = float(
+            market_data.get("rice_methane_price_usd") or 20.0
+        )
+        low = float(market_data.get("rice_methane_range_low_usd") or 15.0)
+        high = float(market_data.get("rice_methane_range_high_usd") or 25.0)
+        source = market_data.get(
+            "rice_methane_source",
+            "Current published rice-methane market reference",
+        )
+        source_url = market_data.get(
+            "rice_methane_source_url",
+            "https://indianexpress.com/article/explained/explained-economics/methane-emission-reductions-farmers-climate-change-rice-carbon-credits-10443685/",
+        )
 
+        # Illustrative rice methane-reduction assumptions from the project model:
+        # 6.0 tCO2e/ha baseline, 42% reduction, giving 2.52 tCO2e/ha/year.
         baseline_emission = 6.0
-        modeled_reduction = 42.0
-        annual_credits = area * baseline_emission * (modeled_reduction / 100.0)
+        reduction_fraction = 0.42
+        annual_credits = area * baseline_emission * reduction_fraction
 
         past_years = 5
         future_years = 5
         past_credits = annual_credits * past_years
         future_credits = annual_credits * future_years
-        past_value = past_credits * market_price
-        future_value = future_credits * market_price
+        past_value = past_credits * carbon_price
+        future_value = future_credits * carbon_price
 
         st.session_state["simple_farm_result"] = {
             "area": area,
             "crop": crop,
-            "market_price": market_price,
-            "market_source": market_data.get("market_source", "market reference"),
+            "carbon_price": carbon_price,
+            "price_low": low,
+            "price_high": high,
+            "market_source": source,
+            "market_source_url": source_url,
             "annual_credits": annual_credits,
             "past_credits": past_credits,
             "future_credits": future_credits,
@@ -497,8 +514,9 @@ def render_farm_simulator():
         st.markdown("### Your estimated opportunity")
         st.markdown(
             f'<div class="info-card"><b>{result["area"]:.2f} hectares of {result["crop"]}</b>'
-            f'<div class="small-copy" style="margin-top:.4rem;">Carbon reference used: '
-            f'USD {result["market_price"]:,.2f} per tCO2e · {result["market_source"]}</div></div>',
+            f'<div class="small-copy" style="margin-top:.4rem;">Current rice-methane reference: '
+            f'USD {result["carbon_price"]:,.2f} per tCO2e '
+            f'(reported range USD {result["price_low"]:,.2f}–{result["price_high"]:,.2f})</div></div>',
             unsafe_allow_html=True,
         )
 
@@ -515,11 +533,11 @@ def render_farm_simulator():
             {
                 "Years": [1, 2, 3, 4, 5],
                 "Past opportunity forgone (USD)": [
-                    result["annual_credits"] * result["market_price"] * year
+                    result["annual_credits"] * result["carbon_price"] * year
                     for year in [1, 2, 3, 4, 5]
                 ],
                 "Future potential value (USD)": [
-                    result["annual_credits"] * result["market_price"] * year
+                    result["annual_credits"] * result["carbon_price"] * year
                     for year in [1, 2, 3, 4, 5]
                 ],
             }
@@ -527,24 +545,31 @@ def render_farm_simulator():
         st.markdown("#### 5-year view")
         st.line_chart(chart, height=280)
 
+        st.markdown(
+            f'<div class="small-copy">Price source: <a href="{result["market_source_url"]}" target="_blank">{result["market_source"]}</a>.</div>',
+            unsafe_allow_html=True,
+        )
+
         with st.expander("Details"):
             details = [
-                f"**Estimated credits / year:** potential carbon-credit quantity from the current rice scenario for your farm size.",
-                f"**Credits potentially forgone:** the modelled credits that could have been generated across the selected past 5-year view.",
-                f"**Next 5-year potential credits:** the modelled credits that could be generated across the next 5 years if the same scenario assumptions continued.",
-                f"**Estimated value:** the modelled credits multiplied by the current carbon-market reference rate.",
-                f"**tCO2e:** tonnes of carbon-dioxide equivalent, the unit used here for carbon-credit quantity.",
+                "**Estimated credits / year:** potential carbon-credit quantity from the current rice scenario for your farm size.",
+                "**Credits potentially forgone:** modelled credits that could have been generated across the past 5-year view.",
+                "**Next 5-year potential credits:** modelled credits that could be generated across the next 5 years under the same scenario.",
+                "**tCO2e:** tonnes of carbon-dioxide equivalent, the unit used for the carbon-credit calculation.",
+                "**Current rice-methane reference price:** midpoint of the currently reported USD 15–25/tCO2e rice methane credit range.",
             ]
             for line in details:
                 st.markdown(line)
             st.caption(
-                "This is an illustrative scenario, not a reconstruction of historical carbon prices and not a guarantee of future carbon-credit issuance or revenue."
+                "The carbon price is a current market reference, not a guaranteed transaction price. "
+                "Historical values are not reconstructed from historical prices, and future values are not guaranteed."
             )
 
         st.success(
             "Thank you for making an effort to save Mother Earth. "
             "Your farm data helps build the evidence base for climate-smart rice."
         )
+
 
 def render_market():
     st.markdown('<div class="section-kicker">MARKET FEED</div>', unsafe_allow_html=True)
