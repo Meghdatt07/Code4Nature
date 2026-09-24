@@ -615,9 +615,9 @@ def render_market():
 
 def render_economics():
     st.markdown('<div class="section-kicker">ECONOMICS SCENARIO</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Model the farm economics.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Model the rice carbon economics.</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">A scenario estimate, not a revenue guarantee — every assumption below is a slider you control. USD↔INR uses a live exchange rate when available.</p>',
+        '<p class="small-copy">The emissions assumptions below are based on the 2026 rice-farming study you supplied: baseline = 3.9 tCO₂e/ha and industrial-process improvements = 2.9 tCO₂e/ha. Farm area is entered in acres and converted to hectares for the calculation.</p>',
         unsafe_allow_html=True,
     )
 
@@ -626,233 +626,185 @@ def render_economics():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,Arial,sans-serif;background:#0f172a;color:#fff}
-  .wrap{background:#0f172a;border-radius:18px;padding:32px}
-  .label{color:#cbd5e1;font-size:14px}
-  .value{color:#86efac;font-weight:700}
-  .result{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px}
-  .result-row{display:flex;flex-direction:column;border-bottom:1px solid #334155;padding-bottom:14px;margin-bottom:14px}
-  .result-row:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
-  .muted{color:#94a3b8;font-size:14px}
-  .big{font-size:24px;font-weight:700}
-  .green{color:#34d399}
-  .blue{color:#93c5fd}
-  .small{font-size:12px;color:#64748b}
-  input[type=range]{width:100%;accent-color:#10b981}
+*{box-sizing:border-box}
+body{margin:0;background:#0f172a;color:#f8fafc;font-family:Inter,Arial,sans-serif}
+.wrap{background:#0f172a;border-radius:18px;padding:30px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.control{margin-bottom:24px}
+.row{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:8px}
+.label{font-size:14px;color:#cbd5e1}
+.value{font-weight:700;color:#86efac}
+input[type=range]{width:100%;accent-color:#10b981}
+.result{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:24px}
+.result-row{border-bottom:1px solid #334155;padding-bottom:14px;margin-bottom:14px}
+.result-row:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.muted{font-size:13px;color:#94a3b8}
+.big{display:block;font-size:25px;font-weight:800;margin-top:4px}
+.green{color:#34d399}
+.blue{color:#93c5fd}
+.formula{margin-top:20px;padding:14px;border:1px solid #334155;border-radius:10px;color:#94a3b8;font-family:monospace;font-size:12px;line-height:1.8}
+.note{font-size:12px;color:#64748b;margin-top:10px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<section class="wrap">
-  <h3 style="margin:0 0 4px;font-size:22px;font-weight:700;">Economics Scenario Calculator</h3>
-  <p class="muted" style="margin:0 0 24px;">
-    A scenario estimate, not a revenue guarantee — every assumption below is a slider you control.
-    USD↔INR uses <span id="fx-source">a live exchange rate</span>.
+<div class="wrap">
+  <h3 style="margin:0 0 5px;font-size:22px;">Economics Scenario Calculator</h3>
+  <p class="muted" style="margin:0 0 25px;">
+    Source-based rice-emissions scenario. Baseline and project emissions use the values reported in the supplied 2026 study.
   </p>
 
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;">
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+  <div class="grid">
+    <div>
+      <div class="control">
+        <div class="row">
           <label class="label">Farm Area</label>
-          <span id="val-acres" class="value"></span>
+          <span id="val-acres" class="value">1,000 Acres</span>
         </div>
         <input type="range" id="slider-acres" min="1" max="10000" step="1" value="1000">
       </div>
 
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-          <label class="label">Abatement (tCO2e / Acre)</label>
-          <span id="val-abatement" class="value"></span>
+      <div class="control">
+        <div class="row">
+          <label class="label">Baseline Emissions (tCO₂e / ha)</label>
+          <span id="val-baseline" class="value">3.9 tCO₂e</span>
         </div>
-        <input type="range" id="slider-abatement" min="0.5" max="2.0" step="0.1" value="1.2">
+        <input type="range" id="slider-baseline" min="3.0" max="5.0" step="0.1" value="3.9">
       </div>
 
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-          <label class="label">Indicative Carbon Price (USD)</label>
-          <span id="val-price" class="value"></span>
+      <div class="control">
+        <div class="row">
+          <label class="label">Project Emissions (tCO₂e / ha)</label>
+          <span id="val-project" class="value">2.9 tCO₂e</span>
         </div>
-        <input type="range" id="slider-price" min="1" max="50" step="0.5" value="24">
+        <input type="range" id="slider-project" min="2.0" max="4.0" step="0.1" value="2.9">
       </div>
 
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+      <div class="control">
+        <div class="row">
+          <label class="label">Carbon Price (USD / tCO₂e)</label>
+          <span id="val-price" class="value">$20.00</span>
+        </div>
+        <input type="range" id="slider-price" min="10" max="50" step="1" value="20">
+      </div>
+
+      <div class="control">
+        <div class="row">
           <label class="label">Farmer Profit Share (%)</label>
-          <span id="val-share" class="value"></span>
+          <span id="val-share" class="value">65%</span>
         </div>
         <input type="range" id="slider-share" min="50" max="100" step="1" value="65">
       </div>
-
-      <button id="btn-use-live-price" style="align-self:flex-start;border:0;border-radius:8px;padding:7px 12px;background:#334155;color:#fff;font-size:12px;cursor:pointer;">
-        ⚡ Use current live/indicative price
-      </button>
     </div>
 
     <div class="result">
       <div class="result-row">
-        <span class="muted">Estimated Carbon Credits</span>
-        <span id="res-credits" class="big">0 VCUs</span>
+        <span class="muted">Farm Area</span>
+        <span id="res-area" class="big">404.69 ha</span>
+      </div>
+      <div class="result-row">
+        <span class="muted">Carbon / Emissions Reduction</span>
+        <span id="res-reduction" class="big green">404.69 tCO₂e</span>
       </div>
       <div class="result-row">
         <span class="muted">Potential Gross Value</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-gross-usd" class="big">$0</span>
-          <span id="res-gross-inr" class="muted">₹0</span>
-        </div>
+        <span id="res-gross-usd" class="big">$8,094</span>
+        <span id="res-gross-inr" class="muted">₹0</span>
       </div>
       <div class="result-row">
-        <span class="green" style="font-weight:600;font-size:14px;">Projected Farmer Share</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-farmers-usd" class="big green">$0</span>
-          <span id="res-farmers-inr" style="font-size:18px;color:#6ee7b7;">₹0</span>
-        </div>
+        <span class="green" style="font-weight:600;font-size:14px;">Projected Farmer / FPO Share</span>
+        <span id="res-farmer-usd" class="big green">$5,261</span>
+        <span id="res-farmer-inr" class="muted">₹0</span>
       </div>
       <div class="result-row">
         <span class="blue" style="font-weight:600;font-size:14px;">Platform / Company Share</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-platform-usd" class="big blue">$0</span>
-          <span id="res-platform-inr" style="font-size:18px;color:#60a5fa;">₹0</span>
-        </div>
+        <span id="res-platform-usd" class="big blue">$2,833</span>
+        <span id="res-platform-inr" class="muted">₹0</span>
       </div>
 
-      <p id="fx-rate-note" class="small" style="margin:16px 0 0;">—</p>
-      <p class="small" style="margin:8px 0 0;">Prototype estimate only — not a verified carbon credit or a price guarantee.</p>
+      <div class="formula">
+        hectares = acres × 0.404686<br>
+        reduction per hectare = baseline emissions − project emissions<br>
+        total reduction = hectares × reduction per hectare<br>
+        gross value = total reduction × carbon price<br>
+        farmer/FPO value = gross value × farmer share<br>
+        company value = gross value − farmer/FPO value
+      </div>
+      <div id="fx-note" class="note">FX: loading…</div>
+      <div class="note">The paper's reported values are study estimates for Vietnam; this calculator applies them to the selected farm area as a scenario, not as a field measurement or credit issuance determination.</div>
     </div>
   </div>
-</section>
+</div>
 
 <script>
-const sliderAcres = document.getElementById('slider-acres');
-const sliderAbatement = document.getElementById('slider-abatement');
-const sliderPrice = document.getElementById('slider-price');
-const sliderShare = document.getElementById('slider-share');
+const acresEl=document.getElementById('slider-acres');
+const baselineEl=document.getElementById('slider-baseline');
+const projectEl=document.getElementById('slider-project');
+const priceEl=document.getElementById('slider-price');
+const shareEl=document.getElementById('slider-share');
 
-const formatUSD = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 0
-});
-const formatINR = new Intl.NumberFormat('en-IN', {
-  style: 'currency',
-  currency: 'INR',
-  maximumFractionDigits: 0
-});
+const formatUSD=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+const formatINR=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
 
-let livePrice = { usd: 24.0, source: 'manual fallback', label: 'indicative' };
-let liveFx = { rate: 83.5, source: 'static fallback' };
+let fxRate=83.5;
+let fxSource='fallback';
 
-async function fetchLiveCarbonPrice() {
-  try {
-    const res = await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=toucan-protocol-base-carbon-tonne&vs_currencies=usd,inr'
-    );
-    if (!res.ok) throw new Error('price fetch failed');
-    const data = await res.json();
-    const usd = data['toucan-protocol-base-carbon-tonne']?.usd;
-    if (typeof usd === 'number' && usd > 0) {
-      livePrice = {
-        usd,
-        source: 'CoinGecko (Toucan BCT, live)',
-        label: 'live tokenized-credit proxy — not a rice-project price'
-      };
-      return;
+async function fetchFX(){
+  try{
+    const res=await fetch('https://open.er-api.com/v6/latest/USD');
+    if(!res.ok) throw new Error('FX fetch failed');
+    const data=await res.json();
+    const rate=data?.rates?.INR;
+    if(typeof rate==='number' && rate>0){
+      fxRate=rate;
+      fxSource='open.er-api.com (live)';
     }
-    throw new Error('unexpected response shape');
-  } catch (e) {
-    livePrice = {
-      usd: 24.0,
-      source: 'manual fallback (live fetch failed)',
-      label: 'indicative'
-    };
-  }
+  }catch(e){}
+  document.getElementById('fx-note').textContent=
+    'FX: 1 USD ≈ ₹'+fxRate.toFixed(2)+' ('+fxSource+').';
 }
 
-async function fetchLiveFxRate() {
-  try {
-    const res = await fetch('https://open.er-api.com/v6/latest/USD');
-    if (!res.ok) throw new Error('fx fetch failed');
-    const data = await res.json();
-    const rate = data?.rates?.INR;
-    if (typeof rate === 'number' && rate > 0) {
-      liveFx = { rate, source: 'open.er-api.com (live)' };
-      return;
-    }
-    throw new Error('unexpected response shape');
-  } catch (e) {
-    liveFx = { rate: 83.5, source: 'static fallback (live fetch failed)' };
-  }
+function calculate(){
+  const acres=Number(acresEl.value);
+  const baseline=Number(baselineEl.value);
+  const project=Number(projectEl.value);
+  const price=Number(priceEl.value);
+  const share=Number(shareEl.value);
+
+  const hectares=acres*0.404686;
+  const reductionPerHa=Math.max(0,baseline-project);
+  const totalReduction=hectares*reductionPerHa;
+
+  const grossUSD=totalReduction*price;
+  const farmerUSD=grossUSD*(share/100);
+  const platformUSD=grossUSD-farmerUSD;
+
+  document.getElementById('val-acres').textContent=acres.toLocaleString()+' Acres';
+  document.getElementById('val-baseline').textContent=baseline.toFixed(1)+' tCO₂e';
+  document.getElementById('val-project').textContent=project.toFixed(1)+' tCO₂e';
+  document.getElementById('val-price').textContent='$'+price.toFixed(2);
+  document.getElementById('val-share').textContent=share+'%';
+
+  document.getElementById('res-area').textContent=hectares.toFixed(2)+' ha';
+  document.getElementById('res-reduction').textContent=totalReduction.toFixed(2)+' tCO₂e';
+  document.getElementById('res-gross-usd').textContent=formatUSD.format(grossUSD);
+  document.getElementById('res-gross-inr').textContent=formatINR.format(grossUSD*fxRate);
+  document.getElementById('res-farmer-usd').textContent=formatUSD.format(farmerUSD);
+  document.getElementById('res-farmer-inr').textContent=formatINR.format(farmerUSD*fxRate);
+  document.getElementById('res-platform-usd').textContent=formatUSD.format(platformUSD);
+  document.getElementById('res-platform-inr').textContent=formatINR.format(platformUSD*fxRate);
 }
 
-function updateEconomicsCalculator() {
-  const acres = parseInt(sliderAcres.value);
-  const abatement = parseFloat(sliderAbatement.value);
-  const priceUSD = parseFloat(sliderPrice.value);
-  const share = parseInt(sliderShare.value);
-  const fx = liveFx.rate;
+[acresEl,baselineEl,projectEl,priceEl,shareEl].forEach(el=>el.addEventListener('input',calculate));
 
-  document.getElementById('val-acres').textContent =
-    acres.toLocaleString() + ' Acres';
-  document.getElementById('val-abatement').textContent =
-    abatement.toFixed(1) + ' tCO2e';
-  document.getElementById('val-price').textContent =
-    '$' + priceUSD.toFixed(2);
-  document.getElementById('val-share').textContent =
-    share + '%';
-
-  const totalCredits = acres * abatement;
-  const grossRevenueUSD = totalCredits * priceUSD;
-  const farmerRevenueUSD = grossRevenueUSD * (share / 100);
-  const platformRevenueUSD = grossRevenueUSD - farmerRevenueUSD;
-
-  document.getElementById('res-credits').textContent =
-    totalCredits.toLocaleString('en-US') + ' VCUs (est.)';
-  document.getElementById('res-gross-usd').textContent =
-    formatUSD.format(grossRevenueUSD);
-  document.getElementById('res-gross-inr').textContent =
-    formatINR.format(grossRevenueUSD * fx);
-  document.getElementById('res-farmers-usd').textContent =
-    formatUSD.format(farmerRevenueUSD);
-  document.getElementById('res-farmers-inr').textContent =
-    formatINR.format(farmerRevenueUSD * fx);
-  document.getElementById('res-platform-usd').textContent =
-    formatUSD.format(platformRevenueUSD);
-  document.getElementById('res-platform-inr').textContent =
-    formatINR.format(platformRevenueUSD * fx);
-
-  document.getElementById('fx-rate-note').textContent =
-    'FX: 1 USD ≈ ₹' + liveFx.rate.toFixed(2) +
-    ' (' + liveFx.source + '). Price: ' + livePrice.source + '.';
-  document.getElementById('fx-source').textContent =
-    liveFx.source.includes('live')
-      ? 'a live exchange rate'
-      : 'a fallback exchange rate';
-}
-
-[sliderAcres, sliderAbatement, sliderPrice, sliderShare]
-  .forEach(s => s.addEventListener('input', updateEconomicsCalculator));
-
-document.getElementById('btn-use-live-price').addEventListener('click', () => {
-  sliderPrice.value = livePrice.usd.toFixed(2);
-  updateEconomicsCalculator();
-});
-
-(async function boot() {
-  await Promise.all([fetchLiveCarbonPrice(), fetchLiveFxRate()]);
-  sliderPrice.value = livePrice.usd.toFixed(2);
-  updateEconomicsCalculator();
-
-  setInterval(async () => {
-    await Promise.all([fetchLiveCarbonPrice(), fetchLiveFxRate()]);
-    updateEconomicsCalculator();
-  }, 120000);
-})();
+calculate();
+fetchFX();
+setInterval(fetchFX,120000);
 </script>
 </body>
 </html>"""
-    components.html(html, height=555, scrolling=False)
+    components.html(html, height=700, scrolling=False)
 
 def render_policy():
     st.markdown('<div class="section-kicker">INDIA ENABLEMENT</div>', unsafe_allow_html=True)
