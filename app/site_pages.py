@@ -41,6 +41,16 @@ def inject_site_css():
 .footer-note{border-top:1px solid var(--line);padding-top:1.25rem;color:#789286;font-size:.72rem;line-height:1.6}
 @media(max-width:900px){.block-container{padding:1rem 1.2rem 3rem!important}.flow,.tiles,.tiles.four{grid-template-columns:1fr 1fr}.hero{padding:3rem 1.5rem}.hero h1{font-size:3.7rem}.band{margin:1rem -1.2rem;padding-left:1.2rem;padding-right:1.2rem}}
 @media(max-width:560px){.flow,.tiles,.tiles.four{grid-template-columns:1fr}}
+
+/* Remove Streamlit's automatic heading/link anchor icon. Keep normal page/navigation links visible. */
+.stMarkdownContainer h1 a,
+.stMarkdownContainer h2 a,
+.stMarkdownContainer h3 a,
+.stMarkdownContainer h4 a,
+.stMarkdownContainer h5 a,
+.stMarkdownContainer h6 a,
+[data-testid="stHeading"] a,
+.stHeadingWithActionElements a { display:none !important; visibility:hidden !important; pointer-events:none !important; }
 </style>""", unsafe_allow_html=True)
 
 def shell():
