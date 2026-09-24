@@ -1,6 +1,3 @@
-import './globals.css';
-import { Navbar } from '@/components/shared/navbar';
-import { Footer } from '@/components/shared/footer';
-import { PageTransition } from '@/components/shared/page-transition';
-export const metadata={title:'Code4Nature — Rice Climate Intelligence',description:'Rice climate intelligence for methane reduction, water management, digital MRV and carbon economics.'};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><Navbar/><PageTransition>{children}</PageTransition><Footer/></body></html>}
+import './globals.css'
+export const metadata={title:'Asterisk Climos | Climate Intelligence for Low-Emission Rice Farming',description:'Prototype field-level rice water-management and climate value simulator.'}
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
