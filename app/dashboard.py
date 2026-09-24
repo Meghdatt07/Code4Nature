@@ -372,6 +372,29 @@ def render_mrv():
             x2.metric("VH mean", "—" if vh is None else f"{float(vh):.2f} dB")
             st.caption(f"Source: {sar.get('source','N/A')}")
             st.caption(sar.get("note",""))
+
+            with st.expander("Show behind-the-scenes calculation and technical terms"):
+                if vv is not None:
+                    vv_value = float(vv)
+                    wetness_calc = max(0.0, min(100.0, 50.0 + (vv_value + 15.0) * 7.0))
+                    st.markdown(
+                        "**Relative wetness:** the demonstrator converts VV backscatter into a relative wetness proxy using "
+                        f"**clamp(50 + (VV + 15) × 7, 0, 100)** → "
+                        f"**{wetness_calc:.1f}%** for VV = **{vv_value:.2f} dB**."
+                    )
+                if vh is not None:
+                    st.markdown(
+                        f"**VH mean:** {float(vh):.2f} dB — VH is the cross-polarized SAR backscatter signal and complements VV when interpreting vegetation and surface scattering."
+                    )
+                st.markdown(
+                    "**SAR:** Synthetic Aperture Radar, an active radar system that measures returned microwave energy.  "
+                    "**VV/VH:** radar polarization channels.  "
+                    "**dB:** decibel scale used to express backscatter.  "
+                    "**Relative wetness:** a model-derived indicator, not an absolute soil-moisture percentage."
+                )
+                st.caption(
+                    "This calculation is performed after you trigger the SAR query. The displayed wetness value is a demonstrator proxy and requires field calibration before use as an absolute soil-moisture measurement."
+                )
         
     k1, k2, k3, k4 = st.columns(4)
     depth = float(st.session_state.get("current_depth", -7.0))
