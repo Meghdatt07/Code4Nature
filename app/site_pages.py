@@ -1,9 +1,9 @@
 import streamlit as st
 
 try:
-    from .dashboard import init_state, render_economics, render_market, render_mrv, render_policy
+    from .dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
 except ImportError:
-    from dashboard import init_state, render_economics, render_market, render_mrv, render_policy
+    from dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
 
 def inject_site_css():
     st.markdown("""<style>
@@ -186,8 +186,8 @@ def technology():
 
 def simulator():
     st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell(); init_state()
-    frame("FARM SIMULATOR","Move the farm. Draw the boundary.","Click a location, choose a preset or draw a polygon/rectangle. The selected geometry feeds the demonstration area and SAR workflow.")
-    render_mrv()
+    frame("FARM SIMULATOR","Explore a rice-field scenario.","Use this page for scenario modelling. Map your farm and change assumptions without running satellite/MRV retrieval.")
+    render_farm_simulator()
 
 def carbon():
     st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell(); init_state()
@@ -196,7 +196,7 @@ def carbon():
 
 def mrv():
     st.set_page_config(page_title="Digital MRV | Asterisk Climos", layout="wide"); shell(); init_state()
-    frame("DIGITAL MRV","Measure what is simulated—and what needs field evidence.","Monitor, report and verify are kept as separate steps.")
+    frame("DIGITAL MRV","Field evidence and satellite intelligence.","Use this page for SAR retrieval, relative wetness, VV/VH backscatter and AWD telemetry/MRV evidence.")
     render_mrv()
 
 def policy():
