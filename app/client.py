@@ -276,7 +276,7 @@ def get_market_data():
     try:
         response = requests.get(rice_source_url, timeout=15)
         response.raise_for_status()
-        text_body = re.sub(r"\\s+", " ", response.text)
+        text_body = re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", response.text))
         match = re.search(
             r"methane abatement.*?\$(\d+(?:\.\d+)?)\s*[-–]\s*\$?(\d+(?:\.\d+)?)\s*(?:dollars|per tonne|per ton)",
             text_body,
