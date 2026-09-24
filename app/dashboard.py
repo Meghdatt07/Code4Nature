@@ -315,7 +315,7 @@ b.data.datasets[0].data.push(continuous.water[i]);b.data.datasets[1].data.push(c
     components.html(html, height=455, scrolling=False)
 
 
-def render_mrv_legacy_unused():
+def render_mrv():
     st.markdown('<div class="section-kicker">LIVE FARM / SAR LAB</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Move the farm. Draw the boundary. Query the satellite.</div>', unsafe_allow_html=True)
     st.markdown(
@@ -406,6 +406,9 @@ def render_mrv_legacy_unused():
     with t1:
         chart_df = pd.DataFrame(st.session_state["telemetry"]).set_index("timestamp")
         st.line_chart(chart_df[["Continuous flooding","AWD water depth (cm)"]], height=320)
+
+    st.markdown('<div class="section-kicker" style="margin-top:3rem">ALGORITHMIC MRV SIMULATION</div>', unsafe_allow_html=True)
+    render_algorithmic_mrv_simulation()
 
 
 
