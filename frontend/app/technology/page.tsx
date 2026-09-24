@@ -46,7 +46,7 @@ export default function Technology() {
               <Link href="/mrv" className="c4n-button c4n-button-lime">Open digital MRV <ArrowRight size={16}/></Link>
             </div>
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-              <img src={gcImage} alt="Gas chromatograph laboratory instrument" className="h-full min-h-[320px] w-full object-cover"/>
+              <img src={gcImage} alt="Gas chromatograph laboratory instrument" className="h-[420px] w-full object-contain bg-[#06110d]"/>
               <div className="px-5 py-4 text-xs text-white/45">Gas chromatograph reference image: Cyberwork 95, Wikimedia Commons, CC BY-SA 4.0.</div>
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function Technology() {
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6"><div className="text-xs tracking-[.18em] text-[#8bcfa6]">CARBON MRV</div><h3 className="mt-3 text-xl font-bold">Connect measurement to evidence</h3><p className="mt-2 text-sm leading-7 text-white/55">Real, location-specific measurements can serve as evidence alongside satellite signals and model outputs when building a project MRV workflow.</p></div>
           </div>
 
-          <div className="mt-8 border-t border-white/10 pt-6 text-xs leading-6 text-white/40">Source context: newspaper clipping supplied for this project, describing rice methane reduction through AWD and direct field measurement using chambers and gas-chromatography analysis. Technical measurement wording is aligned with IRRI rice GHG measurement guidance.</div>
+          <div className="mt-8 border-t border-white/10 pt-6 text-xs leading-6 text-white/40">Source context: newspaper clipping supplied for this project, describing rice methane reduction through AWD and direct field measurement using chambers and gas-chromatography analysis. The clipping also highlights reported AWD water savings in the 15–50% range compared with continuous flooding, depending on field conditions. Technical measurement wording is aligned with IRRI rice GHG measurement guidance.</div>
         </div>
       </section>
 
