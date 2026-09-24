@@ -17,6 +17,10 @@ html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important
 .stMarkdownContainer h6 a,
 [data-testid="stHeading"] a,
 .stHeadingWithActionElements a { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+
+/* Hide Streamlit's automatic heading anchor/link icon. */
+[data-testid="stHeaderActionElements"],
+[data-testid="StyledLinkIconContainer"] { display:none !important; }
 </style>""", unsafe_allow_html=True)
 
 pages=[
