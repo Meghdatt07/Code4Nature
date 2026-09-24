@@ -616,50 +616,39 @@ def render_market():
 def render_economics():
     st.markdown('<div class="section-kicker">SCALED PROJECT ECONOMICS</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Scale the project and see the value split.</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<p class="small-copy">Set the project area in hectares, then change abatement yield, carbon price and FPO/farmer share. All values recalculate instantly.</p>',
-        unsafe_allow_html=True,
-    )
-
-    left, right = st.columns([1.05, 1.0])
-    with left:
-        hectares = st.slider("PROJECT AREA (HECTARES)", 1, 10000, 1000, 1)
-        abatement_yield = st.slider("ABATEMENT YIELD (tCO2e / hectare)", 0.5, 2.0, 1.2, 0.1)
-        carbon_price = st.slider("CARBON CREDIT PRICE (USD / tCO2e)", 5, 50, 20, 1)
-        fpo_share = st.slider("FPO / FARMER SHARE", 50, 100, 65, 1)
-
-    credits = hectares * abatement_yield
-    gross_usd = credits * carbon_price
-    farmer_usd = gross_usd * fpo_share / 100.0
-    platform_usd = gross_usd - farmer_usd
-    # Keep the displayed rupee values and USD equivalents mathematically consistent.
-    prototype_fx = 95.8095238095
-    gross_inr = gross_usd * prototype_fx
-    farmer_inr = farmer_usd * prototype_fx
-    platform_inr = platform_usd * prototype_fx
-
-    with right:
-        st.markdown('<div class="info-card">', unsafe_allow_html=True)
-        st.metric("PROJECT AREA", f"{hectares:,} hectares")
-        st.metric("TOTAL CARBON GENERATED", f"{credits:,.1f} tCO2e")
-        st.metric("TOTAL GROSS REVENUE", f"₹{gross_inr:,.0f}", delta=f"USD {gross_usd:,.2f}")
-        st.metric("DIRECT TO FARMERS / FPOs", f"₹{farmer_inr:,.0f}", delta=f"USD {farmer_usd:,.2f}")
-        st.metric("PLATFORM MRV SHARE", f"₹{platform_inr:,.0f}", delta=f"USD {platform_usd:,.2f}")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown(
-        f'''<div class="formula">
-        credits = hectares × abatement yield<br>
-        gross revenue = credits × carbon credit price<br>
-        FPO / farmer value = gross revenue × {fpo_share}%<br>
-        platform MRV value = gross revenue − FPO / farmer value<br>
-        INR conversion = ₹{prototype_fx:.2f} / USD<br>
-        gross revenue = ₹{gross_inr:,.0f} = USD {gross_usd:,.2f}<br>
-        FPO / farmer value = ₹{farmer_inr:,.0f} = USD {farmer_usd:,.2f}<br>
-        platform MRV value = ₹{platform_inr:,.0f} = USD {platform_usd:,.2f}
-        </div>''',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<p class="small-copy">The component below reproduces the supplied prototype economics interaction: acreage × abatement yield = credits; credits × price = gross revenue; revenue is split between FPOs/farmers and the platform MRV share.</p>', unsafe_allow_html=True)
+    html = r"""<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1425;color:#e8edf7;font-family:Arial,sans-serif}
+.panel{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;padding:6px 0}
+.left{padding:6px 0}.control{margin-bottom:31px}.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.lab{font-size:15px;font-weight:800;color:#92a0b7;letter-spacing:.02em}.val{font-size:18px;font-weight:800;color:#4892ff;font-family:monospace}.green{color:#22d69d}
+input[type=range]{appearance:none;width:100%;height:10px;border-radius:8px;background:#1e2a40;outline:none}input[type=range]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#347eea;cursor:pointer}input[type=range]::-moz-range-thumb{width:20px;height:20px;border:0;border-radius:50%;background:#347eea;cursor:pointer}
+.result{border:1px solid #32415a;border-radius:18px;background:#0d1729;padding:36px;box-shadow:inset 0 0 30px rgba(0,0,0,.12)}
+.item{padding:0 0 24px;margin-bottom:24px;border-bottom:1px solid #26344b}.item:last-child{border-bottom:0;margin:0;padding:0}.cap{font-size:13px;color:#8797af;font-weight:800;letter-spacing:.04em;margin-bottom:14px}.big{font-size:34px;font-weight:900;font-family:monospace}.money{font-size:25px;font-weight:900;font-family:monospace}.farmer .cap,.farmer .big{color:#25d8a1}.submoney{margin-left:16px;font-size:18px;color:#667792;font-family:monospace}.farmersub{color:#047b5c}.formula{margin-top:26px;padding:17px;background:#0c1628;border:1px solid #25344b;border-radius:12px;color:#9eacc0;font-family:monospace;font-size:12px;line-height:1.8}
+@media(max-width:850px){.panel{grid-template-columns:1fr;gap:25px}.result{padding:25px}}
+</style></head><body>
+<div class="panel"><div class="left">
+<div class="control"><div class="row"><span class="lab">PROJECT BOUNDARY</span><span class="val" id="acreV">1,000 Acres</span></div><input id="acres" type="range" min="1" max="10000" step="1" value="1000"></div>
+<div class="control"><div class="row"><span class="lab">ABATEMENT YIELD</span><span class="val" id="abatV">1.2 tCO2e</span></div><input id="abat" type="range" min=".5" max="2" step=".1" value="1.2"></div>
+<div class="control"><div class="row"><span class="lab">CARBON CREDIT PRICE (USD)</span><span class="val green" id="priceV">$20</span></div><input id="price" type="range" min="5" max="50" step="1" value="20"></div>
+<div class="control"><div class="row"><span class="lab">FPO PROFIT SPLIT</span><span class="val" id="shareV">65%</span></div><input id="share" type="range" min="50" max="100" step="1" value="65"></div>
+</div>
+<div class="result">
+<div class="item"><div class="cap">TOTAL CARBON CREDITS GENERATED</div><div class="big" id="credits">1,200 VCUs</div></div>
+<div class="item"><div class="cap">TOTAL GROSS REVENUE</div><div><span class="money" id="grossUsd">$24,000</span><span class="submoney" id="grossInr">₹20,04,000</span></div></div>
+<div class="item farmer"><div class="cap">DIRECT TO FARMERS (FPOS)</div><div><span class="big" id="farmerUsd">$15,600</span><span class="submoney farmersub" id="farmerInr">₹13,02,600</span></div></div>
+<div class="item"><div class="cap">PLATFORM MRV SHARE</div><div><span class="money" id="platformUsd">$8,400</span><span class="submoney" id="platformInr">₹7,01,400</span></div></div>
+</div></div>
+<div class="formula">credits = acres × abatement yield<br>gross revenue = credits × carbon credit price<br>FPO/farmer value = gross revenue × FPO split<br>platform MRV value = gross revenue − FPO/farmer value<br>INR values use prototype FX = ₹83.50 / USD</div>
+<script>
+const fx=83.5,fmtUSD=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}),fmtINR=new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0});
+const A=document.getElementById("acres"),B=document.getElementById("abat"),P=document.getElementById("price"),S=document.getElementById("share");
+function calc(){const a=+A.value,b=+B.value,p=+P.value,s=+S.value;const c=a*b,g=c*p,f=g*s/100,pl=g-f;
+document.getElementById("acreV").textContent=a.toLocaleString()+" Acres";document.getElementById("abatV").textContent=b.toFixed(1)+" tCO2e";document.getElementById("priceV").textContent="$"+p;document.getElementById("shareV").textContent=s+"%";document.getElementById("credits").textContent=c.toLocaleString()+" VCUs";document.getElementById("grossUsd").textContent=fmtUSD.format(g);document.getElementById("grossInr").textContent=fmtINR.format(g*fx);document.getElementById("farmerUsd").textContent=fmtUSD.format(f);document.getElementById("farmerInr").textContent=fmtINR.format(f*fx);document.getElementById("platformUsd").textContent=fmtUSD.format(pl);document.getElementById("platformInr").textContent=fmtINR.format(pl*fx)}
+[A,B,P,S].forEach(x=>x.addEventListener("input",calc));calc();
+</script></body></html>"""
+    components.html(html, height=520, scrolling=False)
 
     st.markdown('<div class="section-kicker" style="margin-top:2rem">EXISTING FARM-LEVEL MODEL</div>', unsafe_allow_html=True)
     st.markdown(
