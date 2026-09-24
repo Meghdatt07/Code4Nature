@@ -668,9 +668,9 @@ input[type=range]{width:100%;accent-color:#10b981}
       <div class="control">
         <div class="row">
           <label class="label">Baseline Emissions (tCO₂e / ha)</label>
-          <span id="val-baseline" class="value">2.9 tCO₂e</span>
+          <span id="val-baseline" class="value">3.9 tCO₂e</span>
         </div>
-        <input type="range" id="slider-baseline" min="0" max="3" step="0.1" value="2.9">
+        <input type="range" id="slider-baseline" min="3.0" max="5.0" step="0.1" value="3.9">
       </div>
 
       <div class="control">
