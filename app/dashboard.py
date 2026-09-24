@@ -637,7 +637,7 @@ def render_economics():
     with right:
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.metric("PROJECT AREA", f"{hectares:,} hectares")
-        st.metric("TOTAL CARBON CREDITS GENERATED", f"{credits:,.1f} tCO2e")
+        st.metric("TOTAL CARBON GENERATED", f"{credits:,.1f} tCO2e")
         st.metric("TOTAL GROSS REVENUE", f"USD {gross_usd:,.0f}")
         st.metric("DIRECT TO FARMERS / FPOs", f"USD {farmer_usd:,.0f}")
         st.metric("PLATFORM MRV SHARE", f"USD {platform_usd:,.0f}")
