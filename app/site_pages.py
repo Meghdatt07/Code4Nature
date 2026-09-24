@@ -140,7 +140,7 @@ def technology():
           </p>
         </div>
         <div class="tile" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/GCMS_Instrument.jpg" alt="Gas chromatograph laboratory instrument" style="width:100%;height:270px;object-fit:cover;display:block;" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/GCMS_Instrument.jpg" alt="Gas chromatograph laboratory instrument" style="width:100%;height:320px;object-fit:contain;display:block;background:#06110d;" />
           <div style="padding:1.2rem;">
             <div class="num">GAS CHROMATOGRAPH</div>
             <p>
