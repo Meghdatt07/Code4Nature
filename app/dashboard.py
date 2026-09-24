@@ -616,7 +616,7 @@ def render_market():
 def render_economics():
     st.markdown('<div class="section-kicker">SCALED PROJECT ECONOMICS</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Scale the project and see the value split.</div>', unsafe_allow_html=True)
-    st.markdown('<p class="small-copy">The component below reproduces the supplied prototype economics interaction: acreage × abatement yield = credits; credits × price = gross revenue; revenue is split between FPOs/farmers and the platform MRV share.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="small-copy">The component below reproduces the supplied prototype economics interaction: hectares × abatement yield = credits; credits × price = gross revenue; revenue is split between FPOs/farmers and the platform MRV share.</p>', unsafe_allow_html=True)
     html = r"""<!doctype html>
 <html><head><meta charset="utf-8">
 <style>
@@ -629,7 +629,7 @@ input[type=range]{appearance:none;width:100%;height:10px;border-radius:8px;backg
 @media(max-width:850px){.panel{grid-template-columns:1fr;gap:25px}.result{padding:25px}}
 </style></head><body>
 <div class="panel"><div class="left">
-<div class="control"><div class="row"><span class="lab">PROJECT BOUNDARY</span><span class="val" id="acreV">1,000 Acres</span></div><input id="acres" type="range" min="1" max="10000" step="1" value="1000"></div>
+<div class="control"><div class="row"><span class="lab">PROJECT AREA</span><span class="val" id="areaV">1,000 Hectares</span></div><input id="area" type="range" min="1" max="10000" step="1" value="1000"></div>
 <div class="control"><div class="row"><span class="lab">ABATEMENT YIELD</span><span class="val" id="abatV">1.2 tCO2e</span></div><input id="abat" type="range" min=".5" max="2" step=".1" value="1.2"></div>
 <div class="control"><div class="row"><span class="lab">CARBON CREDIT PRICE (USD)</span><span class="val green" id="priceV">$20</span></div><input id="price" type="range" min="5" max="50" step="1" value="20"></div>
 <div class="control"><div class="row"><span class="lab">FPO PROFIT SPLIT</span><span class="val" id="shareV">65%</span></div><input id="share" type="range" min="50" max="100" step="1" value="65"></div>
@@ -640,12 +640,12 @@ input[type=range]{appearance:none;width:100%;height:10px;border-radius:8px;backg
 <div class="item farmer"><div class="cap">DIRECT TO FARMERS (FPOS)</div><div><span class="big" id="farmerUsd">$15,600</span><span class="submoney farmersub" id="farmerInr">₹13,02,600</span></div></div>
 <div class="item"><div class="cap">PLATFORM MRV SHARE</div><div><span class="money" id="platformUsd">$8,400</span><span class="submoney" id="platformInr">₹7,01,400</span></div></div>
 </div></div>
-<div class="formula">credits = acres × abatement yield<br>gross revenue = credits × carbon credit price<br>FPO/farmer value = gross revenue × FPO split<br>platform MRV value = gross revenue − FPO/farmer value<br>INR values use prototype FX = ₹83.50 / USD</div>
+<div class="formula">credits = hectares × abatement yield<br>gross revenue = credits × carbon credit price<br>FPO/farmer value = gross revenue × FPO split<br>platform MRV value = gross revenue − FPO/farmer value<br>INR values use prototype FX = ₹83.50 / USD</div>
 <script>
 const fx=83.5,fmtUSD=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}),fmtINR=new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0});
-const A=document.getElementById("acres"),B=document.getElementById("abat"),P=document.getElementById("price"),S=document.getElementById("share");
+const A=document.getElementById("area"),B=document.getElementById("abat"),P=document.getElementById("price"),S=document.getElementById("share");
 function calc(){const a=+A.value,b=+B.value,p=+P.value,s=+S.value;const c=a*b,g=c*p,f=g*s/100,pl=g-f;
-document.getElementById("acreV").textContent=a.toLocaleString()+" Acres";document.getElementById("abatV").textContent=b.toFixed(1)+" tCO2e";document.getElementById("priceV").textContent="$"+p;document.getElementById("shareV").textContent=s+"%";document.getElementById("credits").textContent=c.toLocaleString()+" VCUs";document.getElementById("grossUsd").textContent=fmtUSD.format(g);document.getElementById("grossInr").textContent=fmtINR.format(g*fx);document.getElementById("farmerUsd").textContent=fmtUSD.format(f);document.getElementById("farmerInr").textContent=fmtINR.format(f*fx);document.getElementById("platformUsd").textContent=fmtUSD.format(pl);document.getElementById("platformInr").textContent=fmtINR.format(pl*fx)}
+document.getElementById("areaV").textContent=a.toLocaleString()+" Hectares";document.getElementById("abatV").textContent=b.toFixed(1)+" tCO2e";document.getElementById("priceV").textContent="$"+p;document.getElementById("shareV").textContent=s+"%";document.getElementById("credits").textContent=c.toLocaleString()+" VCUs";document.getElementById("grossUsd").textContent=fmtUSD.format(g);document.getElementById("grossInr").textContent=fmtINR.format(g*fx);document.getElementById("farmerUsd").textContent=fmtUSD.format(f);document.getElementById("farmerInr").textContent=fmtINR.format(f*fx);document.getElementById("platformUsd").textContent=fmtUSD.format(pl);document.getElementById("platformInr").textContent=fmtINR.format(pl*fx)}
 [A,B,P,S].forEach(x=>x.addEventListener("input",calc));calc();
 </script></body></html>"""
     components.html(html, height=520, scrolling=False)
