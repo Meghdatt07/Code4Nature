@@ -7,6 +7,16 @@ html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important
 [data-testid="stHeader"]{background:rgba(7,18,15,.88)!important}
 [data-testid="stSidebar"]{display:none!important}
 .block-container{max-width:1400px!important}
+
+/* Remove Streamlit's automatic heading/link anchor icon. Keep normal page/navigation links visible. */
+.stMarkdownContainer h1 a,
+.stMarkdownContainer h2 a,
+.stMarkdownContainer h3 a,
+.stMarkdownContainer h4 a,
+.stMarkdownContainer h5 a,
+.stMarkdownContainer h6 a,
+[data-testid="stHeading"] a,
+.stHeadingWithActionElements a { display:none !important; visibility:hidden !important; pointer-events:none !important; }
 </style>""", unsafe_allow_html=True)
 
 pages=[
