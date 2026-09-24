@@ -220,7 +220,7 @@ def render_why():
 
 def build_map():
     center = [st.session_state["lat"], st.session_state["lon"]]
-    m = folium.Map(location=center, zoom_start=14, tiles="CartoDB dark_matter", control_scale=True)
+    m = folium.Map(location=center, zoom_start=14, tiles="OpenStreetMap", control_scale=True)
     folium.Marker(
         center,
         tooltip="Selected farm point",
@@ -335,7 +335,6 @@ def render_mrv():
         handle_map_result(map_data)
 
     with right:
-        st.markdown('<div class="glass" style="padding:1.2rem;">', unsafe_allow_html=True)
         preset = st.selectbox("Farm preset", list(PRESETS.keys()))
         if st.button("Use preset", use_container_width=True):
             lat, lon = PRESETS[preset]
@@ -373,8 +372,7 @@ def render_mrv():
             x2.metric("VH mean", "—" if vh is None else f"{float(vh):.2f} dB")
             st.caption(f"Source: {sar.get('source','N/A')}")
             st.caption(sar.get("note",""))
-        st.markdown("</div>", unsafe_allow_html=True)
-
+        
     k1, k2, k3, k4 = st.columns(4)
     depth = float(st.session_state.get("current_depth", -7.0))
     status = classify_awd(depth)
