@@ -1,34 +1,55 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Activity, ArrowRight, Droplets, Leaf, Satellite } from 'lucide-react';
+import { Activity, ArrowRight, HeartHandshake, Satellite } from 'lucide-react';
 import { FarmMap } from '@/components/farm-map/farm-map';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DataBadge } from '@/components/shared/data-badge';
 import { demoEmission, demoWater, revenue } from '@/lib/calculations';
 
+type EquipmentStatus = 'NOT_PURCHASED' | 'PURCHASED';
+type Market = { priceUsd:number; change24hPct:number; source:string; fetchedAt:string };
+
 export default function Simulator(){
- const [area,setArea]=useState(10); const [price,setPrice]=useState(20); const [farmer,setFarmer]=useState(60);
- const [baseline,setBaseline]=useState(6); const [reductionPct,setReductionPct]=useState(41.7); const [waterPct,setWaterPct]=useState(36.7);
+ const [area,setArea]=useState(10),[price,setPrice]=useState(0),[farmer,setFarmer]=useState(60);
+ const [baseline,setBaseline]=useState(6),[reductionPct,setReductionPct]=useState(41.7),[waterPct,setWaterPct]=useState(36.7);
  const [mode,setMode]=useState<'CONSERVATIVE'|'BASE DEMO'|'CUSTOM'>('BASE DEMO');
- const [geometry,setGeometry]=useState<any>(null); const [result,setResult]=useState<any>(null);
- const calc=useMemo(()=>{const e=demoEmission(area,baseline,reductionPct);const w=demoWater(area,4960000,4960000*(1-waterPct/100));const r=revenue(e.reduction,price,farmer);return{...e,...w,...r,credits:e.reduction}},[area,baseline,reductionPct,waterPct,price,farmer]);
- function scenario(x:string){setMode(x as any);if(x==='CONSERVATIVE'){setBaseline(6);setReductionPct(25);setWaterPct(20);setPrice(15);setFarmer(60)}else if(x==='BASE DEMO'){setBaseline(6);setReductionPct(41.7);setWaterPct(36.7);setPrice(20);setFarmer(60)}}
- return <main className="min-h-screen grid-bg"><div className="mx-auto max-w-7xl px-5 py-14"><DataBadge type="SIMULATED"/><div className="mt-5 text-xs tracking-[.2em] text-white/30">FARM SIMULATOR</div><h1 className="mt-3 text-5xl font-bold">Run your rice field scenario.</h1><p className="mt-5 max-w-3xl text-lg leading-8 text-white/55">Draw the farm boundary, change the assumptions and calculate illustrative water savings, methane/CO2e reduction, potential credits and revenue.</p>
- <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_.8fr]"><Card className="overflow-hidden p-2"><FarmMap value={geometry} onChange={(g,a)=>{setGeometry(g);if(a>0)setArea(a)}}/></Card><Card>
-  <div className="text-xs tracking-[.18em] text-white/30">FIELD PARAMETERS</div>
-  <Range label="Farm area" value={area} min={.5} max={100} step={.1} unit="ha" set={setArea}/>
-  <Range label="Baseline emissions" value={baseline} min={3} max={8} step={.1} unit="tCO₂e/ha" set={setBaseline}/>
-  <Range label="Emission reduction" value={reductionPct} min={0} max={70} step={.1} unit="%" set={setReductionPct}/>
-  <Range label="Water reduction" value={waterPct} min={0} max={70} step={.1} unit="%" set={setWaterPct}/>
-  <Range label="Carbon price" value={price} min={1} max={150} step={.5} unit="USD/t" set={setPrice}/>
-  <Range label="Farmer/FPO share" value={farmer} min={0} max={100} step={1} unit="%" set={setFarmer}/>
-  <div className="mt-5 grid grid-cols-3 gap-2"><button onClick={()=>scenario('CONSERVATIVE')} className="rounded-lg border border-white/10 p-2 text-xs">Conservative</button><button onClick={()=>scenario('BASE DEMO')} className="rounded-lg border border-[#8bcfa6] p-2 text-xs">Base Demo</button><button onClick={()=>setMode('CUSTOM')} className="rounded-lg border border-white/10 p-2 text-xs">Custom</button></div>
-  <button onClick={()=>setResult({...calc,geometry,mode})} className="mt-5 w-full rounded-xl bg-[#dcefe5] py-3 font-bold text-[#0a1a13]">RUN FIELD SIMULATION</button>
- </Card></div>
- {result&&<section className="mt-6"><div className="mb-4 flex items-center gap-3"><Activity className="text-[#8bcfa6]"/><div><h2 className="text-2xl font-bold">Simulation result</h2><div className="text-xs text-white/35">{result.mode} • illustrative</div></div></div><div className="grid gap-3 md:grid-cols-4"><Metric title="Water saved" value={(result.saved/1e6).toFixed(2)+'M L'}/><Metric title="CH₄ / CO₂e reduction" value={result.reduction.toFixed(2)+' tCO₂e'}/><Metric title="Potential credits" value={result.credits.toFixed(2)}/><Metric title="Gross value" value={'$'+result.gross.toFixed(2)}/><Metric title="Farmer / FPO" value={'$'+result.farmer.toFixed(2)}/><Metric title="MRV / Company" value={'$'+result.company.toFixed(2)}/><Metric title="Farm boundary" value={geometry?'Selected':'Manual area'}/><Metric title="Mode" value="DEMO"/></div><div className="mt-5 flex flex-wrap gap-3"><Link href="/mrv"><Button variant="outline">Open Digital MRV <ArrowRight size={15}/></Button></Link><Link href="/carbon"><Button>Open Carbon Economics <Leaf size={15}/></Button></Link><Link href="/technology"><Button variant="ghost">View Technology <Satellite size={15}/></Button></Link></div></section>}</div></main>
+ const [geometry,setGeometry]=useState<any>(null),[result,setResult]=useState<any>(null);
+ const [market,setMarket]=useState<Market|null>(null),[marketError,setMarketError]=useState('');
+ const [yearsPast,setYearsPast]=useState(5),[yearsFuture,setYearsFuture]=useState(5);
+ const [equipment,setEquipment]=useState<EquipmentStatus>('NOT_PURCHASED');
+ useEffect(()=>{let active=true;fetch('/api/market',{cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d?.error||'Market feed unavailable');if(active){setMarket(d);setPrice(Number(d.priceUsd));}}).catch(e=>{if(active)setMarketError(e instanceof Error?e.message:'Market feed unavailable')});return()=>{active=false}},[]);
+ const calc=useMemo(()=>{const e=demoEmission(area,baseline,reductionPct);const w=demoWater(area,4960000,4960000*(1-waterPct/100));const r=revenue(e.reduction,price||0,farmer);return{...e,...w,...r,credits:e.reduction}},[area,baseline,reductionPct,waterPct,price,farmer]);
+ const annualCarbonValue=calc.credits*(price||0);
+ const historicalOpportunity=annualCarbonValue*yearsPast;
+ const futureOpportunity=annualCarbonValue*yearsFuture;
+ function scenario(x:string){setMode(x as any);if(x==='CONSERVATIVE'){setBaseline(6);setReductionPct(25);setWaterPct(20);setFarmer(60)}else if(x==='BASE DEMO'){setArea(10);setBaseline(6);setReductionPct(41.7);setWaterPct(36.7);setFarmer(60)}}
+ return <main className="min-h-screen grid-bg"><div className="mx-auto max-w-7xl px-5 py-14">
+  <DataBadge type="SIMULATED"/>
+  <div className="mt-5 text-xs tracking-[.2em] text-white/30">FARM SIMULATOR · FOR NON-EQUIPMENT USERS</div>
+  <h1 className="mt-3 text-5xl font-bold">See what your rice field could have earned — and could earn.</h1>
+  <p className="mt-5 max-w-3xl text-lg leading-8 text-white/55">Use the simulator before purchasing our equipment. Estimate water, methane/CO₂e and carbon-credit opportunity, then switch to Digital MRV after equipment installation.</p>
+  <Card className="mt-8"><div className="text-xs tracking-[.18em] text-white/30">WHICH WORKFLOW IS RIGHT FOR YOU?</div><div className="mt-3 grid gap-3 md:grid-cols-2">
+   <button onClick={()=>setEquipment('NOT_PURCHASED')} className={"rounded-2xl border p-5 text-left "+(equipment==='NOT_PURCHASED'?'border-[#8bcfa6] bg-[#8bcfa6]/10':'border-white/10')}><div className="text-xs tracking-[.16em] text-[#8bcfa6]">NOT PURCHASED</div><div className="mt-2 text-xl font-bold">Farm Simulator</div><div className="mt-1 text-sm text-white/55">Explore scenarios using farm area and assumptions without equipment data.</div></button>
+   <button onClick={()=>setEquipment('PURCHASED')} className={"rounded-2xl border p-5 text-left "+(equipment==='PURCHASED'?'border-[#8bcfa6] bg-[#8bcfa6]/10':'border-white/10')}><div className="text-xs tracking-[.16em] text-[#8bcfa6]">PURCHASED</div><div className="mt-2 text-xl font-bold">Digital MRV</div><div className="mt-1 text-sm text-white/55">Use equipment measurements + satellite evidence for the field-specific MRV workflow.</div></button>
+  </div>{equipment==='PURCHASED'&&<div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-[#8bcfa6]/30 bg-[#8bcfa6]/5 p-4 text-sm"><span>You have our equipment → Digital MRV is the right workflow.</span><Link href="/mrv"><Button>Open Digital MRV <ArrowRight size={15}/></Button></Link></div>}</Card>
+  <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_.8fr]"><Card className="overflow-hidden p-2"><FarmMap value={geometry} onChange={(g,a)=>{setGeometry(g);if(a>0)setArea(a)}}/></Card><Card>
+   <div className="text-xs tracking-[.18em] text-white/30">FIELD PARAMETERS</div>
+   <Range label="Farm area" value={area} min={.5} max={100} step={.1} unit="ha" set={setArea}/><Range label="Baseline emissions" value={baseline} min={3} max={8} step={.1} unit="tCO₂e/ha" set={setBaseline}/><Range label="Emission reduction" value={reductionPct} min={0} max={70} step={.1} unit="%" set={setReductionPct}/><Range label="Water reduction" value={waterPct} min={0} max={70} step={.1} unit="%" set={setWaterPct}/><Range label="Farmer/FPO share" value={farmer} min={0} max={100} step={1} unit="%" set={setFarmer}/>
+   <div className="mt-6 rounded-xl border border-white/10 bg-black/10 p-4"><div className="flex items-center justify-between gap-3"><div><div className="text-xs tracking-[.16em] text-white/35">LIVE CARBON REFERENCE</div><div className="mt-1 text-2xl font-bold">{market?'$'+market.priceUsd.toFixed(2):'Loading…'} <span className="text-sm font-normal text-white/40">/ tCO₂e</span></div></div>{market&&<div className="text-right text-xs text-white/40">24h {market.change24hPct.toFixed(2)}%<br/>Live VCM proxy</div>}</div><div className="mt-2 text-xs text-white/35">{market?'Updated '+new Date(market.fetchedAt).toLocaleString()+' · '+market.source:(marketError||'Fetching market feed…')}</div></div>
+   <div className="mt-5 grid grid-cols-3 gap-2"><button onClick={()=>scenario('CONSERVATIVE')} className="rounded-lg border border-white/10 p-2 text-xs">Conservative</button><button onClick={()=>scenario('BASE DEMO')} className="rounded-lg border border-[#8bcfa6] p-2 text-xs">Base Demo</button><button onClick={()=>setMode('CUSTOM')} className="rounded-lg border border-white/10 p-2 text-xs">Custom</button></div>
+   <button onClick={()=>setResult({...calc,geometry,mode,livePrice:price})} className="mt-5 w-full rounded-xl bg-[#dcefe5] py-3 font-bold text-[#0a1a13]">RUN FIELD SIMULATION</button>
+  </Card></div>
+  {result&&<section className="mt-8"><div className="mb-4 flex items-center gap-3"><Activity className="text-[#8bcfa6]"/><div><h2 className="text-2xl font-bold">Simulation result</h2><div className="text-xs text-white/35">{result.mode} • illustrative</div></div></div><div className="grid gap-3 md:grid-cols-4"><Metric title="Water saved" value={(result.saved/1e6).toFixed(2)+'M L'}/><Metric title="CO₂e reduction" value={result.reduction.toFixed(2)+' tCO₂e'}/><Metric title="Potential credits" value={result.credits.toFixed(2)}/><Metric title="Gross value at live rate" value={'$'+result.gross.toFixed(2)}/><Metric title="Farmer / FPO" value={'$'+result.farmer.toFixed(2)}/><Metric title="MRV / Company" value={'$'+result.company.toFixed(2)}/><Metric title="Farm boundary" value={geometry?'Selected':'Manual area'}/><Metric title="Market price" value={'$'+(result.livePrice??0).toFixed(2)+'/t'}/></div>
+   <Card className="mt-6"><div className="flex items-center gap-2"><HeartHandshake className="text-[#8bcfa6]" size={20}/><h2 className="text-xl font-bold">Your carbon opportunity over time</h2></div><p className="mt-2 max-w-3xl text-sm leading-7 text-white/55">This projection uses the live VCM reference rate fetched today. It estimates the carbon-credit value that the modeled method could have generated in past years and could generate over future years. It does not reconstruct historical market prices or guarantee future prices.</p>
+    <div className="mt-6 grid gap-6 lg:grid-cols-2"><div><Range label={"Years under current practice: "+yearsPast} value={yearsPast} min={1} max={25} step={1} unit="years" set={setYearsPast}/><div className="mt-4 rounded-xl border border-white/10 bg-[#0b1a15] p-5"><div className="text-xs text-white/35">ESTIMATED FORGONE CARBON-CREDIT VALUE</div><div className="mt-2 text-3xl font-black text-[#ffcf8b]">{'$'+historicalOpportunity.toFixed(0)}</div><div className="mt-1 text-sm text-white/45">~{calc.credits.toFixed(2)} credits/year × {market?'$'+market.priceUsd.toFixed(2):'$0'} × {yearsPast} years</div></div></div>
+     <div><Range label={"Years with our method: "+yearsFuture} value={yearsFuture} min={1} max={25} step={1} unit="years" set={setYearsFuture}/><div className="mt-4 rounded-xl border border-[#8bcfa6]/30 bg-[#8bcfa6]/5 p-5"><div className="text-xs text-[#8bcfa6]">PROJECTED CARBON-CREDIT VALUE</div><div className="mt-2 text-3xl font-black text-[#8bcfa6]">{'$'+futureOpportunity.toFixed(0)}</div><div className="mt-1 text-sm text-white/45">~{calc.credits.toFixed(2)} credits/year × {market?'$'+market.priceUsd.toFixed(2):'$0'} × {yearsFuture} years</div></div></div></div>
+    <div className="mt-6 border-t border-white/10 pt-5 text-sm text-white/55">Every farmer who contributes field information helps improve the evidence base for climate-smart rice. <span className="text-[#8bcfa6]">Thank you for making an effort to save Mother Earth.</span></div></Card>
+   <div className="mt-5 flex flex-wrap gap-3"><Link href="/mrv"><Button variant="outline">Open Digital MRV <ArrowRight size={15}/></Button></Link><Link href="/contact"><Button>Book a consultation <HeartHandshake size={15}/></Button></Link><Link href="/technology"><Button variant="ghost">View Technology <Satellite size={15}/></Button></Link></div>
+  </section>}
+ </div></main>
 }
-function Range({label,value,min,max,step,unit,set}:{label:string;value:number;min:number;max:number;step:number;unit:string;set:(n:number)=>void}){return <label className="mt-5 block text-sm text-white/55">{label}: <b className="text-white">{value.toFixed(step<1?1:0)} {unit}</b><input type="range" min={min} max={max} step={step} value={value} onChange={e=>set(Number(e.target.value))} className="mt-2 w-full"/></label>}
+function Range({label,value,min,max,step,unit,set}:{label:string;value:number;min:number;max:number;step:number;unit:string;set:(n:number)=>void}){return <label className="mt-5 block text-sm text-white/55">{label}{unit?': ': ' '}<b className="text-white">{value.toFixed(step<1?1:0)} {unit}</b><input type="range" min={min} max={max} step={step} value={value} onChange={e=>set(Number(e.target.value))} className="mt-2 w-full"/></label>}
 function Metric({title,value}:{title:string;value:string}){return <div className="glass rounded-2xl p-5"><div className="text-xs text-white/35">{title}</div><div className="mt-2 text-2xl font-bold">{value}</div></div>}
