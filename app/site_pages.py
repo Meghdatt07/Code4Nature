@@ -142,11 +142,7 @@ def technology():
         <div class="tile" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/GCMS_Instrument.jpg" alt="Gas chromatograph laboratory instrument" style="width:100%;height:320px;object-fit:contain;display:block;background:#06110d;" />
           <div style="padding:1.2rem;">
-            <div class="num">GAS CHROMATOGRAPH</div>
-            <p>
-              High-resolution reference image of a modern GC/MS instrument. Image: Cyberwork 95,
-              Wikimedia Commons, CC BY-SA 4.0.
-            </p>
+            <div class="num">GAS CHROMATOGRAPHY</div>
           </div>
         </div>
       </div>
