@@ -100,9 +100,93 @@ def climate_smart_rice():
 
 def technology():
     st.set_page_config(page_title="Technology | Asterisk Climos", layout="wide"); shell()
-    frame("OUR TECHNOLOGY","Soil to sky. One evidence chain.","Field observations, satellite signals and deterministic demonstration models are combined into one inspectable workflow.")
-    tiles([("01","GROUND DATA","Water level, irrigation and crop-stage observations."),("02","SENTINEL-1","SAR-derived relative wetness proxy when live credentials are configured."),("03","MODELLING","Scenario equations for water, methane and CO₂e."),("04","PROVENANCE","Keep value, unit, source, model and timestamp attached.")],True)
-    st.markdown('<div class="band"><div class="eyebrow">TRANSPARENT BY DESIGN</div><h2>Simulation ≠ measurement.</h2><div class="section-copy">Every dashboard estimate in this prototype is clearly marked as simulated or illustrative until project-specific measurement, validation and verification are available.</div></div>',unsafe_allow_html=True)
+    frame("OUR TECHNOLOGY","Soil to sky. One evidence chain.","Field observations, satellite signals, methane measurement and transparent modelling are combined into one workflow for rice climate projects.")
+    tiles([
+        ("01","GROUND DATA","Water level, irrigation and crop-stage observations."),
+        ("02","SENTINEL-1","SAR-derived relative wetness proxy for field-scale monitoring."),
+        ("03","MODELLING","Scenario equations connect water regime with methane and CO₂e outcomes."),
+        ("04","PROVENANCE","Keep field, signal, sample, method, model and timestamp attached to every result."),
+    ],True)
+
+    st.markdown("""
+    <section class="section">
+      <div class="eyebrow">FIELD VALIDATION</div>
+      <h2>Measure methane at the source.</h2>
+      <div class="section-copy">
+        Satellite and model outputs help us monitor fields at scale, but the project also needs
+        direct greenhouse-gas measurements to establish what is happening at the field.
+      </div>
+      <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:1rem;margin-top:2rem;align-items:stretch;">
+        <div class="tile" style="min-height:0;">
+          <div class="num">01 / CHAMBER SAMPLING</div>
+          <h3>Capture the gas released by the rice field.</h3>
+          <p>
+            Closed chambers are placed over defined areas of a rice plot. Air samples are collected
+            from the chamber headspace at set time intervals so the change in methane concentration
+            can be measured.
+          </p>
+          <div class="num" style="margin-top:1.2rem;">02 / GAS CHROMATOGRAPHY</div>
+          <h3>Turn a gas sample into a methane concentration.</h3>
+          <p>
+            Gas chromatography is the laboratory measurement layer used to quantify methane in the
+            collected samples. The concentration measured across time is then used to estimate the
+            methane flux from the field.
+          </p>
+          <div class="num" style="margin-top:1.2rem;">03 / DIGITAL MRV</div>
+          <h3>Connect measured data with the digital evidence chain.</h3>
+          <p>
+            The resulting location-specific measurements can be used as field evidence for calibration,
+            validation and transparent MRV alongside satellite observations and modelled scenarios.
+          </p>
+        </div>
+        <div class="tile" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/GCMS_Instrument.jpg" alt="Gas chromatograph laboratory instrument" style="width:100%;height:270px;object-fit:cover;display:block;" />
+          <div style="padding:1.2rem;">
+            <div class="num">GAS CHROMATOGRAPH</div>
+            <p>
+              High-resolution reference image of a modern GC/MS instrument. Image: Cyberwork 95,
+              Wikimedia Commons, CC BY-SA 4.0.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <section class="section">
+      <div class="eyebrow">FIELD EVIDENCE / PRESS REPORT</div>
+      <h2>Why this matters for Code4Nature.</h2>
+      <div class="section-copy">
+        A recent field report on rice methane highlighted the same measurement pathway that matters
+        for our platform: reducing prolonged flooding through Alternate Wetting and Drying (AWD),
+        measuring emissions from individual fields, and using laboratory gas chromatography to turn
+        collected gas samples into location-specific methane data.
+      </div>
+      <div class="tiles" style="margin-top:2rem;">
+        <div class="tile">
+          <div class="num">AWD</div>
+          <h3>Reduce prolonged flooding.</h3>
+          <p>Periodic dry-downs interrupt the continuously flooded conditions that support methane-producing processes in rice soils.</p>
+        </div>
+        <div class="tile">
+          <div class="num">MEASUREMENT</div>
+          <h3>Use chambers + gas chromatography.</h3>
+          <p>Field chambers capture gas samples; laboratory gas chromatography quantifies methane concentration so field flux can be estimated from the concentration change over time.</p>
+        </div>
+        <div class="tile">
+          <div class="num">CARBON MRV</div>
+          <h3>Build evidence that can be traced.</h3>
+          <p>Real, verified, location-specific measurements strengthen the evidence chain needed to connect farm practice, modeled impact and carbon-credit MRV.</p>
+        </div>
+      </div>
+      <div class="footer-note" style="margin-top:1.5rem;">
+        Source context: supplied newspaper clipping about rice methane and farmer economics. The report describes AWD,
+        field chambers and gas-chromatography analysis; project-specific measurements and verification are still required.
+      </div>
+    </section>
+    """, unsafe_allow_html=True)
+
 
 def simulator():
     st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell(); init_state()
