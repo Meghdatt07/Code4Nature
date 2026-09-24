@@ -52,17 +52,17 @@ The previous Streamlit implementation remains in the repository for compatibilit
 
 ## Scientific limitation
 
-All model outputs supplied in the MVP are deterministic demonstration equations. They should not be represented as measured agronomic results or certified carbon credits. Project-specific methodology, MRV, validation, verification and evidence are required for real credit issuance.
+All model outputs supplied in the MVP are deterministic demonstration equations. They should not be represented as measured agronomic results or certified carbon credits. Project-specific methodology, MRV, validation, verification and evidence are required for real credit issuance. 
 
-## Google Maps setup
+## Map setup
 
-The Farm Simulator now uses Google Maps satellite imagery. The frontend reads the browser key from `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`.
+The Farm Simulator uses **Leaflet + OpenStreetMap**. No Google Maps API key is required.
 
-For local development, create `frontend/.env.local` with:
+The map supports:
+- satellite-free OpenStreetMap base mapping
+- clickable farm-boundary points
+- polygon completion
+- automatic farm-area calculation in hectares
+- boundary clearing/reset
 
-```
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_BROWSER_KEY
-```
-
-For the deployed frontend, add the same variable to the hosting platform's environment variables and redeploy. In Google Cloud, enable the Maps JavaScript API, create a browser-restricted API key, and restrict it to the production site's allowed referrers. The repository intentionally does not contain a real API key.
-
+OpenStreetMap attribution is included directly on the map as required by the tile-service policy.
