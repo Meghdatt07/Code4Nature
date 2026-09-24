@@ -672,12 +672,9 @@ def render_economics():
         st.session_state["farm_area_ha"] = farm_ha
         ch4_rate = st.slider("Methane reduction (kg CH4 / ha / season)", 60.0, 200.0, float(CH4_REDUCTION_PER_HA), 5.0)
         farmer_share = st.slider("Farmer / FPO share", 50, 100, 65)
-        market_data = st.session_state.get("market_data") or get_market_data()
-        st.session_state["market_data"] = market_data
-        live_vcm = float(market_data.get("market_carbon_price_usd") or DEFAULT_VCM_PRICE_USD)
-        price_model = st.radio("Pricing model", ["Government ERF scenario (USD 15/tCO2e)", "Live VCM proxy"], horizontal=True)
-        price_usd = ERF_SCENARIO_PRICE_USD if price_model.startswith("Government") else live_vcm
-        fx = float(market_data.get("fx_usd_inr", 88.0))
+        # Calculator reference values requested for the project model.
+        price_usd = 15.0
+        fx = 95.8095238095
 
     with right:
         methane_kg = farm_ha * ch4_rate
@@ -708,6 +705,13 @@ def render_economics():
             company_share = gross_value − farmer_share
             </div>""",
             unsafe_allow_html=True,
+        )
+        st.caption(
+            "Reference calculation: 10 hectares × 120 kg CH4/ha = 1,200 kg CH4; "
+            "1,200 × 28 / 1,000 = 33.60 tCO2e; "
+            "33.60 × USD 15 = USD 504; "
+            "USD 504 × ₹95.8095238/USD = ₹48,288. "
+            "The displayed default farmer share is 65%."
         )
 
 def render_policy():
