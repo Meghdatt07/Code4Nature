@@ -618,7 +618,7 @@ def render_market():
     st.markdown('<div class="section-kicker">MARKET FEED</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Carbon prices: global + India</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">Carbon is not one universal commodity price. This panel separates a global agriculture market reference, a voluntary carbon-token proxy, and the India VCM conversion. No fabricated Indian compliance-market spot price is shown.</p>',
+        '<p class="small-copy">This section is a market reference for the CarbonAWD rice-carbon model. The most relevant figure is the reported rice-methane credit range; the broader agriculture benchmark is kept as context. None of these numbers is a guaranteed selling price for our credits.</p>',
         unsafe_allow_html=True,
     )
     if st.button("Refresh market feed"):
@@ -630,30 +630,33 @@ def render_market():
             st.session_state["market_data"] = market_data
 
     ag = float(market_data.get("global_agriculture_median_usd", 71.40))
-    bct = float(market_data.get("market_carbon_price_usd", DEFAULT_VCM_PRICE_USD))
+    rice_low = float(market_data.get("rice_methane_range_low_usd", 15.0))
+    rice_high = float(market_data.get("rice_methane_range_high_usd", 25.0))
+    rice_mid = float(market_data.get("rice_methane_price_usd", (rice_low + rice_high) / 2.0))
     fx = float(market_data.get("fx_usd_inr", 88.0))
-    india_proxy = ag * fx
 
     p1, p2, p3, p4 = st.columns(4)
-    p1.metric("Global agriculture median", f"USD {ag:,.2f}")
-    p2.metric("VCM carbon-token proxy", f"USD {bct:,.2f}")
-    p3.metric("USD / INR", f"₹{fx:,.2f}")
-    p4.metric("India VCM reference proxy", f"₹{india_proxy:,.2f}")
+    p1.metric("Global agriculture benchmark", f"USD {ag:,.2f}")
+    p2.metric("Rice methane credit range", f"USD {rice_low:,.0f}–{rice_high:,.0f}/t")
+    p3.metric("Live USD / INR", f"₹{fx:,.2f}")
+    p4.metric("Rice methane midpoint in INR", f"₹{rice_mid * fx:,.0f}/t")
 
     st.caption(
         f"Global source: {market_data.get('global_source','N/A')} | "
-        f"VCM proxy: {market_data.get('market_source','N/A')} | "
+        f"Rice methane source: {market_data.get('rice_methane_source','N/A')} | "
         f"FX source: {market_data.get('fx_source','N/A')} | "
-        f"Updated: {market_data.get('updated_at','N/A')}"
+        f"Updated: {market_data.get('updated_at','latest available')}"
     )
 
     q1, q2, q3 = st.columns(3)
     with q1:
-        st.markdown('<div class="info-card"><b>Global VCM</b><div class="small-copy" style="font-size:.82rem;">Observable reference data, not a guaranteed sale price for project credits.</div></div>', unsafe_allow_html=True)
+        st.markdown('<div class="info-card"><b>Why the global agriculture benchmark matters</b><div class="small-copy" style="font-size:.82rem;">It gives broad context for agricultural carbon projects, but it is not rice-specific and should not be used as our project credit price.</div></div>', unsafe_allow_html=True)
     with q2:
-        st.markdown('<div class="info-card"><b>India VCM proxy</b><div class="small-copy" style="font-size:.82rem;">Global agriculture reference converted using current FX for scenario modelling.</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-card"><b>Why the rice methane range matters</b><div class="small-copy" style="font-size:.82rem;">This is the directly relevant market reference for rice methane abatement used by the Farm Simulator. The scenario range is USD {rice_low:.0f}–{rice_high:.0f}/tCO₂e, with a midpoint of USD {rice_mid:.0f}/tCO₂e. It is a market reference, not a guaranteed buyer offer.</div></div>', unsafe_allow_html=True)
     with q3:
-        st.markdown('<div class="info-card"><b>India ICM / CCC</b><div class="small-copy" style="font-size:.82rem;">Not displayed as a live spot price in this prototype.</div></div>', unsafe_allow_html=True)
+        st.markdown('<div class="info-card"><b>India carbon-market context</b><div class="small-copy" style="font-size:.82rem;">India’s compliance-market / CCC price is kept separate from voluntary-market references. The prototype does not invent an Indian compliance spot price. INR figures here are USD market references converted using the live FX rate.</div></div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="info-card" style="margin-top:1rem;"><b>How this connects to our calculator</b><div class="small-copy" style="font-size:.84rem;margin-top:.35rem;">The Carbon Economics Calculator lets you choose the carbon price manually. The Market Feed does not automatically overwrite that input. This separation prevents a broad market benchmark from being mistaken for the actual contracted price of our rice-carbon credits.</div></div>', unsafe_allow_html=True)
 
 
 def render_economics():
