@@ -178,7 +178,7 @@ def render_intro():
     if phase == "loading":
         st.markdown(INTRO_STYLE, unsafe_allow_html=True)
         st.markdown(
-            '''<div class="c4n-intro-lock">
+            f'''<div class="c4n-intro-lock">
               <div class="c4n-intro-loading">
                 <div class="c4n-intro-brand">CODE<span>4</span>NATURE</div>
                 <div class="c4n-intro-scene">
