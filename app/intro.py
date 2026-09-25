@@ -128,6 +128,18 @@ body:has(.c4n-intro-lock) .stApp { overflow:hidden; }
   font-weight:950; letter-spacing:-.055em; line-height:.9; }
 .c4n-intro-welcome-brand span { color:#7ee2b1; }
 .c4n-intro-welcome-sub { margin-top:18px; color:#7f998d; font-size:13px; }
+.c4n-intro-enter-link{
+  position:absolute; left:50%; bottom:54px; transform:translateX(-50%);
+  z-index:20; display:inline-flex; align-items:center; justify-content:center; gap:11px;
+  min-width:170px; padding:14px 22px; border-radius:999px;
+  border:1px solid rgba(126,226,177,.28); background:#7ee2b1; color:#07120f;
+  text-decoration:none; font-size:12px; font-weight:900; letter-spacing:.14em;
+  box-shadow:0 14px 40px rgba(126,226,177,.18);
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.c4n-intro-enter-link:hover{transform:translateX(-50%) translateY(-2px);background:#98e7bd;box-shadow:0 18px 46px rgba(126,226,177,.24)}
+.c4n-intro-enter-link:focus-visible{outline:2px solid #d8f1e2;outline-offset:4px}
+.c4n-intro-enter-link span{font-size:16px}
 .c4n-intro-enter-wrap { position:fixed; left:50%; bottom:54px;
   transform:translateX(-50%); z-index:100001; width:auto; }
 .c4n-intro-enter-wrap [data-testid="stButton"] { width:auto; }
