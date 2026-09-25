@@ -14,7 +14,6 @@
   setTimeout(()=>{
     enter.disabled=false;
     enter.classList.add("is-ready");
-    enter.focus({preventScroll:true});
   },READY_DELAY);
   enter.addEventListener("click",enterSite);
   enter.addEventListener("keydown",(event)=>{
