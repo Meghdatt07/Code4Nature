@@ -5,7 +5,48 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
-</head><body>
+</head><body class="intro-lock">
+<div id="siteIntro" class="site-intro" data-phase="loading" aria-label="Asterisk Climos introduction">
+  <div class="intro-loading" aria-hidden="true">
+    <div class="intro-brand">CODE<span>4</span>NATURE</div>
+    <div class="intro-scene">
+      <div class="intro-panel intro-panel-flooded">
+        <div class="intro-panel-label">FLOODED SOIL</div>
+        <div class="intro-waterline"></div>
+        <div class="intro-soil"></div>
+        <div class="intro-roots"></div>
+        <div class="intro-plant intro-plant-left"><i></i><i></i><b></b></div>
+        <div class="intro-bubbles"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="intro-ch4-tag">MORE CH₄ POTENTIAL</div>
+      </div>
+      <div class="intro-panel intro-panel-awd">
+        <div class="intro-panel-label">AWD / DRY-DOWN</div>
+        <div class="intro-waterline"></div>
+        <div class="intro-soil"></div>
+        <div class="intro-roots"></div>
+        <div class="intro-plant intro-plant-right"><i></i><i></i><b></b></div>
+        <div class="intro-bubbles intro-bubbles-few"><span></span><span></span></div>
+        <div class="intro-ch4-tag">LOWER CH₄ POTENTIAL</div>
+      </div>
+    </div>
+    <div class="intro-copy">
+      <div class="intro-kicker">FIELD INTELLIGENCE</div>
+      <h2>Water changes the story beneath the crop.</h2>
+      <p>Visualising how prolonged flooding and controlled dry-down affect the methane pathway in rice fields.</p>
+    </div>
+    <div class="intro-progress" aria-hidden="true"><span></span></div>
+    <div class="intro-status">CALIBRATING WATER · METHANE · EVIDENCE<span class="intro-dots">…</span></div>
+  </div>
+
+  <div class="intro-welcome" aria-hidden="true">
+    <div class="intro-welcome-glow"></div>
+    <div class="intro-welcome-kicker">CODE4NATURE PRESENTS</div>
+    <div class="intro-welcome-title">WELCOME TO THE WORLD OF OPPORTUNITIES</div>
+    <div class="intro-welcome-brand">ASTERISK <span>CLIMOS</span></div>
+    <div class="intro-welcome-sub">Climate intelligence for measurable rice-field impact.</div>
+    <button id="introEnter" class="intro-enter" type="button">LET'S GO <span>↗</span></button>
+  </div>
+</div>
 <nav class="nav"><div class="container nav-in"><a class="brand" href="#top">CARBON<span>AWD</span></a><div class="nav-links">
 <a href="#science">Science</a><a href="#mrv">Live MRV</a><a href="#market">Market</a><a href="#economics">Economics</a><a href="#policy">Policy</a><a class="nav-cta" href="#mrv">Select a farm</a>
 </div><button class="menu" id="menu">☰</button></div></nav>

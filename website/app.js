@@ -1,3 +1,25 @@
+(function setupIntro(){
+  const intro=$("siteIntro");
+  if(!intro)return;
+  document.body.classList.add("intro-lock");
+  const finishLoading=()=>{
+    intro.dataset.phase="welcome";
+    intro.querySelector(".intro-welcome")?.setAttribute("aria-hidden","false");
+    const button=$("introEnter");
+    if(button) setTimeout(()=>button.focus(),120);
+  };
+  const enterSite=()=>{
+    intro.classList.add("is-entered");
+    document.body.classList.remove("intro-lock");
+    setTimeout(()=>intro.remove(),850);
+  };
+  setTimeout(finishLoading,4000);
+  $("introEnter")?.addEventListener("click",enterSite);
+  $("introEnter")?.addEventListener("keydown",(event)=>{
+    if(event.key==="Enter"||event.key===" "){event.preventDefault();enterSite();}
+  });
+})();
+
 function $(id){return document.getElementById(id)}
 function usd(v){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(v)}
 function inr(v){return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(v)}
@@ -13,4 +35,14 @@ function setupMap(){if(!$("map"))return;const lat0=Number(localStorage.getItem(L
 function setupChart(){if(!$("awdChart"))return;const lab=Array.from({length:30},(_,i)=>"D"+(i+1)),base=lab.map(()=>5),awd=[5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7,-11,-15,5,4,2,0,-3,-7];new Chart($("awdChart"),{type:"line",data:{labels:lab,datasets:[{label:"Continuous flooding",data:base,borderWidth:2},{label:"AWD water depth (cm)",data:awd,borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:"Water depth (cm)"}},x:{grid:{display:false}}},plugins:{legend:{labels:{color:"#cbd5e1"}}}}});$("telemetryBtn").onclick=()=>{const v=Number($("depth").value),s=v>0?"WET":v>=-15?"DRYING":"REWETTING";$("depthValue").textContent=v.toFixed(1)+" cm";$("telemetryStatus").textContent=s;$("awdState").textContent=s};$("depth").oninput=()=>$("depthValue").textContent=Number($("depth").value).toFixed(1)+" cm"}
 function calc(){if(!$("areaRange"))return;const a=Number($("areaRange").value),r=Number($("abatement").value),s=Number($("share").value)/100,p=$("priceModel").value==="erf"?15:(market&&market.vcm||1.85),fx=market&&market.fx||88,ch4=a*r,credits=ch4*28/1000,gross=credits*p,f=gross*s,c=gross-f;$("areaLabel").textContent=a.toFixed(1)+" ha";$("abatementLabel").textContent=r.toFixed(0)+" kg";$("shareLabel").textContent=Math.round(s*100)+"%";$("priceLabel").textContent=usd(p)+"/tCO₂e";$("ch4Out").textContent=ch4.toLocaleString()+" kg";$("creditOut").textContent=credits.toFixed(2)+" tCO₂e";$("grossOut").textContent=usd(gross);$("grossInr").textContent=inr(gross*fx);$("farmerOut").textContent=usd(f);$("farmerInr").textContent=inr(f*fx);$("companyOut").textContent=usd(c);$("companyInr").textContent=inr(c*fx);$("selectedAreaHint").textContent="Map-selected area: "+farmArea().toFixed(2)+" ha";$("fxOut").textContent="1 USD ≈ ₹"+fx.toFixed(2);$("ch4Kpi")&&($("ch4Kpi").textContent=(farmArea()*120).toLocaleString()+" kg");$("co2Kpi")&&($("co2Kpi").textContent=(farmArea()*120*28/1000).toFixed(2)+" t")}
 async function setupMarket(){if(!$("marketPrice"))return;market=await getMarket();$("marketPrice").textContent=usd(market.agriculture);$("marketInr").textContent=inr(market.agriculture*market.fx)+" / tCO₂e";$("bctPrice").textContent=usd(market.vcm);$("indiaProxy").textContent=inr(market.agriculture*market.fx);$("fxText").textContent="1 USD ≈ ₹"+market.fx.toFixed(2);$("marketUpdated").textContent=market.updated;calc()}
-document.addEventListener("DOMContentLoaded",()=>{setupMap();setupChart();setupMarket();["areaRange","abatement","share"].forEach(id=>$(id)&&$(id).addEventListener("input",calc));$("priceModel")&&$("priceModel").addEventListener("change",calc);$("refreshMarket")&&$("refreshMarket").addEventListener("click",setupMarket);if($("areaRange"))$("areaRange").value=Math.min(50,Math.max(.5,farmArea()));calc()});
+document.addEventListener("DOMContentLoaded",()=>{
+  setupMap();setupChart();setupMarket();
+  ["areaRange","abatement","share"].forEach(id=>$(id)&&$(id).addEventListener("input",calc));
+  $("priceModel")&&$("priceModel").addEventListener("change",calc);
+  $("refreshMarket")&&$("refreshMarket").addEventListener("click",setupMarket);
+  if($("areaRange"))$("areaRange").value=Math.min(50,Math.max(.5,farmArea()));
+  const menu=$("menu"),links=document.querySelector(".nav-links");
+  menu&&menu.addEventListener("click",()=>links&&links.classList.toggle("open"));
+  links&&links.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>links.classList.remove("open")));
+  calc()
+});
