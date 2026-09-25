@@ -1,22 +1,24 @@
 (function setupIntro(){
-  const intro=$("siteIntro"),hit=$("introEnter");
-  if(!intro||!hit)return;
+  const intro=$("siteIntro"),enter=$("introEnter");
+  if(!intro||!enter)return;
   document.body.classList.add("intro-lock");
+  const READY_DELAY=4200;
   const enterSite=()=>{
-    if(hit.disabled)return;
-    hit.disabled=true;
+    if(enter.disabled)return;
+    enter.disabled=true;
+    enter.classList.remove("is-ready");
     intro.classList.add("is-entered");
     document.body.classList.remove("intro-lock");
-    setTimeout(()=>intro.remove(),650);
+    setTimeout(()=>intro.remove(),700);
   };
   setTimeout(()=>{
-    hit.disabled=false;
-    hit.tabIndex=0;
-    hit.classList.add("is-ready");
-  },4200);
-  hit.addEventListener("click",enterSite);
-  hit.addEventListener("keydown",(event)=>{
-    if((event.key==="Enter"||event.key===" ")&&!hit.disabled){
+    enter.disabled=false;
+    enter.classList.add("is-ready");
+    enter.focus({preventScroll:true});
+  },READY_DELAY);
+  enter.addEventListener("click",enterSite);
+  enter.addEventListener("keydown",(event)=>{
+    if((event.key==="Enter"||event.key===" ")&&!enter.disabled){
       event.preventDefault();
       enterSite();
     }
