@@ -548,14 +548,31 @@ def render_farm_simulator():
                 return fallback_rate, "Fallback rate", "MSEI/RBI reference rate"
 
         usd_inr, fx_updated_at, fx_source = get_live_usd_inr()
-        future_value_inr = result["future_value"] * usd_inr
+        future_value_usd = result["future_value"]
+        future_value_inr = future_value_usd * usd_inr
 
-        v1, v2 = st.columns(2)
-        v1.metric("Potential value over next 5 years", f"USD {result['future_value']:,.0f}")
-        v2.metric("Potential value over next 5 years", f"₹{future_value_inr:,.0f}")
+        # Revenue-sharing model: 40% platform/company share and 60% direct farmer share.
+        our_share_usd = future_value_usd * 0.40
+        farmer_share_usd = future_value_usd * 0.60
+        our_share_inr = our_share_usd * usd_inr
+        farmer_share_inr = farmer_share_usd * usd_inr
+
+        st.markdown("#### Potential value over next 5 years")
+        total_usd, total_inr = st.columns(2)
+        total_usd.metric("Total potential value", f"USD {future_value_usd:,.0f}")
+        total_inr.metric("Total potential value", f"₹{future_value_inr:,.0f}")
+
+        our_col, farmer_col = st.columns(2)
+        with our_col:
+            st.metric("Our share — 40%", f"₹{our_share_inr:,.0f}")
+            st.caption(f"USD {our_share_usd:,.2f} • 40% of total potential value")
+        with farmer_col:
+            st.metric("Direct farmer share — 60%", f"₹{farmer_share_inr:,.0f}")
+            st.caption(f"USD {farmer_share_usd:,.2f} • 60% of total potential value")
+
         st.caption(
             f"Live FX: 1 USD = ₹{usd_inr:,.2f} • Source: {fx_source} • Updated: {fx_updated_at}. "
-            "INR value is the USD scenario converted at the latest available API rate."
+            "Both INR share values are converted from the USD carbon-credit value using the latest available exchange rate."
         )
 
         chart = pd.DataFrame(
@@ -581,7 +598,8 @@ def render_farm_simulator():
                 "**CO2e conversion:** 120 kg CH4 × GWP100 28 ÷ 1000 = 3.36 tCO2e per hectare per season.",
                 "**10-hectare reference:** 10 ha × 3.36 = 33.60 tCO2e per season.",
                 "**5-year potential value:** five one-season-per-year opportunities using the current carbon-price reference.",
-                "**USD → INR conversion:** the displayed INR estimate uses the latest available USD/INR rate from the live exchange-rate API.",
+                "**Revenue split:** 40% to our platform/company share and 60% directly to the farmer.",
+                "**USD → INR conversion:** total value and both revenue shares use the latest available USD/INR rate from the live exchange-rate API.",
                 "**Current rice-methane reference price:** midpoint of the currently reported USD 15–25/tCO2e rice methane credit range.",
             ]
             for line in details:
