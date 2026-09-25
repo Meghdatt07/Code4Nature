@@ -657,10 +657,10 @@ def render_market():
 
 
 def render_economics():
-    st.markdown('<div class="section-kicker">RESEARCH-BASED CARBON ECONOMICS</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Low-emission rice economics calculator</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-kicker">LIVE CARBON ECONOMICS CALCULATOR</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Farmer + company carbon economics</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">Based on Do et al. (2026): baseline, input-efficiency and industrial-process-improvement economics, with carbon-price scenarios from USD 10–50/tCO2e. USD↔INR uses a live exchange rate.</p>',
+        '<p class="small-copy">Live scenario calculator based on the supplied CarbonAWD page. Area is entered in hectares with the equivalent acreage shown automatically. USD values are converted to INR using a live USD/INR exchange rate.</p>',
         unsafe_allow_html=True,
     )
 
@@ -671,143 +671,192 @@ def render_economics():
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0f172a;color:#fff;font-family:Inter,Arial,sans-serif}
-.wrap{background:#0f172a;border-radius:18px;padding:28px}
+body{margin:0;background:#06110d;color:#e7f5ed;font-family:Inter,Arial,sans-serif}
+.wrap{padding:4px 0 18px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px}
-.control{margin-bottom:20px}.row{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px}
-.label{font-size:14px;color:#cbd5e1}.value{font-weight:800;color:#86efac}
-select,input[type=range]{width:100%}select{background:#1e293b;color:#fff;border:1px solid #334155;border-radius:9px;padding:10px}
-input[type=range]{accent-color:#10b981}
-.result{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.card{background:#111c2e;border:1px solid #334155;border-radius:12px;padding:14px}
-.muted{color:#94a3b8;font-size:12px}.big{font-size:23px;font-weight:800;margin-top:5px}
-.green{color:#34d399}.blue{color:#93c5fd}.amber{color:#fbbf24}
-.note{font-size:12px;color:#94a3b8;line-height:1.5}
-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
-th,td{padding:8px;border-bottom:1px solid #334155;text-align:right}th:first-child,td:first-child{text-align:left}
-th{color:#94a3b8;font-weight:600}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
+.panel{background:rgba(10,25,19,.78);border:1px solid rgba(120,255,184,.12);border-radius:18px;padding:26px}
+.control{margin-bottom:22px}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.label{font-size:14px;color:#cbd5e1}.value{font-weight:800;color:#6ee7b7}
+input[type=range]{width:100%;accent-color:#34d399}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.065);border-radius:14px;padding:16px}
+.muted{color:#8ca99a;font-size:12px}.big{font-size:25px;font-weight:900;margin-top:5px}
+.green{color:#6ee7b7}.blue{color:#93c5fd}
+button{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,.05);color:#e7f5ed;cursor:pointer;font-weight:700;width:100%}
+button:hover{background:rgba(255,255,255,.09)}
+.note{font-size:12px;color:#8ca99a;line-height:1.55}
+.formula{background:rgba(0,0,0,.22);border-radius:12px;padding:14px;margin-top:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.8;color:#bcd0c5}
+.fx{margin-top:14px;padding:12px;border-radius:10px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.14)}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="grid">
-    <div>
+    <div class="panel">
       <div class="control">
-        <div class="row"><label class="label">Production system</label></div>
-        <select id="system">
-          <option value="industrial">Industrial process improvements (AWD / SRI)</option>
-          <option value="input">Input-efficiency improvements</option>
-          <option value="baseline">Baseline / conventional</option>
-        </select>
+        <div class="row"><label class="label">Project area</label><span id="areaVal" class="value">10 ha</span></div>
+        <input id="area" type="range" min="1" max="10000" step="1" value="10">
+        <div id="acreEquivalent" class="note" style="margin-top:6px">≈ 24.71 acres</div>
       </div>
 
       <div class="control">
-        <div class="row"><label class="label">Farm Area (hectares)</label><span id="val-area" class="value">10 ha</span></div>
-        <input type="range" id="area" min="1" max="10000" step="1" value="10">
+        <div class="row"><label class="label">Abatement</label><span id="abatementVal" class="value">2.97 tCO₂e/ha</span></div>
+        <input id="abatement" type="range" min="1.24" max="4.94" step="0.01" value="2.97">
+        <div class="note" style="margin-top:6px">Converted from the supplied calculator's 0.5–2.0 tCO₂e/acre range.</div>
       </div>
 
       <div class="control">
-        <div class="row"><label class="label">Carbon Price (USD/tCO2e)</label><span id="val-price" class="value">$20</span></div>
-        <input type="range" id="price" min="10" max="50" step="1" value="20">
+        <div class="row"><label class="label">Carbon price</label><span id="priceVal" class="value">$20/tCO₂e</span></div>
+        <input id="price" type="range" min="1" max="150" step="0.5" value="20">
       </div>
 
       <div class="control">
-        <div class="row"><label class="label">Carbon-price scenario</label><span id="val-scenario" class="value">USD 20/t</span></div>
-        <div class="note">The paper models carbon prices from USD 10 to USD 50/tCO2e. Move the slider to reproduce an approximate point on Figure 5.</div>
+        <div class="row"><label class="label">Farmer share</label><span id="shareVal" class="value">65%</span></div>
+        <input id="share" type="range" min="50" max="100" step="1" value="65">
       </div>
 
-      <button id="live-price" style="border:0;border-radius:8px;padding:9px 12px;background:#334155;color:#fff;cursor:pointer;">⚡ Refresh live USD/INR</button>
+      <button id="useMarket">Use current market proxy</button>
+      <div class="fx">
+        <div class="muted">Live USD → INR</div>
+        <div id="fxText" style="font-weight:800;margin-top:4px">Loading live exchange rate…</div>
+      </div>
+      <button id="refreshFx" style="margin-top:10px">⚡ Refresh live USD/INR</button>
     </div>
 
-    <div class="result">
-      <div class="cards">
-        <div class="card"><div class="muted">Reported cost / ha</div><div id="cost-usd" class="big">$883</div><div id="cost-inr" class="muted">₹—</div></div>
-        <div class="card"><div class="muted">Reported gross revenue / ha</div><div id="gross-usd" class="big">$1,673</div><div id="gross-inr" class="muted">₹—</div></div>
-        <div class="card"><div class="muted">Reported net profit / ha</div><div id="profit-usd" class="big green">$790</div><div id="profit-inr" class="muted">₹—</div></div>
-        <div class="card"><div class="muted">Reported emissions / ha</div><div id="emissions" class="big amber">2.9 tCO2e</div><div id="abatement" class="muted">1.0 tCO2e/ha vs baseline</div></div>
+    <div class="panel">
+      <div class="result-grid">
+        <div class="card">
+          <div class="muted">Estimated credits</div>
+          <div id="credits" class="big">0</div>
+          <div class="muted">tCO₂e / scenario</div>
+        </div>
+        <div class="card">
+          <div class="muted">Gross value</div>
+          <div id="gross" class="big">$0</div>
+          <div id="grossInr" class="muted">₹0</div>
+        </div>
+        <div class="card">
+          <div class="muted">Farmer / FPO</div>
+          <div id="farmer" class="big green">$0</div>
+          <div id="farmerInr" class="muted">₹0</div>
+        </div>
+        <div class="card">
+          <div class="muted">Company / MRV platform</div>
+          <div id="company" class="big blue">$0</div>
+          <div id="companyInr" class="muted">₹0</div>
+        </div>
       </div>
 
-      <div class="card" style="margin-bottom:12px">
-        <div class="muted">Estimated carbon-market income from the paper's baseline-vs-practice emission difference</div>
-        <div style="display:flex;gap:16px;align-items:baseline;flex-wrap:wrap">
-          <span id="carbon-usd" class="big blue">$20</span>
-          <span id="carbon-inr" class="big blue">₹—</span>
-        </div>
-        <div id="carbon-per-ha" class="note">per hectare at the selected carbon price</div>
+      <div class="formula">
+        <div>credits = area (ha) × abatement (tCO₂e/ha)</div>
+        <div>gross = credits × carbon price</div>
+        <div>farmer = gross × farmer share</div>
+        <div>company = gross − farmer</div>
       </div>
 
-      <div class="card">
-        <div class="muted">Farm-scale 1-year scenario</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
-          <div><div class="muted">Carbon income</div><div id="farm-carbon-usd" class="big">$200</div><div id="farm-carbon-inr" class="muted">₹—</div></div>
-          <div><div class="muted">Reported operating profit</div><div id="farm-profit-usd" class="big green">$7,900</div><div id="farm-profit-inr" class="muted">₹—</div></div>
-        </div>
-        <div id="fx-note" class="note" style="margin-top:12px">FX loading…</div>
+      <div class="card" style="margin-top:14px">
+        <div class="muted">Area conversion</div>
+        <div id="areaConversion" style="font-size:15px;font-weight:800;margin-top:5px">10 hectares = 24.71 acres</div>
+        <div class="note" style="margin-top:5px">1 hectare = 2.47105 acres • 1 acre = 0.404686 hectare</div>
       </div>
 
       <div class="note" style="margin-top:14px">
-        The paper reports economic outcomes per hectare for Vietnam: baseline cost $756, gross revenue $1,572 and net profit $816; input-efficiency cost $917, gross revenue $1,650 and net profit $733; industrial-process improvement cost $883, gross revenue $1,673 and net profit $790. Emissions are 3.9, 3.7 and 2.9 tCO2e/ha respectively.
+        All INR values are recalculated from USD using the latest successful live exchange-rate response. Carbon price, abatement and revenue shares are scenario inputs and are not guaranteed transaction values.
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const DATA={
-  baseline:{cost:756,gross:1572,profit:816,emissions:3.9},
-  input:{cost:917,gross:1650,profit:733,emissions:3.7},
-  industrial:{cost:883,gross:1673,profit:790,emissions:2.9}
-};
-const price=document.getElementById('price'), area=document.getElementById('area'), system=document.getElementById('system');
+const ACRE_PER_HECTARE=2.47105;
+const HECTARE_PER_ACRE=0.404686;
+const area=document.getElementById('area');
+const abatement=document.getElementById('abatement');
+const price=document.getElementById('price');
+const share=document.getElementById('share');
 const fmtUSD=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
 const fmtINR=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
-let fx={rate:95.91,source:'fallback',updated:'fallback reference'};
+let fx={rate:95.91,source:'fallback reference',updated:'not live'};
 
 async function fetchFx(){
   try{
-    const r=await fetch('https://open.er-api.com/v6/latest/USD');
+    const r=await fetch('https://open.er-api.com/v6/latest/USD',{cache:'no-store'});
     if(!r.ok) throw new Error('FX request failed');
-    const d=await r.json(), rate=Number(d?.rates?.INR);
-    if(!Number.isFinite(rate)||rate<=0) throw new Error('Invalid FX');
-    fx={rate,source:'open.er-api.com',updated:d?.time_last_update_utc||'API update time unavailable'};
+    const d=await r.json();
+    const rate=Number(d?.rates?.INR);
+    if(!Number.isFinite(rate)||rate<=0) throw new Error('Invalid FX rate');
+    fx={
+      rate,
+      source:'open.er-api.com',
+      updated:d?.time_last_update_utc||'API update time unavailable'
+    };
   }catch(e){}
 }
 
 function update(){
-  const d=DATA[system.value], a=Number(area.value), p=Number(price.value);
-  const baseline=DATA.baseline.emissions;
-  const abatement=Math.max(0,baseline-d.emissions);
-  const carbonPerHa=abatement*p;
-  const farmCarbon=carbonPerHa*a;
-  const farmProfit=d.profit*a;
-  document.getElementById('val-area').textContent=a.toLocaleString()+' ha';
-  document.getElementById('val-price').textContent='$'+p.toFixed(0);
-  document.getElementById('val-scenario').textContent='USD '+p.toFixed(0)+'/t';
-  document.getElementById('cost-usd').textContent=fmtUSD.format(d.cost);
-  document.getElementById('gross-usd').textContent=fmtUSD.format(d.gross);
-  document.getElementById('profit-usd').textContent=fmtUSD.format(d.profit);
-  document.getElementById('emissions').textContent=d.emissions.toFixed(1)+' tCO2e';
-  document.getElementById('abatement').textContent=abatement.toFixed(1)+' tCO2e/ha vs baseline';
-  document.getElementById('carbon-usd').textContent=fmtUSD.format(carbonPerHa);
-  document.getElementById('carbon-inr').textContent=fmtINR.format(carbonPerHa*fx.rate);
-  document.getElementById('carbon-per-ha').textContent='per hectare at USD '+p+'/tCO2e';
-  document.getElementById('farm-carbon-usd').textContent=fmtUSD.format(farmCarbon);
-  document.getElementById('farm-carbon-inr').textContent=fmtINR.format(farmCarbon*fx.rate);
-  document.getElementById('farm-profit-usd').textContent=fmtUSD.format(farmProfit);
-  document.getElementById('farm-profit-inr').textContent=fmtINR.format(farmProfit*fx.rate);
-  for(const id of ['cost','gross','profit']){
-    document.getElementById(id+'-inr').textContent=fmtINR.format(d[id]*fx.rate);
-  }
-  document.getElementById('fx-note').textContent='Live FX: 1 USD ≈ ₹'+fx.rate.toFixed(2)+' • Source: '+fx.source+' • Updated: '+fx.updated+'. INR values fluctuate with the exchange rate.';
+  const a=Number(area.value);
+  const b=Number(abatement.value);
+  const p=Number(price.value);
+  const s=Number(share.value)/100;
+  const credits=a*b;
+  const gross=credits*p;
+  const farmer=gross*s;
+  const company=gross-farmer;
+  const acres=a*ACRE_PER_HECTARE;
+
+  document.getElementById('areaVal').textContent=a.toLocaleString()+' ha';
+  document.getElementById('acreEquivalent').textContent='≈ '+acres.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+' acres';
+  document.getElementById('abatementVal').textContent=b.toFixed(2)+' tCO₂e/ha';
+  document.getElementById('priceVal').textContent='$'+p.toFixed(2)+'/tCO₂e';
+  document.getElementById('shareVal').textContent=(s*100).toFixed(0)+'%';
+
+  document.getElementById('credits').textContent=credits.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById('gross').textContent=fmtUSD.format(gross);
+  document.getElementById('grossInr').textContent=fmtINR.format(gross*fx.rate);
+  document.getElementById('farmer').textContent=fmtUSD.format(farmer);
+  document.getElementById('farmerInr').textContent=fmtINR.format(farmer*fx.rate);
+  document.getElementById('company').textContent=fmtUSD.format(company);
+  document.getElementById('companyInr').textContent=fmtINR.format(company*fx.rate);
+
+  document.getElementById('areaConversion').textContent=
+    a.toLocaleString(undefined,{maximumFractionDigits:2})+' hectares = '+
+    acres.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+' acres';
+
+  document.getElementById('fxText').textContent=
+    '1 USD ≈ ₹'+fx.rate.toFixed(2)+' • '+fx.source+' • '+fx.updated;
 }
-[price,area,system].forEach(x=>x.addEventListener('input',update));
-system.addEventListener('change',update);
-document.getElementById('live-price').addEventListener('click',async()=>{await fetchFx();update();});
+
+[area,abatement,price,share].forEach(x=>x.addEventListener('input',update));
+
+document.getElementById('refreshFx').addEventListener('click',async()=>{
+  await fetchFx();
+  update();
+});
+
+document.getElementById('useMarket').addEventListener('click',async()=>{
+  try{
+    const apiBase=window.CARBONAWD_API_BASE||'http://localhost:8000';
+    const r=await fetch(apiBase+'/api/market',{cache:'no-store'});
+    if(!r.ok) throw new Error('market feed unavailable');
+    const d=await r.json();
+    const market=Number(d?.global_agriculture_median_usd);
+    if(Number.isFinite(market)&&market>0){
+      price.value=Math.max(1,Math.min(150,market));
+      update();
+    }
+  }catch(e){
+    // Keep the manually selected price when the optional market feed is unavailable.
+  }
+});
+
 (async function boot(){
-  await fetchFx(); update();
-  setInterval(async()=>{await fetchFx();update();},300000);
+  await fetchFx();
+  update();
+  setInterval(async()=>{
+    await fetchFx();
+    update();
+  },300000);
 })();
 </script>
 </body>
