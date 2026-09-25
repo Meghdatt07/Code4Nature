@@ -83,6 +83,20 @@ body:has(.c4n-intro-lock) .stApp { overflow:hidden; }
 .c4n-intro-bubbles i:nth-child(7){left:84%;animation-delay:.7s}
 .c4n-intro-bubbles.few { opacity:.62; }
 .c4n-intro-bubbles.few i:nth-child(n+3){display:none}
+.c4n-plant-gif{
+  position:absolute; left:50%; top:34px; bottom:46px; width:72%;
+  transform:translateX(-50%); object-fit:cover; object-position:center;
+  border-radius:18px; mix-blend-mode:normal; opacity:.96;
+  filter:saturate(1.08) contrast(1.04);
+  animation:c4n-plant-breathe 3.5s ease-in-out infinite;
+}
+.c4n-plant-gif.flooded{top:28px;bottom:36px}
+.c4n-plant-gif.awd{top:28px;bottom:36px}
+.c4n-intro-panel:after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,17,13,0.04),rgba(6,17,13,0.08) 62%,rgba(6,17,13,.42));
+}
+@keyframes c4n-plant-breathe{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.018)}}
 .c4n-intro-ch4 { position:absolute; left:18px; bottom:17px;
   font-size:9px; font-weight:900; letter-spacing:.13em; color:#9cb9aa; }
 .c4n-intro-copy { position:absolute; left:50%; bottom:62px; transform:translateX(-50%);
@@ -146,10 +160,21 @@ body:has(.c4n-intro-lock) .stApp { overflow:hidden; }
 """
 
 def render_intro():
+    # Use a query-param CTA so the "LET'S GO" control is a real browser link,
+    # not a Streamlit widget that can get trapped behind a fixed overlay.
+    try:
+        if st.query_params.get("c4n_intro") == "enter":
+            st.session_state["c4n_intro_complete"] = True
+            st.session_state["c4n_intro_phase"] = "entered"
+            st.query_params.clear()
+    except Exception:
+        pass
+
     if st.session_state.get("c4n_intro_complete"):
         return
 
     phase = st.session_state.get("c4n_intro_phase", "loading")
+
     if phase == "loading":
         st.markdown(INTRO_STYLE, unsafe_allow_html=True)
         st.markdown(
@@ -159,18 +184,16 @@ def render_intro():
                 <div class="c4n-intro-scene">
                   <div class="c4n-intro-panel">
                     <div class="c4n-intro-tag">FLOODED SOIL</div>
-                    <div class="c4n-intro-water high"></div><div class="c4n-intro-soil"></div>
-                    <div class="c4n-intro-roots"><i></i><i></i><i></i></div>
-                    <div class="c4n-intro-plant tall"><b></b><b></b><b></b><b></b></div>
-                    <div class="c4n-intro-bubbles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="c4n-intro-water high"></div>
+                    <div class="c4n-intro-soil"></div>
+                    <img class="c4n-plant-gif flooded" src="assets/flooded-rice-plant.gif" alt="" aria-hidden="true">
                     <div class="c4n-intro-ch4">MORE CH₄ POTENTIAL</div>
                   </div>
                   <div class="c4n-intro-panel dry">
                     <div class="c4n-intro-tag">AWD / DRY-DOWN</div>
-                    <div class="c4n-intro-water low"></div><div class="c4n-intro-soil"></div>
-                    <div class="c4n-intro-roots"><i></i><i></i><i></i></div>
-                    <div class="c4n-intro-plant"><b></b><b></b><b></b><b></b></div>
-                    <div class="c4n-intro-bubbles few"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="c4n-intro-water low"></div>
+                    <div class="c4n-intro-soil"></div>
+                    <img class="c4n-plant-gif awd" src="assets/awd-rice-plant.gif" alt="" aria-hidden="true">
                     <div class="c4n-intro-ch4">LOWER CH₄ POTENTIAL</div>
                   </div>
                 </div>
@@ -200,13 +223,10 @@ def render_intro():
               <div class="c4n-intro-welcome-sub">Climate intelligence for measurable rice-field impact.</div>
             </div>
           </div>
+          <a class="c4n-intro-enter-link" href="?c4n_intro=enter" aria-label="Enter Asterisk Climos">
+            LET'S GO <span>↗</span>
+          </a>
         </div>''',
         unsafe_allow_html=True,
     )
-    st.markdown('<div class="c4n-intro-enter-wrap">', unsafe_allow_html=True)
-    clicked = st.button("LET'S GO ↗", key="c4n_intro_enter", type="primary")
-    st.markdown("</div>", unsafe_allow_html=True)
-    if clicked:
-        st.session_state["c4n_intro_complete"] = True
-        st.rerun()
     st.stop()
