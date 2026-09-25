@@ -210,20 +210,136 @@ def about():
 
 def insights():
     st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
-    frame("INSIGHTS / FIELD INTELLIGENCE","Rice, methane, water and the evidence in between.","The Insights archive is now based on the current rice-climate topics covered by our reference source, with concise summaries rather than copied article text.")
-    tiles([
-        ("01","One million carbon credits","Methane reduction, water savings and field-level climate intelligence."),
-        ("02","Water resilience","Why rice irrigation matters for India's 2026 water crisis."),
-        ("03","$9.5M Series A","Scaling climate-smart rice and water resilience across Asia."),
-        ("04","Sylvera rating","Remote sensing, field evidence and carbon-credit integrity."),
-        ("05","Traceable impact","Technology and evidence behind carbon-credit issuance."),
-        ("06","Beyond CO₂","Methane and other short-lived climate pollutants."),
-        ("07","ICVCM","Rice methane and Core Carbon Principles."),
-        ("08","ICAR-IARI research","Field sampling, laboratory measurement and satellite remote sensing."),
-        ("09","Alternate Wetting and Drying","Water management, methane reduction and farmer implementation.")
-    ], True)
-    st.markdown('<div class="band"><div class="eyebrow">THE EVIDENCE CHAIN</div><h2>From field practice → satellite → MRV → carbon value.</h2><div class="section-copy">AWD, farmer implementation, satellite and field evidence, methane measurement, digital monitoring and carbon-market integrity are connected parts of one system.</div></div>', unsafe_allow_html=True)
-    st.markdown('<div class="footer-note">Content is paraphrased from the current reference Insights archive. Use the original publisher for the full articles and source imagery.</div>', unsafe_allow_html=True)
+    frame(
+        "INSIGHTS / FIELD INTELLIGENCE",
+        "Rice, methane, water and the evidence in between.",
+        "Explore the current rice-climate themes covered by the reference Insights archive, with source imagery and concise summaries."
+    )
+
+    articles = [
+        ("01","Aug 5, 2026","Mitti Labs raises $9.5M to build water resilience in Asia's rice fields",
+         "Scaling climate-smart rice and water resilience across Asia.",
+         "https://framerusercontent.com/images/ox87vh4KJgar1GBdMbhHxGXpA.jpg?height=388&width=640",
+         "https://www.mittilabs.earth/insights/mitti-labs-raises-9.5m-to-build-water-resilience-in-asia-s-rice-ields"),
+        ("02","Jul 28, 2026","Sylvera issues an 'A' Rating for Mitti Labs' carbon credits based on rice methane",
+         "Remote sensing, field evidence and carbon-credit integrity.",
+         "https://framerusercontent.com/images/KBPj8j0Lffivecp1wu3rmMm3yrk.png?height=441&width=600",
+         "https://www.mittilabs.earth/insights/sylvera-rating"),
+        ("03","Jul 15, 2026","Leveraging technology for traceable impact: our first carbon credit issuance",
+         "Technology and evidence behind traceable carbon-credit issuance.",
+         "https://framerusercontent.com/images/gXpIvePI8FNZiKhtgNf4XGLE.png?height=662&width=1587",
+         "https://www.mittilabs.earth/insights/leveraging-technology-for-trackeable-impact"),
+        ("04","Jun 19, 2026","Beyond CO₂: Carbon Direct X Mitti Labs",
+         "Methane and other short-lived climate pollutants beyond CO₂.",
+         "https://framerusercontent.com/images/PHSFrlTkzH1j6EZRqevIza4z8A.png?height=904&width=2240",
+         "https://www.mittilabs.earth/insights/carbon-direct-x-mitti-labs-beyond-co2-webinar"),
+        ("05","May 18, 2026","The other half of global warming, and what we can do about it",
+         "Why methane matters in the wider climate-action picture.",
+         "https://framerusercontent.com/images/hOqc3RKzRg0p9V9a3aBKOSYI.png?height=910&width=2224",
+         "https://www.mittilabs.earth/insights/the-other-half-of-global-warming-%E2%80%94-and-what-we-can-do-about-it"),
+        ("06","May 13, 2026","Cool Effect and Mitti Labs: partnering on a world first",
+         "Superpollutant credits based on rice methane reduction.",
+         "https://framerusercontent.com/images/ULUMYH42UmrhRPAgrn4Dg6Gm4I.png?height=1080&width=1920",
+         "https://www.mittilabs.earth/insights/cool-effect-and-mitti-labs-partnering-on-a-world-first"),
+        ("07","Mar 27, 2026","An update from ICVCM: Rice methane gets its Core Carbon Principles label",
+         "Rice methane projects and carbon-market integrity.",
+         "https://framerusercontent.com/images/SJ9R3bayFImfIvT6U61ZnEoUFQc.jpg?height=3944&width=5916",
+         "https://www.mittilabs.earth/insights/an-update-from-icvcm-rice-methane-gets-its-core-carbon-principle-label"),
+        ("08","Feb 10, 2026","Mitti Labs partners with ICAR-IARI",
+         "Field sampling, laboratory measurement and satellite remote sensing.",
+         "https://framerusercontent.com/images/THHB3FbAFczZ99q7fgclT9Lrwhk.png?height=627&width=1200",
+         "https://www.mittilabs.earth/insights/mitti-labs-and-icar-iari-partner-on-ground-breaking-research-to-quantify-methane-emissions-from-rice-farming"),
+        ("09","Dec 3, 2025","ACCESS and Mitti Labs: a partnership to transform rice farming in India",
+         "Implementation, partnerships and climate-smart rice adoption.",
+         "https://framerusercontent.com/images/J9ZyQITtbxd9MN0j5Zl3MfMyY.png?height=580&width=900",
+         "https://www.mittilabs.earth/insights/mitti-labs-and-access-are-transforming-rice-farming-in-india"),
+    ]
+
+    cards = '<div class="insight-grid">'
+    for num, date, title, body, image, url in articles:
+        cards += f'''<article class="insight-card">
+          <a href="{url}" target="_blank" rel="noopener noreferrer">
+            <div class="insight-image-wrap">
+              <img src="{image}" alt="{title}" loading="lazy">
+            </div>
+            <div class="insight-content">
+              <div class="num">{num} / {date}</div>
+              <h3>{title}</h3>
+              <p>{body}</p>
+              <span class="insight-link">Read source article →</span>
+            </div>
+          </a>
+        </article>'''
+    cards += "</div>"
+
+    st.markdown("""
+    <style>
+      .insight-grid{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:1rem;
+        margin:0 0 3rem;
+      }
+      .insight-card{
+        overflow:hidden;
+        border:1px solid rgba(126,226,177,.13);
+        border-radius:20px;
+        background:rgba(255,255,255,.035);
+        transition:transform .18s ease,border-color .18s ease;
+      }
+      .insight-card:hover{
+        transform:translateY(-3px);
+        border-color:rgba(126,226,177,.38);
+      }
+      .insight-card a{display:block;color:inherit;text-decoration:none;}
+      .insight-image-wrap{
+        height:210px;
+        overflow:hidden;
+        background:#06110d;
+        border-bottom:1px solid rgba(126,226,177,.10);
+      }
+      .insight-image-wrap img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        display:block;
+      }
+      .insight-content{padding:1.25rem;}
+      .insight-content h3{
+        margin:.7rem 0 .55rem;
+        color:#edf7f2;
+        font-size:1.05rem;
+        line-height:1.25;
+      }
+      .insight-content p{
+        margin:0;
+        color:#91aa9e;
+        line-height:1.6;
+        font-size:.86rem;
+        min-height:2.75rem;
+      }
+      .insight-link{
+        display:inline-block;
+        margin-top:1rem;
+        color:#7ee2b1;
+        font-size:.78rem;
+        font-weight:800;
+      }
+      @media(max-width:1000px){.insight-grid{grid-template-columns:1fr 1fr;}}
+      @media(max-width:620px){.insight-grid{grid-template-columns:1fr;}.insight-image-wrap{height:230px;}}
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(cards, unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="band"><div class="eyebrow">THE EVIDENCE CHAIN</div><h2>From field practice → satellite → MRV → carbon value.</h2><div class="section-copy">AWD, farmer implementation, satellite and field evidence, methane measurement, digital monitoring and carbon-market integrity are connected parts of one system.</div></div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="footer-note">Images are displayed from the public image assets referenced by the Mitti Labs Insights page. Article titles and links point to the original publisher; summaries are concise paraphrases rather than copied article text.</div>',
+        unsafe_allow_html=True
+    )
 
 def contact():
     st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
