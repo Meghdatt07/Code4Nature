@@ -59,18 +59,18 @@ export function IntroLoader(){
       <path d="M0 365 Q210 315 460 354 T930 346 T1330 362 T1600 350 V510 H0Z" fill="#79927a" opacity=".45"/>
       <rect y="404" width="1600" height="105" fill="#dbe9dd" opacity=".08" filter="url(#introBlur)"/>
 
-      <!-- flooded half -->
+      {/* flooded half */}
       <rect x="0" y="500" width="800" height="230" fill="url(#introWater)"/>
       <path d="M0 504 Q170 485 335 504 T650 498 T800 505" fill="none" stroke="#e7ffff" strokeOpacity=".58" strokeWidth="4"/>
       <path d="M0 535 Q160 519 330 537 T650 532 T800 539" fill="none" stroke="#c9fffb" strokeOpacity=".2" strokeWidth="2"/>
       <rect x="0" y="730" width="800" height="170" fill="#2e1e12"/>
 
-      <!-- dry half -->
+      {/* dry half */}
       <rect x="800" y="536" width="800" height="364" fill="url(#introDry)"/>
       <path d="M800 553 Q950 522 1090 548 T1370 542 T1600 554" fill="none" stroke="#e1b273" strokeOpacity=".35" strokeWidth="4"/>
       <path d="M850 635 Q950 600 1050 640 T1260 630 T1450 645 T1600 625" fill="none" stroke="#d39b5c" strokeOpacity=".18" strokeWidth="5"/>
 
-      <!-- flooded rice -->
+      {/* flooded rice */}
       <g>
         <path d="M400 730 C408 650 408 566 402 505" fill="none" stroke="#7b9a57" strokeWidth="14" strokeLinecap="round"/>
         <path d="M402 520 C305 420 260 345 285 240 C360 310 401 406 402 520Z" fill="url(#introLeaf)"/>
@@ -79,7 +79,7 @@ export function IntroLoader(){
         <path d="M410 561 C508 500 590 486 674 512 C598 576 503 588 410 561Z" fill="url(#introLeaf)"/>
       </g>
 
-      <!-- dry rice -->
+      {/* dry rice */}
       <g>
         <path d="M1197 738 C1202 654 1194 566 1195 514" fill="none" stroke="#708d50" strokeWidth="14" strokeLinecap="round"/>
         <path d="M1195 524 C1099 424 1065 338 1097 238 C1160 320 1192 418 1195 524Z" fill="url(#introLeaf)"/>
@@ -88,13 +88,13 @@ export function IntroLoader(){
         <path d="M1198 572 C1296 519 1397 518 1494 553 C1402 607 1297 608 1198 572Z" fill="url(#introLeaf)"/>
       </g>
 
-      <!-- roots -->
+      {/* roots */}
       <g fill="none" stroke="url(#introRoot)" strokeLinecap="round">
         <path d="M400 714 C366 764 342 816 320 872 M404 712 C405 775 392 836 376 895 M407 714 C450 763 477 822 495 880 M398 723 C350 760 305 776 260 790 M411 730 C460 757 510 780 557 792" strokeWidth="6"/>
         <path d="M1194 720 C1154 768 1134 822 1112 884 M1196 719 C1193 780 1185 840 1172 895 M1200 720 C1240 766 1274 821 1304 874 M1204 723 C1254 753 1305 771 1354 783" strokeWidth="6"/>
       </g>
 
-      <!-- methane bubbles -->
+      {/* methane bubbles */}
       <g fill="#efffff" fillOpacity=".06" stroke="#e7ffff" strokeOpacity=".62">
         <circle cx="115" cy="610" r="22"/><circle cx="190" cy="662" r="36"/><circle cx="276" cy="588" r="19"/><circle cx="340" cy="675" r="29"/>
         <circle cx="438" cy="622" r="17"/><circle cx="510" cy="694" r="33"/><circle cx="610" cy="610" r="21"/><circle cx="684" cy="658" r="14"/>
