@@ -208,21 +208,20 @@ def about():
 
     frame(
         "ABOUT / OUR DIRECTION",
-        "From the Mitti Labs model to an IIT Gandhinagar student-built climate intelligence platform.",
-        "We study how science, remote sensing, AI, field operations and carbon economics can work together to make climate-smart rice measurable, practical and scalable."
+        "Building climate intelligence for rice, water and measurable impact.",
+        "Asterisk Climos is a student-driven initiative at IIT Gandhinagar bringing together Earth Science, computer science, data science, remote sensing, machine learning and sustainability."
     )
 
     st.markdown("""
     <section class="section" style="padding-top:0;">
-      <div class="eyebrow">WHAT WE LEARN FROM THE MITTI LABS MODEL</div>
+      <div class="eyebrow">OUR APPROACH</div>
       <h2>One problem. Multiple layers. One measurable impact.</h2>
       <div class="section-copy">
-        Mitti Labs' public work shows an integrated approach to rice-climate action:
-        work directly with farmers, observe fields using satellite technology, combine
-        ground measurements with scientific models, and connect verified impact with
-        carbon-market mechanisms. Their work is focused specifically on rice and
-        methane reduction through climate-smart practices such as Alternate Wetting
-        and Drying (AWD).
+        Climate-smart rice requires more than a single technology. Our approach connects
+        farmers and field observations with Earth observation, scientific measurement,
+        data-driven modelling, digital MRV and transparent carbon economics.
+        The aim is to create an evidence chain from what happens on the farm to
+        measurable environmental and economic outcomes.
       </div>
     </section>
 
@@ -230,22 +229,22 @@ def about():
       <div class="tile">
         <div class="num">01 / FIELD</div>
         <h3>Farmers & implementation</h3>
-        <p>Work with farming communities and local partners to support adoption of climate-smart rice practices and collect reliable field observations.</p>
+        <p>Understand farming practices, water management and field conditions while keeping the needs of farmers and local partners at the centre.</p>
       </div>
       <div class="tile">
         <div class="num">02 / EARTH OBSERVATION</div>
         <h3>Satellite + GeoAI</h3>
-        <p>Use radar and other Earth-observation data with AI to understand field conditions such as flooding, crop state and soil-water dynamics.</p>
+        <p>Use radar and other Earth-observation data with data science and AI to understand field conditions at scale.</p>
       </div>
       <div class="tile">
         <div class="num">03 / SCIENCE</div>
         <h3>dMRV & measurement</h3>
-        <p>Combine ground truth, in-field measurements, laboratory analysis and process-based models to make environmental outcomes measurable and traceable.</p>
+        <p>Combine ground observations, field measurements, laboratory evidence and scientific models to make environmental outcomes traceable.</p>
       </div>
       <div class="tile">
         <div class="num">04 / VALUE</div>
         <h3>Carbon + farmer economics</h3>
-        <p>Translate credible methane reductions and co-benefits into transparent carbon-market and farmer-value pathways.</p>
+        <p>Explore how credible methane reductions and climate-smart practices can connect to transparent carbon and farmer-value pathways.</p>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -255,7 +254,7 @@ def about():
       <div class="eyebrow">OUR IIT GANDHINAGAR MISSION</div>
       <h2>We are students. We can build, test and learn in the field.</h2>
       <div class="section-copy">
-        Asterisk Climos is our student-driven attempt to apply the same systems thinking
+        Asterisk Climos is our student-driven attempt to apply science and technology
         to a practical climate problem. We are bringing together Earth Science,
         computer science, data science, remote sensing, machine learning and
         sustainability to build a working prototype—not just a presentation.
@@ -288,17 +287,17 @@ def about():
       <div class="eyebrow">OUR DIFFERENCE</div>
       <h2>Student-built does not mean science-light.</h2>
       <div class="section-copy">
-        Our prototype is an educational and research-oriented platform. We do not claim
-        to reproduce Mitti Labs' proprietary technology, data, models or operational
-        capabilities. Instead, we use the public structure of the problem as inspiration
-        and build our own transparent workflow using open data, documented assumptions
-        and reproducible methods.
+        We are building an educational and research-oriented platform around open data,
+        documented assumptions and reproducible methods. The project is designed to
+        learn through experimentation, field validation and continuous improvement,
+        while clearly separating prototype results from independently measured or
+        verified outcomes.
       </div>
     </section>
     """, unsafe_allow_html=True)
 
     st.markdown(
-        '<div class="footer-note">Reference: Mitti Labs public About, Climate-smart Rice and Soil-to-Sky Technology pages. Asterisk Climos is an independent IIT Gandhinagar student project and is not presented as an official Mitti Labs product or partnership.</div>',
+        '<div class="footer-note">Asterisk Climos is an independent IIT Gandhinagar student initiative focused on climate-smart rice, Earth observation, digital MRV and transparent carbon economics.</div>',
         unsafe_allow_html=True
     )
 
