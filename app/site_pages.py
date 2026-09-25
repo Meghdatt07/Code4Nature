@@ -280,21 +280,38 @@ def contact():
         }
 
         try:
+            # Use FormSubmit's JSON/AJAX endpoint. This is more reliable for
+            # Streamlit's server-side submission flow than the normal HTML redirect endpoint.
+            form_data["_replyto"] = email.strip()
             response = requests.post(
-                f"https://formsubmit.co/{recipient}",
-                data=form_data,
-                timeout=15,
+                f"https://formsubmit.co/ajax/{recipient}",
+                json=form_data,
+                headers={
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                timeout=20,
             )
             response.raise_for_status()
+
+            try:
+                result = response.json()
+            except ValueError:
+                result = {}
+
+            if result.get("success") is False:
+                raise RuntimeError(result.get("message", "FormSubmit rejected the request."))
+
             st.success(
-                "Partnership request sent successfully. We will review your message and get back to you."
+                "Partnership request sent successfully to meghdatt712@gmail.com."
             )
             st.caption(
-                "If this is the first submission through the email service, the mailbox may need to confirm the FormSubmit activation email once."
+                "If this is the first submission, FormSubmit may send an activation email to the recipient. "
+                "That address must be confirmed before FormSubmit forwards submissions to the mailbox."
             )
-        except requests.RequestException as exc:
+        except (requests.RequestException, RuntimeError) as exc:
             st.error(
-                "We could not send the partnership request right now. "
-                "Please try again in a moment."
+                "The partnership request could not be delivered. "
+                "Please try again after checking that the FormSubmit activation email has been confirmed."
             )
-            st.caption(f"Email delivery service error: {exc}")
+            st.caption(f"Email delivery service response: {exc}")
