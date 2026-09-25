@@ -438,7 +438,7 @@ def render_farm_simulator():
     st.markdown('<div class="section-kicker">FARM SIMULATOR</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">See your rice carbon-credit opportunity in seconds.</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">Enter your farm land and crop. Code4Nature estimates potential methane-abatement credits using the current published rice-methane carbon price reference, then shows the value for past and future years.</p>',
+        '<p class="small-copy">Enter your farm land and crop. The Farm Simulator uses the same rice methane-abatement reference standard as Digital MRV so both pages produce the same CO2e opportunity for the same area.</p>',
         unsafe_allow_html=True,
     )
 
@@ -481,11 +481,16 @@ def render_farm_simulator():
             "https://indianexpress.com/article/explained/explained-economics/methane-emission-reductions-farmers-climate-change-rice-carbon-credits-10443685/",
         )
 
-        # Illustrative rice methane-reduction assumptions from the project model:
-        # 6.0 tCO2e/ha baseline, 42% reduction, giving 2.52 tCO2e/ha/year.
-        baseline_emission = 6.0
-        reduction_fraction = 0.42
-        annual_credits = area * baseline_emission * reduction_fraction
+        # DIGITAL MRV REFERENCE STANDARD
+        # 120 kg CH4 abatement / ha / season × GWP100 28
+        # = 3.36 tCO2e / ha / season.
+        ch4_reduction_per_ha = CH4_REDUCTION_PER_HA
+        co2e_per_ha = ch4_reduction_per_ha * GWP_CH4 / 1000.0
+        seasonal_credits = area * co2e_per_ha
+
+        # The prototype treats one rice season as one annual opportunity
+        # for the 5-year economic view.
+        annual_credits = seasonal_credits
 
         past_years = 5
         future_years = 5
@@ -497,6 +502,8 @@ def render_farm_simulator():
         st.session_state["simple_farm_result"] = {
             "area": area,
             "crop": crop,
+            "ch4_reduction_per_ha": ch4_reduction_per_ha,
+            "co2e_per_ha": co2e_per_ha,
             "carbon_price": carbon_price,
             "price_low": low,
             "price_high": high,
@@ -514,6 +521,9 @@ def render_farm_simulator():
         st.markdown("### Your estimated opportunity")
         st.markdown(
             f'<div class="info-card"><b>{result["area"]:.2f} hectares of {result["crop"]}</b>'
+            f'<div class="small-copy" style="margin-top:.4rem;">Digital MRV standard: '
+            f'{result["ch4_reduction_per_ha"]:,.0f} kg CH4/ha/season × '
+            f'{GWP_CH4:.0f} GWP100 = {result["co2e_per_ha"]:.2f} tCO2e/ha/season.</div>'
             f'<div class="small-copy" style="margin-top:.4rem;">Current rice-methane reference: '
             f'USD {result["carbon_price"]:,.2f} per tCO2e '
             f'(reported range USD {result["price_low"]:,.2f}–{result["price_high"]:,.2f})</div></div>',
@@ -521,7 +531,7 @@ def render_farm_simulator():
         )
 
         r1, r2, r3 = st.columns(3)
-        r1.metric("Estimated credits / year", f"{result['annual_credits']:,.2f} tCO2e")
+        r1.metric("Estimated credits / season", f"{result['annual_credits']:,.2f} tCO2e")
         r2.metric("5-year credits potentially forgone", f"{result['past_credits']:,.2f} tCO2e")
         r3.metric("Next 5-year potential credits", f"{result['future_credits']:,.2f} tCO2e")
 
@@ -552,10 +562,10 @@ def render_farm_simulator():
 
         with st.expander("Details"):
             details = [
-                "**Estimated credits / year:** potential carbon-credit quantity from the current rice scenario for your farm size.",
-                "**Credits potentially forgone:** modelled credits that could have been generated across the past 5-year view.",
-                "**Next 5-year potential credits:** modelled credits that could be generated across the next 5 years under the same scenario.",
-                "**tCO2e:** tonnes of carbon-dioxide equivalent, the unit used for the carbon-credit calculation.",
+                "**Digital MRV standard:** 120 kg CH4 abatement per hectare per rice season.",
+                "**CO2e conversion:** 120 kg CH4 × GWP100 28 ÷ 1000 = 3.36 tCO2e per hectare per season.",
+                "**10-hectare reference:** 10 ha × 3.36 = 33.60 tCO2e per season.",
+                "**5-year credits potentially forgone:** the same one-season-per-year scenario repeated for five years.",
                 "**Current rice-methane reference price:** midpoint of the currently reported USD 15–25/tCO2e rice methane credit range.",
             ]
             for line in details:
@@ -569,7 +579,6 @@ def render_farm_simulator():
             "Thank you for making an effort to save Mother Earth. "
             "Your farm data helps build the evidence base for climate-smart rice."
         )
-
 
 def render_market():
     st.markdown('<div class="section-kicker">MARKET FEED</div>', unsafe_allow_html=True)
