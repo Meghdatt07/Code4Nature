@@ -657,10 +657,10 @@ def render_market():
 
 
 def render_economics():
-    st.markdown('<div class="section-kicker">ECONOMICS SCENARIO</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Economics Scenario Calculator</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-kicker">RESEARCH-BASED CARBON ECONOMICS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Low-emission rice economics calculator</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="small-copy">A scenario estimate, not a revenue guarantee — every assumption below is a slider you control. USD↔INR uses a live exchange rate when available.</p>',
+        '<p class="small-copy">Based on Do et al. (2026): baseline, input-efficiency and industrial-process-improvement economics, with carbon-price scenarios from USD 10–50/tCO2e. USD↔INR uses a live exchange rate.</p>',
         unsafe_allow_html=True,
     )
 
@@ -668,26 +668,26 @@ def render_economics():
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0f172a;color:#fff;font-family:Inter,Arial,sans-serif}
-.wrap{background:#0f172a;border-radius:18px;padding:30px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
-.control{margin-bottom:24px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:8px}
-.label{font-size:14px;color:#cbd5e1}
-.value{font-weight:700;color:#86efac}
-input[type=range]{width:100%;accent-color:#10b981}
-.result{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px}
-.result-row{display:flex;flex-direction:column;border-bottom:1px solid #334155;padding-bottom:14px;margin-bottom:14px}
-.result-row:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
-.muted{color:#94a3b8;font-size:14px}
-.big{font-size:24px;font-weight:700}
-.green{color:#34d399}
-.blue{color:#93c5fd}
-.small{font-size:12px;color:#64748b}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.wrap{background:#0f172a;border-radius:18px;padding:28px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px}
+.control{margin-bottom:20px}.row{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px}
+.label{font-size:14px;color:#cbd5e1}.value{font-weight:800;color:#86efac}
+select,input[type=range]{width:100%}select{background:#1e293b;color:#fff;border:1px solid #334155;border-radius:9px;padding:10px}
+input[type=range]{accent-color:#10b981}
+.result{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card{background:#111c2e;border:1px solid #334155;border-radius:12px;padding:14px}
+.muted{color:#94a3b8;font-size:12px}.big{font-size:23px;font-weight:800;margin-top:5px}
+.green{color:#34d399}.blue{color:#93c5fd}.amber{color:#fbbf24}
+.note{font-size:12px;color:#94a3b8;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+th,td{padding:8px;border-bottom:1px solid #334155;text-align:right}th:first-child,td:first-child{text-align:left}
+th{color:#94a3b8;font-weight:600}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -695,208 +695,124 @@ input[type=range]{width:100%;accent-color:#10b981}
   <div class="grid">
     <div>
       <div class="control">
-        <div class="row">
-          <label class="label">Farm Area</label>
-          <span id="val-acres" class="value">1,000 Acres</span>
-        </div>
-        <input type="range" id="slider-acres" min="1" max="10000" step="1" value="1000">
+        <div class="row"><label class="label">Production system</label></div>
+        <select id="system">
+          <option value="industrial">Industrial process improvements (AWD / SRI)</option>
+          <option value="input">Input-efficiency improvements</option>
+          <option value="baseline">Baseline / conventional</option>
+        </select>
       </div>
 
       <div class="control">
-        <div class="row">
-          <label class="label">Abatement (tCO2e / Acre)</label>
-          <span id="val-abatement" class="value">1.2 tCO2e</span>
-        </div>
-        <input type="range" id="slider-abatement" min="0.5" max="2.0" step="0.1" value="1.2">
+        <div class="row"><label class="label">Farm Area (hectares)</label><span id="val-area" class="value">10 ha</span></div>
+        <input type="range" id="area" min="1" max="10000" step="1" value="10">
       </div>
 
       <div class="control">
-        <div class="row">
-          <label class="label">Indicative Carbon Price (USD)</label>
-          <span id="val-price" class="value">$24.00</span>
-        </div>
-        <input type="range" id="slider-price" min="1" max="50" step="0.5" value="24">
+        <div class="row"><label class="label">Carbon Price (USD/tCO2e)</label><span id="val-price" class="value">$20</span></div>
+        <input type="range" id="price" min="10" max="50" step="1" value="20">
       </div>
 
       <div class="control">
-        <div class="row">
-          <label class="label">Farmer Profit Share (%)</label>
-          <span id="val-share" class="value">65%</span>
-        </div>
-        <input type="range" id="slider-share" min="50" max="100" step="1" value="65">
+        <div class="row"><label class="label">Carbon-price scenario</label><span id="val-scenario" class="value">USD 20/t</span></div>
+        <div class="note">The paper models carbon prices from USD 10 to USD 50/tCO2e. Move the slider to reproduce an approximate point on Figure 5.</div>
       </div>
 
-      <button id="btn-use-live-price" style="border:0;border-radius:8px;padding:8px 12px;background:#334155;color:#fff;font-size:12px;cursor:pointer;">
-        ⚡ Use current live/indicative price
-      </button>
+      <button id="live-price" style="border:0;border-radius:8px;padding:9px 12px;background:#334155;color:#fff;cursor:pointer;">⚡ Refresh live USD/INR</button>
     </div>
 
     <div class="result">
-      <div class="result-row">
-        <span class="muted">Estimated Carbon Credits</span>
-        <span id="res-credits" class="big">0 VCUs</span>
+      <div class="cards">
+        <div class="card"><div class="muted">Reported cost / ha</div><div id="cost-usd" class="big">$883</div><div id="cost-inr" class="muted">₹—</div></div>
+        <div class="card"><div class="muted">Reported gross revenue / ha</div><div id="gross-usd" class="big">$1,673</div><div id="gross-inr" class="muted">₹—</div></div>
+        <div class="card"><div class="muted">Reported net profit / ha</div><div id="profit-usd" class="big green">$790</div><div id="profit-inr" class="muted">₹—</div></div>
+        <div class="card"><div class="muted">Reported emissions / ha</div><div id="emissions" class="big amber">2.9 tCO2e</div><div id="abatement" class="muted">1.0 tCO2e/ha vs baseline</div></div>
       </div>
 
-      <div class="result-row">
-        <span class="muted">Potential Gross Value</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-gross-usd" class="big">$0</span>
-          <span id="res-gross-inr" class="muted">₹0</span>
+      <div class="card" style="margin-bottom:12px">
+        <div class="muted">Estimated carbon-market income from the paper's baseline-vs-practice emission difference</div>
+        <div style="display:flex;gap:16px;align-items:baseline;flex-wrap:wrap">
+          <span id="carbon-usd" class="big blue">$20</span>
+          <span id="carbon-inr" class="big blue">₹—</span>
         </div>
+        <div id="carbon-per-ha" class="note">per hectare at the selected carbon price</div>
       </div>
 
-      <div class="result-row">
-        <span class="green" style="font-weight:600;font-size:14px;">Projected Farmer Share</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-farmers-usd" class="big green">$0</span>
-          <span id="res-farmers-inr" class="muted">₹0</span>
+      <div class="card">
+        <div class="muted">Farm-scale 1-year scenario</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+          <div><div class="muted">Carbon income</div><div id="farm-carbon-usd" class="big">$200</div><div id="farm-carbon-inr" class="muted">₹—</div></div>
+          <div><div class="muted">Reported operating profit</div><div id="farm-profit-usd" class="big green">$7,900</div><div id="farm-profit-inr" class="muted">₹—</div></div>
         </div>
+        <div id="fx-note" class="note" style="margin-top:12px">FX loading…</div>
       </div>
 
-      <div class="result-row">
-        <span class="blue" style="font-weight:600;font-size:14px;">Platform / Company Share</span>
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span id="res-platform-usd" class="big blue">$0</span>
-          <span id="res-platform-inr" class="muted">₹0</span>
-        </div>
+      <div class="note" style="margin-top:14px">
+        The paper reports economic outcomes per hectare for Vietnam: baseline cost $756, gross revenue $1,572 and net profit $816; input-efficiency cost $917, gross revenue $1,650 and net profit $733; industrial-process improvement cost $883, gross revenue $1,673 and net profit $790. Emissions are 3.9, 3.7 and 2.9 tCO2e/ha respectively.
       </div>
-
-      <p id="fx-rate-note" class="small" style="margin:16px 0 0;">—</p>
-      <p class="small" style="margin:8px 0 0;">Prototype estimate only — not a verified carbon credit or a price guarantee.</p>
     </div>
   </div>
 </div>
 
 <script>
-const sliderAcres=document.getElementById('slider-acres');
-const sliderAbatement=document.getElementById('slider-abatement');
-const sliderPrice=document.getElementById('slider-price');
-const sliderShare=document.getElementById('slider-share');
+const DATA={
+  baseline:{cost:756,gross:1572,profit:816,emissions:3.9},
+  input:{cost:917,gross:1650,profit:733,emissions:3.7},
+  industrial:{cost:883,gross:1673,profit:790,emissions:2.9}
+};
+const price=document.getElementById('price'), area=document.getElementById('area'), system=document.getElementById('system');
+const fmtUSD=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+const fmtINR=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
+let fx={rate:95.91,source:'fallback',updated:'fallback reference'};
 
-const formatUSD=new Intl.NumberFormat('en-US',{
-  style:'currency',
-  currency:'USD',
-  maximumFractionDigits:0
-});
-const formatINR=new Intl.NumberFormat('en-IN',{
-  style:'currency',
-  currency:'INR',
-  maximumFractionDigits:0
-});
-
-let livePrice={usd:24.0,source:'manual fallback',label:'indicative'};
-let liveFx={rate:83.5,source:'static fallback'};
-
-async function fetchLiveCarbonPrice(){
+async function fetchFx(){
   try{
-    const res=await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=toucan-protocol-base-carbon-tonne&vs_currencies=usd,inr'
-    );
-    if(!res.ok) throw new Error('price fetch failed');
-    const data=await res.json();
-    const usd=data['toucan-protocol-base-carbon-tonne']?.usd;
+    const r=await fetch('https://open.er-api.com/v6/latest/USD');
+    if(!r.ok) throw new Error('FX request failed');
+    const d=await r.json(), rate=Number(d?.rates?.INR);
+    if(!Number.isFinite(rate)||rate<=0) throw new Error('Invalid FX');
+    fx={rate,source:'open.er-api.com',updated:d?.time_last_update_utc||'API update time unavailable'};
+  }catch(e){}
+}
 
-    if(typeof usd==='number' && usd>0){
-      livePrice={
-        usd,
-        source:'CoinGecko (Toucan BCT, live)',
-        label:'live tokenized-credit proxy — not a rice-project price'
-      };
-      return;
-    }
-    throw new Error('unexpected response shape');
-  }catch(e){
-    livePrice={
-      usd:24.0,
-      source:'manual fallback (live fetch failed)',
-      label:'indicative'
-    };
+function update(){
+  const d=DATA[system.value], a=Number(area.value), p=Number(price.value);
+  const baseline=DATA.baseline.emissions;
+  const abatement=Math.max(0,baseline-d.emissions);
+  const carbonPerHa=abatement*p;
+  const farmCarbon=carbonPerHa*a;
+  const farmProfit=d.profit*a;
+  document.getElementById('val-area').textContent=a.toLocaleString()+' ha';
+  document.getElementById('val-price').textContent='$'+p.toFixed(0);
+  document.getElementById('val-scenario').textContent='USD '+p.toFixed(0)+'/t';
+  document.getElementById('cost-usd').textContent=fmtUSD.format(d.cost);
+  document.getElementById('gross-usd').textContent=fmtUSD.format(d.gross);
+  document.getElementById('profit-usd').textContent=fmtUSD.format(d.profit);
+  document.getElementById('emissions').textContent=d.emissions.toFixed(1)+' tCO2e';
+  document.getElementById('abatement').textContent=abatement.toFixed(1)+' tCO2e/ha vs baseline';
+  document.getElementById('carbon-usd').textContent=fmtUSD.format(carbonPerHa);
+  document.getElementById('carbon-inr').textContent=fmtINR.format(carbonPerHa*fx.rate);
+  document.getElementById('carbon-per-ha').textContent='per hectare at USD '+p+'/tCO2e';
+  document.getElementById('farm-carbon-usd').textContent=fmtUSD.format(farmCarbon);
+  document.getElementById('farm-carbon-inr').textContent=fmtINR.format(farmCarbon*fx.rate);
+  document.getElementById('farm-profit-usd').textContent=fmtUSD.format(farmProfit);
+  document.getElementById('farm-profit-inr').textContent=fmtINR.format(farmProfit*fx.rate);
+  for(const id of ['cost','gross','profit']){
+    document.getElementById(id+'-inr').textContent=fmtINR.format(d[id]*fx.rate);
   }
+  document.getElementById('fx-note').textContent='Live FX: 1 USD ≈ ₹'+fx.rate.toFixed(2)+' • Source: '+fx.source+' • Updated: '+fx.updated+'. INR values fluctuate with the exchange rate.';
 }
-
-async function fetchLiveFxRate(){
-  try{
-    const res=await fetch('https://open.er-api.com/v6/latest/USD');
-    if(!res.ok) throw new Error('fx fetch failed');
-    const data=await res.json();
-    const rate=data?.rates?.INR;
-
-    if(typeof rate==='number' && rate>0){
-      liveFx={rate,source:'open.er-api.com (live)'};
-      return;
-    }
-    throw new Error('unexpected response shape');
-  }catch(e){
-    liveFx={rate:83.5,source:'static fallback (live fetch failed)'};
-  }
-}
-
-function updateEconomicsCalculator(){
-  const acres=parseInt(sliderAcres.value);
-  const abatement=parseFloat(sliderAbatement.value);
-  const priceUSD=parseFloat(sliderPrice.value);
-  const share=parseInt(sliderShare.value);
-  const fx=liveFx.rate;
-
-  document.getElementById('val-acres').textContent=
-    acres.toLocaleString()+' Acres';
-  document.getElementById('val-abatement').textContent=
-    abatement.toFixed(1)+' tCO2e';
-  document.getElementById('val-price').textContent=
-    '$'+priceUSD.toFixed(2);
-  document.getElementById('val-share').textContent=
-    share+'%';
-
-  const totalCredits=acres*abatement;
-  const grossRevenueUSD=totalCredits*priceUSD;
-  const farmerRevenueUSD=grossRevenueUSD*(share/100);
-  const platformRevenueUSD=grossRevenueUSD-farmerRevenueUSD;
-
-  document.getElementById('res-credits').textContent=
-    totalCredits.toLocaleString('en-US')+' VCUs (est.)';
-
-  document.getElementById('res-gross-usd').textContent=
-    formatUSD.format(grossRevenueUSD);
-  document.getElementById('res-gross-inr').textContent=
-    formatINR.format(grossRevenueUSD*fx);
-
-  document.getElementById('res-farmers-usd').textContent=
-    formatUSD.format(farmerRevenueUSD);
-  document.getElementById('res-farmers-inr').textContent=
-    formatINR.format(farmerRevenueUSD*fx);
-
-  document.getElementById('res-platform-usd').textContent=
-    formatUSD.format(platformRevenueUSD);
-  document.getElementById('res-platform-inr').textContent=
-    formatINR.format(platformRevenueUSD*fx);
-
-  document.getElementById('fx-rate-note').textContent=
-    'FX: 1 USD ≈ ₹'+liveFx.rate.toFixed(2)+
-    ' ('+liveFx.source+'). Price: '+livePrice.source+'.';
-}
-
-[sliderAcres,sliderAbatement,sliderPrice,sliderShare]
-  .forEach(s=>s.addEventListener('input',updateEconomicsCalculator));
-
-document.getElementById('btn-use-live-price').addEventListener('click',()=>{
-  sliderPrice.value=livePrice.usd.toFixed(2);
-  updateEconomicsCalculator();
-});
-
+[price,area,system].forEach(x=>x.addEventListener('input',update));
+system.addEventListener('change',update);
+document.getElementById('live-price').addEventListener('click',async()=>{await fetchFx();update();});
 (async function boot(){
-  await Promise.all([fetchLiveCarbonPrice(),fetchLiveFxRate()]);
-  sliderPrice.value=livePrice.usd.toFixed(2);
-  updateEconomicsCalculator();
-
-  setInterval(async()=>{
-    await Promise.all([fetchLiveCarbonPrice(),fetchLiveFxRate()]);
-    updateEconomicsCalculator();
-  },120000);
+  await fetchFx(); update();
+  setInterval(async()=>{await fetchFx();update();},300000);
 })();
 </script>
 </body>
 </html>"""
-    components.html(html, height=570, scrolling=False)
+    components.html(html, height=700, scrolling=False)
 
 def render_policy():
     st.markdown('<div class="section-kicker">INDIA ENABLEMENT</div>', unsafe_allow_html=True)
