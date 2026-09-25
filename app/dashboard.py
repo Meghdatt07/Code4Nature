@@ -530,14 +530,12 @@ def render_farm_simulator():
             unsafe_allow_html=True,
         )
 
-        r1, r2, r3 = st.columns(3)
+        r1, r2 = st.columns(2)
         r1.metric("Estimated credits / season", f"{result['annual_credits']:,.2f} tCO2e")
-        r2.metric("5-year credits potentially forgone", f"{result['past_credits']:,.2f} tCO2e")
-        r3.metric("Next 5-year potential credits", f"{result['future_credits']:,.2f} tCO2e")
+        r2.metric("Next 5-year potential credits", f"{result['future_credits']:,.2f} tCO2e")
 
-        v1, v2 = st.columns(2)
-        v1.metric("Estimated value potentially forgone", f"USD {result['past_value']:,.0f}")
-        v2.metric("Potential value over next 5 years", f"USD {result['future_value']:,.0f}")
+        v1 = st.columns(1)[0]
+        v1.metric("Potential value over next 5 years", f"USD {result['future_value']:,.0f}")
 
         chart = pd.DataFrame(
             {
