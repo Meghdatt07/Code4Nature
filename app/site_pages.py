@@ -1,6 +1,6 @@
 import re
-import requests
 import streamlit as st
+import streamlit.components.v1 as components
 
 from app.dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
 
@@ -221,97 +221,206 @@ def contact():
         "Tell us who you are, what you want to contribute and how we can work together."
     )
 
-    partner_types = [
-        "Farmers",
-        "FPOs",
-        "Research teams",
-        "Carbon-market organisations",
-        "Technology partners",
-        "Other",
-    ]
-    partner_type = st.selectbox("I am interested in partnering as", partner_types)
+    # Submit from the visitor's browser to FormSubmit's AJAX endpoint.
+    # This avoids the Streamlit server acting as a bot-like relay and keeps
+    # the recipient address out of the visible success message.
+    partner_form_html = """
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        background: transparent;
+        color: #edf7f2;
+      }
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 8px 0 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .field { margin-bottom: 14px; }
+      .full { grid-column: 1 / -1; }
+      label {
+        display: block;
+        margin: 0 0 7px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #b9cec3;
+      }
+      input, select, textarea {
+        width: 100%;
+        border: 1px solid #29483c;
+        border-radius: 10px;
+        padding: 12px 13px;
+        background: #0d1d18;
+        color: #edf7f2;
+        font: inherit;
+        outline: none;
+      }
+      input:focus, select:focus, textarea:focus {
+        border-color: #7ee2b1;
+        box-shadow: 0 0 0 2px rgba(126,226,177,.12);
+      }
+      textarea { min-height: 150px; resize: vertical; }
+      .other { display: none; }
+      button {
+        border: 0;
+        border-radius: 11px;
+        padding: 12px 18px;
+        background: #7ee2b1;
+        color: #07120f;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      button:disabled { opacity: .65; cursor: wait; }
+      .status {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        display: none;
+        line-height: 1.5;
+        font-size: 14px;
+      }
+      .success { display: block; background: rgba(72,227,154,.10); border: 1px solid rgba(72,227,154,.28); color: #bdf4d8; }
+      .error { display: block; background: rgba(240,90,90,.10); border: 1px solid rgba(240,90,90,.30); color: #ffd0d0; }
+      @media(max-width: 700px) {
+        .grid { grid-template-columns: 1fr; }
+        .full { grid-column: auto; }
+      }
+    </style>
 
-    other_type = ""
-    if partner_type == "Other":
-        other_type = st.text_input(
-            "Please define your partner type",
-            placeholder="e.g. NGO, investor, government body, agribusiness",
-        )
+    <div class="wrap">
+      <form id="partner-form">
+        <div class="grid">
+          <div class="field">
+            <label for="name">Name *</label>
+            <input id="name" name="name" required placeholder="Your name">
+          </div>
 
-    with st.form("partner_form"):
-        name = st.text_input("Name *")
-        organisation = st.text_input("Organisation / Farm / Institution")
-        email = st.text_input("Email *")
-        phone = st.text_input("Phone / WhatsApp")
-        message = st.text_area(
-            "Tell us about the partnership *",
-            placeholder="What do you want to collaborate on, and how can we work together?",
-            height=150,
-        )
+          <div class="field">
+            <label for="email">Email *</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com">
+          </div>
 
-        submitted = st.form_submit_button("Send partnership request")
+          <div class="field">
+            <label for="partner_type">I am interested in partnering as *</label>
+            <select id="partner_type" name="partner_type" required>
+              <option value="Farmers">Farmers</option>
+              <option value="FPOs">FPOs</option>
+              <option value="Research teams">Research teams</option>
+              <option value="Carbon-market organisations">Carbon-market organisations</option>
+              <option value="Technology partners">Technology partners</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-    if submitted:
-        if not name.strip() or not email.strip() or not message.strip():
-            st.error("Please complete all required fields marked with *.")
-            return
+          <div class="field other" id="other-wrap">
+            <label for="other_type">Please define your partner type *</label>
+            <input id="other_type" name="other_type" placeholder="e.g. NGO, investor, government body">
+          </div>
 
-        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email.strip()):
-            st.error("Please enter a valid email address.")
-            return
+          <div class="field">
+            <label for="organisation">Organisation / Farm / Institution</label>
+            <input id="organisation" name="organisation" placeholder="Optional">
+          </div>
 
-        if partner_type == "Other" and not other_type.strip():
-            st.error("Please define your partner type.")
-            return
+          <div class="field">
+            <label for="phone">Phone / WhatsApp</label>
+            <input id="phone" name="phone" placeholder="Optional">
+          </div>
 
-        recipient = "meghdatt712@gmail.com"
-        selected_type = other_type.strip() if partner_type == "Other" else partner_type
+          <div class="field full">
+            <label for="message">Tell us about the partnership *</label>
+            <textarea id="message" name="message" required placeholder="What do you want to collaborate on, and how can we work together?"></textarea>
+          </div>
+        </div>
 
-        form_data = {
-            "name": name.strip(),
-            "organisation": organisation.strip(),
-            "email": email.strip(),
-            "phone": phone.strip(),
-            "partner_type": selected_type,
-            "message": message.strip(),
-            "_subject": f"New Code4Nature partnership request — {selected_type}",
-            "_captcha": "false",
-            "_template": "table",
+        <input type="hidden" name="_subject" value="New Code4Nature partnership request">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_replyto" id="_replyto">
+
+        <button id="submit-btn" type="submit">Send partnership request</button>
+        <div id="status" class="status"></div>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("partner-form");
+      const typeSelect = document.getElementById("partner_type");
+      const otherWrap = document.getElementById("other-wrap");
+      const otherInput = document.getElementById("other_type");
+      const emailInput = document.getElementById("email");
+      const replyTo = document.getElementById("_replyto");
+      const button = document.getElementById("submit-btn");
+      const status = document.getElementById("status");
+
+      function toggleOther() {
+        const isOther = typeSelect.value === "Other";
+        otherWrap.style.display = isOther ? "block" : "none";
+        otherInput.required = isOther;
+      }
+
+      typeSelect.addEventListener("change", toggleOther);
+      toggleOther();
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.className = "status";
+        status.textContent = "";
+        replyTo.value = emailInput.value.trim();
+        button.disabled = true;
+        button.textContent = "Sending...";
+
+        const data = Object.fromEntries(new FormData(form).entries());
+        if (data.partner_type === "Other") {
+          data.partner_type = data.other_type || "Other";
         }
+        delete data.other_type;
 
-        try:
-            # Use FormSubmit's JSON/AJAX endpoint. This is more reliable for
-            # Streamlit's server-side submission flow than the normal HTML redirect endpoint.
-            form_data["_replyto"] = email.strip()
-            response = requests.post(
-                f"https://formsubmit.co/ajax/{recipient}",
-                json=form_data,
-                headers={
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                timeout=20,
-            )
-            response.raise_for_status()
+        try {
+          const response = await fetch("https://formsubmit.co/ajax/meghdatt712@gmail.com", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
 
-            try:
-                result = response.json()
-            except ValueError:
-                result = {}
+          let result = {};
+          try {
+            result = await response.json();
+          } catch (_) {}
 
-            if result.get("success") is False:
-                raise RuntimeError(result.get("message", "FormSubmit rejected the request."))
+          if (!response.ok || result.success === false) {
+            throw new Error(result.message || ("Email service returned HTTP " + response.status));
+          }
 
-            st.success(
-                "Partnership request sent successfully to meghdatt712@gmail.com."
-            )
-            st.caption(
-                "If this is the first submission, FormSubmit may send an activation email to the recipient. "
-                "That address must be confirmed before FormSubmit forwards submissions to the mailbox."
-            )
-        except (requests.RequestException, RuntimeError) as exc:
-            st.error(
-                "The partnership request could not be delivered. "
-                "Please try again after checking that the FormSubmit activation email has been confirmed."
-            )
-            st.caption(f"Email delivery service response: {exc}")
+          status.className = "status success";
+          status.textContent = "Thanks! Your partnership request has been submitted.";
+          form.reset();
+          toggleOther();
+        } catch (error) {
+          status.className = "status error";
+          status.textContent = "We couldn't submit the request right now. Please try again in a moment.";
+          console.error("Partner form submission error:", error);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Send partnership request";
+        }
+      });
+    </script>
+    """
+
+    components.html(partner_form_html, height=610, scrolling=False)
+
+    st.markdown(
+        '<div class="footer-note">Your information is used only to respond to the partnership request.</div>',
+        unsafe_allow_html=True,
+    )
+
