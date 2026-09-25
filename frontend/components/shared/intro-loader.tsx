@@ -17,7 +17,7 @@ export function IntroLoader(){
 
   if(phase==='entered') return null
 
-  return <div className={`site-intro${phase==='entered'?' is-entered':''}`} data-phase={phase} aria-label="Asterisk Climos introduction">
+  return <div className="site-intro" data-phase={phase} aria-label="Asterisk Climos introduction">
     <div className="intro-loading-screen" aria-hidden={phase!=='loading'}>
       <div className="intro-loading-brand">CODE<span>4</span>NATURE</div>
       <div className="intro-scene-next">
