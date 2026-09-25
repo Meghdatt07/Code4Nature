@@ -66,13 +66,10 @@ def _logo_data():
         theme_type = "light"
 
     theme_dir = Path(__file__).resolve().parent / "assets"
-    prefix = "logo_dark" if theme_type == "dark" else "logo_light"
-    parts = []
-    for part in ("1", "2"):
-        part_path = theme_dir / f"{prefix}_{part}.txt"
-        parts.append(part_path.read_text(encoding="utf-8").strip())
-
-    return "data:image/webp;base64," + "".join(parts)
+    logo_path = theme_dir / ("logo_dark.svg" if theme_type == "dark" else "logo_light.svg")
+    svg = logo_path.read_text(encoding="utf-8")
+    encoded = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+    return "data:image/svg+xml;base64," + encoded
 
 def shell():
     inject_site_css()
