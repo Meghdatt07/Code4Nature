@@ -14,8 +14,8 @@ def inject_site_css():
 [data-testid="stHeader"]{background:rgba(7,18,15,.88)}
 [data-testid="stSidebar"]{background:#091713}
 .block-container{max-width:1400px!important;padding:1.25rem 3rem 4rem!important}
-.site-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:.5rem 0 1.15rem;margin-bottom:1.2rem}
-.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}.brand-logo{width:180px;height:58px;object-fit:contain;display:block;border-radius:10px}
+.site-head{display:flex;justify-content:space-between;align-items:center;min-height:112px;border-bottom:1px solid var(--line);padding:.35rem 0 .8rem;margin-bottom:1.2rem}
+.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}.brand-logo{width:96px;height:96px;object-fit:contain;object-position:center;display:block}
 .brand-mark{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#07120f;display:grid;place-items:center;font-weight:900}
 .brand small{display:block;color:#668276;font-size:.55rem;letter-spacing:.18em;font-weight:700;margin-top:.15rem}
 .status{font-size:.62rem;letter-spacing:.14em;color:#7d998c}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#48e39a;box-shadow:0 0 12px #48e39a;margin-right:.4rem}
@@ -41,7 +41,7 @@ def inject_site_css():
 .tile h3{margin:.75rem 0 .35rem;color:#edf7f2}.tile p{margin:0;color:#91aa9e;line-height:1.65;font-size:.88rem}
 .glass{background:rgba(13,29,24,.82);border:1px solid var(--line);border-radius:20px;padding:1.2rem}
 .footer-note{border-top:1px solid var(--line);padding-top:1.25rem;color:#789286;font-size:.72rem;line-height:1.6}
-@media(max-width:900px){.block-container{padding:1rem 1.2rem 3rem!important}.flow,.tiles,.tiles.four{grid-template-columns:1fr 1fr}.hero{padding:3rem 1.5rem}.hero h1{font-size:3.7rem}.band{margin:1rem -1.2rem;padding-left:1.2rem;padding-right:1.2rem}}
+@media(max-width:900px){.block-container{padding:1rem 1.2rem 3rem!important}.site-head{min-height:96px}.brand-logo{width:82px;height:82px}.flow,.tiles,.tiles.four{grid-template-columns:1fr 1fr}.hero{padding:3rem 1.5rem}.hero h1{font-size:3.7rem}.band{margin:1rem -1.2rem;padding-left:1.2rem;padding-right:1.2rem}}
 @media(max-width:560px){.flow,.tiles,.tiles.four{grid-template-columns:1fr}}
 
 /* Remove Streamlit's automatic heading/link anchor icon. Keep normal page/navigation links visible. */
