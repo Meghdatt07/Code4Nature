@@ -1,5 +1,16 @@
+import base64
 import time
+from pathlib import Path
+
 import streamlit as st
+
+ASSET_DIR = Path(__file__).resolve().parent.parent / "assets"
+
+def asset_data_uri(filename):
+    try:
+        return "data:image/gif;base64," + base64.b64encode((ASSET_DIR / filename).read_bytes()).decode("ascii")
+    except Exception:
+        return ""
 
 INTRO_STYLE = """
 <style>
@@ -186,6 +197,8 @@ def render_intro():
         return
 
     phase = st.session_state.get("c4n_intro_phase", "loading")
+    flooded_gif = asset_data_uri("flooded-rice-plant.gif")
+    awd_gif = asset_data_uri("awd-rice-plant.gif")
 
     if phase == "loading":
         st.markdown(INTRO_STYLE, unsafe_allow_html=True)
@@ -198,14 +211,14 @@ def render_intro():
                     <div class="c4n-intro-tag">FLOODED SOIL</div>
                     <div class="c4n-intro-water high"></div>
                     <div class="c4n-intro-soil"></div>
-                    <img class="c4n-plant-gif flooded" src="assets/flooded-rice-plant.gif" alt="" aria-hidden="true">
+                    <img class="c4n-plant-gif flooded" src="{flooded_gif}" alt="" aria-hidden="true">
                     <div class="c4n-intro-ch4">MORE CH₄ POTENTIAL</div>
                   </div>
                   <div class="c4n-intro-panel dry">
                     <div class="c4n-intro-tag">AWD / DRY-DOWN</div>
                     <div class="c4n-intro-water low"></div>
                     <div class="c4n-intro-soil"></div>
-                    <img class="c4n-plant-gif awd" src="assets/awd-rice-plant.gif" alt="" aria-hidden="true">
+                    <img class="c4n-plant-gif awd" src="{awd_gif}" alt="" aria-hidden="true">
                     <div class="c4n-intro-ch4">LOWER CH₄ POTENTIAL</div>
                   </div>
                 </div>
