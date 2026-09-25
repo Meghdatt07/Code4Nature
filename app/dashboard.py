@@ -2,6 +2,7 @@ import math
 from datetime import datetime, timedelta, timezone
 
 import folium
+import requests
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
@@ -492,11 +493,8 @@ def render_farm_simulator():
         # for the 5-year economic view.
         annual_credits = seasonal_credits
 
-        past_years = 5
         future_years = 5
-        past_credits = annual_credits * past_years
         future_credits = annual_credits * future_years
-        past_value = past_credits * carbon_price
         future_value = future_credits * carbon_price
 
         st.session_state["simple_farm_result"] = {
@@ -510,9 +508,7 @@ def render_farm_simulator():
             "market_source": source,
             "market_source_url": source_url,
             "annual_credits": annual_credits,
-            "past_credits": past_credits,
             "future_credits": future_credits,
-            "past_value": past_value,
             "future_value": future_value,
         }
 
@@ -534,16 +530,37 @@ def render_farm_simulator():
         r1.metric("Estimated credits / season", f"{result['annual_credits']:,.2f} tCO2e")
         r2.metric("Next 5-year potential credits", f"{result['future_credits']:,.2f} tCO2e")
 
-        v1 = st.columns(1)[0]
+        @st.cache_data(ttl=300, show_spinner=False)
+        def get_live_usd_inr():
+            fallback_rate = 95.91
+            try:
+                response = requests.get(
+                    "https://open.er-api.com/v6/latest/USD",
+                    timeout=5,
+                )
+                response.raise_for_status()
+                data = response.json()
+                rate = float(data["rates"]["INR"])
+                if rate <= 0:
+                    raise ValueError("Invalid USD/INR rate")
+                return rate, data.get("time_last_update_utc", "API update time unavailable"), "open.er-api.com"
+            except (requests.RequestException, KeyError, TypeError, ValueError):
+                return fallback_rate, "Fallback rate", "MSEI/RBI reference rate"
+
+        usd_inr, fx_updated_at, fx_source = get_live_usd_inr()
+        future_value_inr = result["future_value"] * usd_inr
+
+        v1, v2 = st.columns(2)
         v1.metric("Potential value over next 5 years", f"USD {result['future_value']:,.0f}")
+        v2.metric("Potential value over next 5 years", f"₹{future_value_inr:,.0f}")
+        st.caption(
+            f"Live FX: 1 USD = ₹{usd_inr:,.2f} • Source: {fx_source} • Updated: {fx_updated_at}. "
+            "INR value is the USD scenario converted at the latest available API rate."
+        )
 
         chart = pd.DataFrame(
             {
                 "Years": [1, 2, 3, 4, 5],
-                "Past opportunity forgone (USD)": [
-                    result["annual_credits"] * result["carbon_price"] * year
-                    for year in [1, 2, 3, 4, 5]
-                ],
                 "Future potential value (USD)": [
                     result["annual_credits"] * result["carbon_price"] * year
                     for year in [1, 2, 3, 4, 5]
@@ -563,14 +580,15 @@ def render_farm_simulator():
                 "**Digital MRV standard:** 120 kg CH4 abatement per hectare per rice season.",
                 "**CO2e conversion:** 120 kg CH4 × GWP100 28 ÷ 1000 = 3.36 tCO2e per hectare per season.",
                 "**10-hectare reference:** 10 ha × 3.36 = 33.60 tCO2e per season.",
-                "**5-year credits potentially forgone:** the same one-season-per-year scenario repeated for five years.",
+                "**5-year potential value:** five one-season-per-year opportunities using the current carbon-price reference.",
+                "**USD → INR conversion:** the displayed INR estimate uses the latest available USD/INR rate from the live exchange-rate API.",
                 "**Current rice-methane reference price:** midpoint of the currently reported USD 15–25/tCO2e rice methane credit range.",
             ]
             for line in details:
                 st.markdown(line)
             st.caption(
                 "The carbon price is a current market reference, not a guaranteed transaction price. "
-                "Historical values are not reconstructed from historical prices, and future values are not guaranteed."
+                "Future values are not guaranteed, and the INR figure changes as the USD/INR exchange rate changes."
             )
 
         st.success(
