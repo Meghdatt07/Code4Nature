@@ -1,24 +1,28 @@
 (function setupIntro(){
-  const intro=$("siteIntro");
-  if(!intro)return;
+  const intro=$("siteIntro"),hit=$("introEnter");
+  if(!intro||!hit)return;
   document.body.classList.add("intro-lock");
-  const finishLoading=()=>{
-    intro.dataset.phase="welcome";
-    intro.querySelector(".intro-welcome")?.setAttribute("aria-hidden","false");
-    const button=$("introEnter");
-    if(button) setTimeout(()=>button.focus(),120);
-  };
   const enterSite=()=>{
+    if(hit.disabled)return;
+    hit.disabled=true;
     intro.classList.add("is-entered");
     document.body.classList.remove("intro-lock");
-    setTimeout(()=>intro.remove(),850);
+    setTimeout(()=>intro.remove(),650);
   };
-  setTimeout(finishLoading,4000);
-  $("introEnter")?.addEventListener("click",enterSite);
-  $("introEnter")?.addEventListener("keydown",(event)=>{
-    if(event.key==="Enter"||event.key===" "){event.preventDefault();enterSite();}
+  setTimeout(()=>{
+    hit.disabled=false;
+    hit.tabIndex=0;
+    hit.classList.add("is-ready");
+  },4200);
+  hit.addEventListener("click",enterSite);
+  hit.addEventListener("keydown",(event)=>{
+    if((event.key==="Enter"||event.key===" ")&&!hit.disabled){
+      event.preventDefault();
+      enterSite();
+    }
   });
 })();
+
 
 function $(id){return document.getElementById(id)}
 function usd(v){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(v)}
