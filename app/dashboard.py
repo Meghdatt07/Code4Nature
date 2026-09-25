@@ -621,8 +621,6 @@ def render_market():
         '<p class="small-copy">This section is a market reference for the CarbonAWD rice-carbon model. The most relevant figure is the reported rice-methane credit range; the broader agriculture benchmark is kept as context. None of these numbers is a guaranteed selling price for our credits.</p>',
         unsafe_allow_html=True,
     )
-    if st.button("Refresh market feed"):
-        st.session_state["market_data"] = None
     market_data = st.session_state.get("market_data")
     if market_data is None:
         with st.spinner("Refreshing market feed..."):
