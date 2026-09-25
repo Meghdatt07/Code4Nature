@@ -2,6 +2,9 @@ import re
 import streamlit as st
 import streamlit.components.v1 as components
 
+from pathlib import Path
+import base64
+
 from app.dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
 
 def inject_site_css():
@@ -56,9 +59,28 @@ def inject_site_css():
 [data-testid="StyledLinkIconContainer"] { display:none !important; }
 </style>""", unsafe_allow_html=True)
 
+def _logo_data():
+    try:
+        theme_type = st.context.theme.type
+    except Exception:
+        theme_type = "light"
+
+    theme_dir = Path(__file__).resolve().parent / "assets"
+    prefix = "logo_dark" if theme_type == "dark" else "logo_light"
+    parts = []
+    for part in ("1", "2"):
+        part_path = theme_dir / f"{prefix}_{part}.txt"
+        parts.append(part_path.read_text(encoding="utf-8").strip())
+
+    return "data:image/webp;base64," + "".join(parts)
+
 def shell():
     inject_site_css()
-    st.markdown('<div class="site-head"><div class="brand"><div class="brand-mark">A</div><div>ASTERISK CLIMOS<small>CLIMATE INTELLIGENCE</small></div></div><div class="status"><span class="dot"></span>SYSTEM ONLINE</div></div>', unsafe_allow_html=True)
+    logo = _logo_data()
+    st.markdown(
+        f'<div class="site-head"><div class="brand"><img class="brand-logo" src="{logo}" alt="Asterisk Climos logo"></div><div class="status"><span class="dot"></span>SYSTEM ONLINE</div></div>',
+        unsafe_allow_html=True
+    )
 
 def frame(eyebrow,title,text):
     st.markdown(f'<section class="section"><div class="eyebrow">{eyebrow}</div><h2>{title}</h2><div class="section-copy">{text}</div></section>', unsafe_allow_html=True)
