@@ -3,7 +3,6 @@ from pathlib import Path
 
 import streamlit as st
 
-from app.intro import render_intro
 
 # Streamlit Cloud may execute this file with /app as the script path.
 # Add the repository root so the `app` package can always be imported reliably.
@@ -11,6 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from app.intro import render_intro
 from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology
 
 st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide", initial_sidebar_state="collapsed")
