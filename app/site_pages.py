@@ -15,7 +15,7 @@ def inject_site_css():
 [data-testid="stSidebar"]{background:#091713}
 .block-container{max-width:1400px!important;padding:1.25rem 3rem 4rem!important}
 .site-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:.5rem 0 1.15rem;margin-bottom:1.2rem}
-.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}
+.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}.brand-logo{width:180px;height:58px;object-fit:contain;display:block;border-radius:10px}
 .brand-mark{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#07120f;display:grid;place-items:center;font-weight:900}
 .brand small{display:block;color:#668276;font-size:.55rem;letter-spacing:.18em;font-weight:700;margin-top:.15rem}
 .status{font-size:.62rem;letter-spacing:.14em;color:#7d998c}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#48e39a;box-shadow:0 0 12px #48e39a;margin-right:.4rem}
