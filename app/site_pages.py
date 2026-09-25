@@ -1,3 +1,5 @@
+import re
+import requests
 import streamlit as st
 
 from app.dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
@@ -213,8 +215,86 @@ def insights():
 
 def contact():
     st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
-    frame("PARTNER WITH US","Build the evidence chain with us.","For farmers, FPOs, research teams, carbon-market organisations and technology partners.")
+    frame(
+        "PARTNER WITH US",
+        "Build the evidence chain with us.",
+        "Tell us who you are, what you want to contribute and how we can work together."
+    )
+
+    partner_types = [
+        "Farmers",
+        "FPOs",
+        "Research teams",
+        "Carbon-market organisations",
+        "Technology partners",
+        "Other",
+    ]
+    partner_type = st.selectbox("I am interested in partnering as", partner_types)
+
+    other_type = ""
+    if partner_type == "Other":
+        other_type = st.text_input(
+            "Please define your partner type",
+            placeholder="e.g. NGO, investor, government body, agribusiness",
+        )
+
     with st.form("partner_form"):
-        name=st.text_input("Name"); organisation=st.text_input("Organisation"); email=st.text_input("Email"); message=st.text_area("What are you building?")
-        if st.form_submit_button("Send partnership request"):
-            st.success("Demo request captured locally. Connect an email/CRM service before production use.")
+        name = st.text_input("Name *")
+        organisation = st.text_input("Organisation / Farm / Institution")
+        email = st.text_input("Email *")
+        phone = st.text_input("Phone / WhatsApp")
+        message = st.text_area(
+            "Tell us about the partnership *",
+            placeholder="What do you want to collaborate on, and how can we work together?",
+            height=150,
+        )
+
+        submitted = st.form_submit_button("Send partnership request")
+
+    if submitted:
+        if not name.strip() or not email.strip() or not message.strip():
+            st.error("Please complete all required fields marked with *.")
+            return
+
+        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email.strip()):
+            st.error("Please enter a valid email address.")
+            return
+
+        if partner_type == "Other" and not other_type.strip():
+            st.error("Please define your partner type.")
+            return
+
+        recipient = "meghdatt712@gmail.com"
+        selected_type = other_type.strip() if partner_type == "Other" else partner_type
+
+        form_data = {
+            "name": name.strip(),
+            "organisation": organisation.strip(),
+            "email": email.strip(),
+            "phone": phone.strip(),
+            "partner_type": selected_type,
+            "message": message.strip(),
+            "_subject": f"New Code4Nature partnership request — {selected_type}",
+            "_captcha": "false",
+            "_template": "table",
+        }
+
+        try:
+            response = requests.post(
+                f"https://formsubmit.co/{recipient}",
+                data=form_data,
+                timeout=15,
+            )
+            response.raise_for_status()
+            st.success(
+                "Partnership request sent successfully. We will review your message and get back to you."
+            )
+            st.caption(
+                "If this is the first submission through the email service, the mailbox may need to confirm the FormSubmit activation email once."
+            )
+        except requests.RequestException as exc:
+            st.error(
+                "We could not send the partnership request right now. "
+                "Please try again in a moment."
+            )
+            st.caption(f"Email delivery service error: {exc}")
