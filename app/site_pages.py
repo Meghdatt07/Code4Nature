@@ -210,8 +210,20 @@ def about():
 
 def insights():
     st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
-    frame("INSIGHTS","Field notes, methods and context.","Explore the science and implementation questions around rice methane, AWD, remote sensing, MRV and carbon economics.")
-    tiles([("01","Rice methane","Why prolonged flooding matters for methane formation."),("02","SAR evidence","How radar can support relative wetness monitoring."),("03","From methane to CO₂e","How a scenario becomes a transparent calculation.")])
+    frame("INSIGHTS / FIELD INTELLIGENCE","Rice, methane, water and the evidence in between.","The Insights archive is now based on the current rice-climate topics covered by our reference source, with concise summaries rather than copied article text.")
+    tiles([
+        ("01","One million carbon credits","Methane reduction, water savings and field-level climate intelligence."),
+        ("02","Water resilience","Why rice irrigation matters for India's 2026 water crisis."),
+        ("03","$9.5M Series A","Scaling climate-smart rice and water resilience across Asia."),
+        ("04","Sylvera rating","Remote sensing, field evidence and carbon-credit integrity."),
+        ("05","Traceable impact","Technology and evidence behind carbon-credit issuance."),
+        ("06","Beyond CO₂","Methane and other short-lived climate pollutants."),
+        ("07","ICVCM","Rice methane and Core Carbon Principles."),
+        ("08","ICAR-IARI research","Field sampling, laboratory measurement and satellite remote sensing."),
+        ("09","Alternate Wetting and Drying","Water management, methane reduction and farmer implementation.")
+    ], True)
+    st.markdown('<div class="band"><div class="eyebrow">THE EVIDENCE CHAIN</div><h2>From field practice → satellite → MRV → carbon value.</h2><div class="section-copy">AWD, farmer implementation, satellite and field evidence, methane measurement, digital monitoring and carbon-market integrity are connected parts of one system.</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer-note">Content is paraphrased from the current reference Insights archive. Use the original publisher for the full articles and source imagery.</div>', unsafe_allow_html=True)
 
 def contact():
     st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
