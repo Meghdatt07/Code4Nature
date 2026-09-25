@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 150" role="img" aria-label="Asterisk Climos">
+  <g transform="translate(12 12)" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58 16C82 33 91 54 87 77C69 67 55 46 58 16Z" fill="#ffffff" stroke="none"/>
+    <path d="M112 7C128 32 128 57 114 78C101 60 101 34 112 7Z" fill="#ffffff" stroke="none"/>
+    <path d="M156 25C162 52 153 75 132 88C129 66 138 43 156 25Z" fill="#ffffff" stroke="none"/>
+    <path d="M171 73C149 82 132 96 126 119C149 116 168 101 171 73Z" fill="#ffffff" stroke="none"/>
+    <path d="M143 124C119 114 97 115 77 129C95 143 121 143 143 124Z" fill="#ffffff" stroke="none"/>
+    <path d="M76 125C72 102 58 85 37 78C35 100 49 119 76 125Z" fill="#ffffff" stroke="none"/>
+    <path d="M43 74C61 57 65 38 58 16" />
+    <path d="M87 77L126 119M114 78L77 129M132 88L143 124M87 77L171 73M114 78L43 74" />
+    <circle cx="100" cy="82" r="8" fill="#ffffff" stroke="none"/>
+  </g>
+  <text x="205" y="74" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="48" font-weight="800" letter-spacing="2">ASTERISK</text>
+  <text x="207" y="119" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="500" letter-spacing="7">CLIMOS</text>
+</svg>
