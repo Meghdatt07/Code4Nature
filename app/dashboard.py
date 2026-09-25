@@ -716,7 +716,6 @@ button:hover{background:rgba(255,255,255,.09)}
         <input id="share" type="range" min="50" max="100" step="1" value="65">
       </div>
 
-      <button id="useMarket">Use current market proxy</button>
       <div class="fx">
         <div class="muted">Live USD → INR</div>
         <div id="fxText" style="font-weight:800;margin-top:4px">Loading live exchange rate…</div>
@@ -832,22 +831,6 @@ function update(){
 document.getElementById('refreshFx').addEventListener('click',async()=>{
   await fetchFx();
   update();
-});
-
-document.getElementById('useMarket').addEventListener('click',async()=>{
-  try{
-    const apiBase=window.CARBONAWD_API_BASE||'http://localhost:8000';
-    const r=await fetch(apiBase+'/api/market',{cache:'no-store'});
-    if(!r.ok) throw new Error('market feed unavailable');
-    const d=await r.json();
-    const market=Number(d?.global_agriculture_median_usd);
-    if(Number.isFinite(market)&&market>0){
-      price.value=Math.max(1,Math.min(150,market));
-      update();
-    }
-  }catch(e){
-    // Keep the manually selected price when the optional market feed is unavailable.
-  }
 });
 
 (async function boot(){
