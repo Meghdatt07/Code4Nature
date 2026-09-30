@@ -11,7 +11,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from app.intro import render_intro
-from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology
+from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
 
 st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide", initial_sidebar_state="collapsed")
 render_intro()
@@ -33,4 +33,11 @@ st.Page(insights,title="Insights",icon=":material/auto_stories:",url_path="insig
 st.Page(about,title="About",icon=":material/info:",url_path="about"),
 st.Page(contact,title="Partner with us",icon=":material/handshake:",url_path="partner-with-us"),
 ]
+
+# Give homepage buttons the actual Streamlit Page objects.
+set_page_routes({
+    "technology": pages[2],
+    "simulator": pages[3],
+})
+
 st.navigation(pages,position="top").run()
