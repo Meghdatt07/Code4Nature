@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import { ArrowRight, Download, Droplets, Factory, Info, Leaf, MapPinned, Satellite, ShieldCheck, Sparkles } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from 'recharts'
 
@@ -31,8 +32,8 @@ export default function Home(){
           <h1 className="mt-7 max-w-5xl text-balance text-5xl font-black leading-[.95] tracking-[-.05em] md:text-7xl">Make every rice field <span className="text-[#8bcfa6]">measurable.</span></h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-[#9ab3a8]">Connect water management, methane modelling, field evidence and carbon economics in one transparent climate workflow.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#simulator" className="inline-flex items-center gap-2 rounded-xl bg-[#8bcfa6] px-5 py-3.5 font-bold text-[#07120f]">Explore a field <ArrowRight size={17}/></a>
-            <a href="#how-it-works" className="inline-flex items-center gap-2 rounded-xl border border-[#355e4d] px-5 py-3.5 font-semibold text-[#d9e9e1]">How it works</a>
+            <Link href="/simulator" className="inline-flex items-center gap-2 rounded-xl bg-[#8bcfa6] px-5 py-3.5 font-bold text-[#07120f]">Run simulator <ArrowRight size={17}/></Link>
+            <Link href="/technology" className="inline-flex items-center gap-2 rounded-xl border border-[#355e4d] px-5 py-3.5 font-semibold text-[#d9e9e1]">Explore technology <ArrowRight size={17}/></Link>
           </div>
           <div className="mt-11 grid max-w-2xl grid-cols-3 divide-x divide-[#244137] rounded-2xl border border-[#244137] bg-[#0a1813]/80">
             <HeroMetric label="Water" value={water+'%'} note="illustrative saving"/>
