@@ -3,7 +3,7 @@ from pathlib import Path
 import streamlit as st
 
 from app.intro import render_intro
-from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology
+from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -103,6 +103,8 @@ page_lookup = {
     "About": pages[8],
     "Partner with us": pages[9],
 }
+
+set_page_routes({"technology": pages[2], "simulator": pages[3]})
 
 if selected_page is not None:
     st.switch_page(page_lookup[selected_page])
