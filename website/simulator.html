@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CarbonAWD | Farm Simulator</title>
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<nav class="nav"><div class="container nav-in">
+<a class="brand" href="index.html">CARBON<span>AWD</span></a>
+<div class="nav-links">
+<a href="index.html">Home</a><a href="simulator.html">Simulator</a><a href="technology.html">Technology</a>
+</div>
+</div></nav>
+<header class="hero"><div class="container hero-grid"><section>
+<span class="pill">FARM SIMULATOR</span>
+<h1>Run your rice field <span class="gradient">scenario.</span></h1>
+<p class="lead">Define your farm, adjust water management and carbon assumptions, and see the illustrative methane and carbon-credit outcomes.</p>
+<div class="actions"><a class="btn" href="index.html">← Back home</a><a class="btn primary" href="technology.html">Explore technology →</a></div>
+</section>
+<section class="glass flow">
+<div class="small">Simulation workflow</div>
+<div class="flow-item"><b>01</b><div><strong>Define field</strong><div class="small">Enter area and farm location</div></div></div>
+<div class="flow-item"><b>02</b><div><strong>Set practice</strong><div class="small">Adjust methane-abatement assumptions</div></div></div>
+<div class="flow-item"><b>03</b><div><strong>Estimate value</strong><div class="small">Convert CO₂e to illustrative value</div></div></div>
+</section></div></header>
+<section class="section alt"><div class="container">
+<div class="section-head"><span class="pill">INPUTS</span><h2>Your farm scenario</h2><p>These are illustrative calculations, not certified carbon-credit measurements.</p></div>
+<div class="calc-layout">
+<div class="glass side">
+<div class="range-row"><div><span>Farm area</span><b id="areaLabel">10.0 ha</b></div><input id="areaRange" type="range" min=".5" max="50" step=".1" value="10"></div>
+<div class="range-row"><div><span>CH₄ reduction / ha / season</span><b id="abatementLabel">120 kg</b></div><input id="abatement" type="range" min="60" max="200" step="5" value="120"></div>
+<div class="range-row"><div><span>Farmer/FPO share</span><b id="shareLabel">65%</b></div><input id="share" type="range" min="50" max="100" value="65"></div>
+</div>
+<div class="glass side"><div class="results">
+<div class="result"><span>Methane reduced</span><b id="ch4Out">—</b></div>
+<div class="result"><span>Potential credits</span><b id="creditOut">—</b></div>
+<div class="result"><span>Gross value</span><b id="grossOut">—</b><small id="grossInr">₹—</small></div>
+<div class="result em"><span>Farmer / FPO</span><b id="farmerOut">—</b><small id="farmerInr">₹—</small></div>
+<div class="result blue"><span>MRV / Company</span><b id="companyOut">—</b><small id="companyInr">₹—</small></div>
+<div class="result"><span>Price used</span><b>$15/tCO₂e</b></div>
+</div>
+<div class="formula">methane = area × abatement<br>CO₂e = methane × 28 / 1000<br>credits = CO₂e tonnes<br>gross = credits × $15<br>farmer = gross × share<br>company = gross − farmer</div></div>
+</div></div></section>
+<footer class="footer"><div class="container">CarbonAWD • Code4Nature 2026 prototype</div></footer>
+<script>
+const $=id=>document.getElementById(id);
+function usd(v){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(v)}
+function inr(v){return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(v)}
+function calc(){
+ const a=Number($("areaRange").value),r=Number($("abatement").value),s=Number($("share").value)/100,p=15,fx=88;
+ const ch4=a*r,credits=ch4*28/1000,gross=credits*p,f=gross*s,c=gross-f;
+ $("areaLabel").textContent=a.toFixed(1)+" ha";$("abatementLabel").textContent=r.toFixed(0)+" kg";$("shareLabel").textContent=Math.round(s*100)+"%";
+ $("ch4Out").textContent=ch4.toLocaleString()+" kg";$("creditOut").textContent=credits.toFixed(2)+" tCO₂e";
+ $("grossOut").textContent=usd(gross);$("grossInr").textContent=inr(gross*fx);
+ $("farmerOut").textContent=usd(f);$("farmerInr").textContent=inr(f*fx);
+ $("companyOut").textContent=usd(c);$("companyInr").textContent=inr(c*fx);
+}
+["areaRange","abatement","share"].forEach(id=>$(id).addEventListener("input",calc));calc();
+</script>
+</body></html>
