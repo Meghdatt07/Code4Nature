@@ -35,6 +35,43 @@ def inject_site_css():
 .hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
 .a-btn{display:inline-block;padding:.8rem 1.1rem;border-radius:12px;text-decoration:none;font-weight:800;font-size:.82rem}
 .a-btn.primary{background:var(--accent);color:#07120f}.a-btn.secondary{border:1px solid #315949;color:#e8f2ed}
+.home-action-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+div.st-key-home_run_sim button,
+div.st-key-home_explore_tech button{
+  border-radius:12px!important;
+  padding:.8rem 1.1rem!important;
+  min-height:0!important;
+  height:auto!important;
+  font-size:.82rem!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  text-decoration:none!important;
+  box-shadow:none!important;
+}
+div.st-key-home_run_sim button{
+  background:var(--accent)!important;
+  border:1px solid var(--accent)!important;
+  color:#07120f!important;
+}
+div.st-key-home_run_sim button:hover{
+  background:#8de8bd!important;
+  border-color:#8de8bd!important;
+}
+div.st-key-home_explore_tech button{
+  background:transparent!important;
+  border:1px solid #315949!important;
+  color:#e8f2ed!important;
+}
+div.st-key-home_explore_tech button:hover{
+  background:rgba(126,226,177,.06)!important;
+  border-color:#4d7b68!important;
+}
+div.st-key-home_run_sim button p,
+div.st-key-home_explore_tech button p{
+  margin:0!important;
+  text-decoration:none!important;
+}
+
 .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:1rem}
 .card,.metric-card{background:rgba(255,255,255,.035);border:1px solid rgba(126,226,177,.12);border-radius:18px;padding:1.15rem;min-height:150px}
 .card b,.metric-card b{font-size:1.05rem}.num{color:var(--accent);font-size:.72rem;font-weight:900;letter-spacing:.15em}
@@ -109,9 +146,11 @@ def home():
     </section>''', unsafe_allow_html=True)
     link_cols = st.columns([1.15, 1.1, 5.75])
     with link_cols[0]:
-        st.page_link(_PAGE_ROUTES["simulator"], label="Run Farm Simulation →", use_container_width=False)
+        if st.button("Run Farm Simulation →", key="home_run_sim", type="primary"):
+            st.switch_page(_PAGE_ROUTES["simulator"])
     with link_cols[1]:
-        st.page_link(_PAGE_ROUTES["technology"], label="Explore Technology", use_container_width=False)
+        if st.button("Explore Technology", key="home_explore_tech", type="secondary"):
+            st.switch_page(_PAGE_ROUTES["technology"])
     cols=st.columns(4)
     flow=[("01","Farm data","Field boundary and water observations"),("02","Satellite","SAR wetness evidence"),("03","MRV","Methane → CO₂e scenario"),("04","Value","Farmer/FPO + company economics")]
     for col,(n,t,b) in zip(cols,flow):
