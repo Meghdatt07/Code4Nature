@@ -7,6 +7,14 @@ import base64
 
 from app.dashboard import init_state, render_economics, render_market, render_mrv, render_policy, render_farm_simulator
 
+# Native Streamlit page objects used by homepage page links.
+_PAGE_ROUTES = {}
+
+def set_page_routes(routes):
+    global _PAGE_ROUTES
+    _PAGE_ROUTES = routes
+
+
 def inject_site_css():
     st.markdown("""<style>
 :root{--bg:#07120f;--panel:#0d1d18;--line:#244137;--text:#edf7f2;--muted:#9ab3a8;--accent:#7ee2b1;--water:#66b7d7}
@@ -97,8 +105,13 @@ def home():
       <div class="eyebrow">CODE4NATURE / RICE CLIMATE INTELLIGENCE</div>
       <h1>Measure. Optimize.<br><span>Reduce. Value.</span></h1>
       <p>Transform rice-field water management into measurable climate impact through field data, transparent modelling and carbon-economics simulation.</p>
-      <div class="hero-actions"><a class="a-btn primary" href="/simulator">Run Farm Simulation →</a><a class="a-btn secondary" href="/technology">Explore Technology</a></div>
+      <div class="hero-actions"></div>
     </section>''', unsafe_allow_html=True)
+    link_cols = st.columns([1.15, 1.1, 5.75])
+    with link_cols[0]:
+        st.page_link(_PAGE_ROUTES["simulator"], label="Run Farm Simulation →", use_container_width=False)
+    with link_cols[1]:
+        st.page_link(_PAGE_ROUTES["technology"], label="Explore Technology", use_container_width=False)
     cols=st.columns(4)
     flow=[("01","Farm data","Field boundary and water observations"),("02","Satellite","SAR wetness evidence"),("03","MRV","Methane → CO₂e scenario"),("04","Value","Farmer/FPO + company economics")]
     for col,(n,t,b) in zip(cols,flow):
