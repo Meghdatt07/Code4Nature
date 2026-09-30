@@ -2,8 +2,12 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Activity, ArrowRight, Check, Info, Leaf, MapPinned, Satellite, ShieldCheck } from 'lucide-react';
-import { FarmMap } from '@/components/farm-map/farm-map';
+const FarmMap = dynamic(
+  () => import('@/components/farm-map/farm-map-client'),
+  { ssr: false, loading: () => <div className="grid h-[520px] place-items-center rounded-2xl bg-[#0b2119] text-sm text-[#8fa79c]">Loading interactive farm map…</div> }
+);
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DataBadge } from '@/components/shared/data-badge';
