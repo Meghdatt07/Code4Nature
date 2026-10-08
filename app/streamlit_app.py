@@ -11,6 +11,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
+from app.ui_theme import inject_ui_theme
 
 st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide", initial_sidebar_state="collapsed")
 
@@ -41,3 +42,7 @@ set_page_routes({
 })
 
 st.navigation(pages,position="top").run()
+
+# Apply the final visual layer after the page renders so it can restyle
+# every existing page component without changing page content or logic.
+inject_ui_theme()
