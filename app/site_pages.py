@@ -508,7 +508,7 @@ def simulator():
     render_farm_simulator()
 
 def carbon():
-    st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell(); init_state()
+    shell(); init_state()
     frame("CARBON ECONOMICS","See the economics behind the scenario.","Change the area, abatement, carbon price and farmer/FPO share to inspect illustrative USD and INR outcomes.")
     render_market(); render_economics()
 
