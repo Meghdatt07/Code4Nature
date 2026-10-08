@@ -306,6 +306,110 @@ def tiles(items, four=False):
     html+='</div>'
     st.markdown(html,unsafe_allow_html=True)
 
+
+def home():
+    shell(); init_state()
+    cells = "".join("<i></i>" for _ in range(35))
+    st.markdown(f"""
+    <div class="c4n-experience">
+      <section class="c4n-hero">
+        <svg class="hero-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c4sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0c2a20"/><stop offset="58%" stop-color="#214f38"/><stop offset="100%" stop-color="#0a2117"/></linearGradient>
+            <linearGradient id="c4field" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#4d835b"/><stop offset="48%" stop-color="#244f36"/><stop offset="100%" stop-color="#0e2a1c"/></linearGradient>
+            <radialGradient id="c4sun"><stop offset="0%" stop-color="#f1e9bd" stop-opacity=".98"/><stop offset="32%" stop-color="#e7d98c" stop-opacity=".48"/><stop offset="100%" stop-color="#e7d98c" stop-opacity="0"/></radialGradient>
+            <pattern id="c4rows" width="150" height="44" patternUnits="userSpaceOnUse" patternTransform="skewX(-22)">
+              <path d="M0 3 H150 M0 30 H150" stroke="#b6d29c" stroke-opacity=".18" stroke-width="2"/>
+              <path d="M20 0 V44 M86 0 V44" stroke="#b6d29c" stroke-opacity=".10"/>
+            </pattern>
+            <filter id="c4blur"><feGaussianBlur stdDeviation="30"/></filter>
+          </defs>
+          <rect width="1600" height="900" fill="url(#c4sky)"/>
+          <circle class="sun" cx="1180" cy="170" r="170" fill="url(#c4sun)"/>
+          <g class="wind" filter="url(#c4blur)" fill="none" stroke="#d3e5be" stroke-opacity=".16" stroke-width="5">
+            <path d="M110 470 C430 370 620 520 890 420 S1310 310 1550 430"/>
+            <path d="M40 530 C380 420 650 610 1010 480 S1390 410 1620 500"/>
+          </g>
+          <path d="M0 492 C260 420 540 470 770 400 C1040 319 1320 392 1600 310 V900 H0 Z" fill="url(#c4field)"/>
+          <path d="M0 520 C330 430 550 500 800 430 C1090 347 1380 415 1600 345 V900 H0 Z" fill="url(#c4rows)" opacity=".95"/>
+          <path d="M0 625 C260 548 530 610 800 545 C1040 484 1350 530 1600 462 V900 H0 Z" fill="url(#c4rows)" opacity=".55"/>
+          <g opacity=".28" stroke="#e6f0d8" stroke-width="2"><path d="M0 705 C290 610 520 735 820 650 S1330 600 1600 555"/><path d="M0 770 C300 680 560 790 850 725 S1320 690 1600 650"/></g>
+          <g class="grain"><circle cx="90" cy="160" r="2" fill="#fff"/><circle cx="270" cy="240" r="2" fill="#fff"/><circle cx="470" cy="130" r="2" fill="#fff"/><circle cx="740" cy="200" r="2" fill="#fff"/><circle cx="970" cy="100" r="2" fill="#fff"/><circle cx="1360" cy="250" r="2" fill="#fff"/></g>
+          <g class="scan"><rect x="-120" y="115" width="3" height="670" fill="#c5e8c8" opacity=".34"/></g>
+        </svg>
+        <div class="scene-glow"></div>
+        <div class="wrap">
+          <div class="hero-radar"></div>
+          <div class="hero-readout"><small>FIELD SIGNAL / PROTOTYPE</small><strong>31.8% wetness</strong><span>VV −17.60 dB · VH −23.80 dB</span></div>
+          <div class="c4n-scroll">Scroll to enter the field</div>
+          <div class="hero-copy">
+            <div class="micro"><span>ASTERISK CLIMOS / CODE4NATURE</span><span>RICE · WATER · CLIMATE INTELLIGENCE</span></div>
+            <h1>Every field<br><span>leaves a signal.</span></h1>
+            <p class="lede">We connect what happens in the rice field with what a satellite can see—and turn that evidence into a transparent climate-impact story.</p>
+            <div class="hero-pills"><span class="hero-pill">ALTERNATE WETTING & DRYING</span><span class="hero-pill">SENTINEL‑1 SAR</span><span class="hero-pill">DIGITAL MRV</span><span class="hero-pill">CARBON ECONOMICS</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="narrative"><div class="wrap"><div class="story-grid">
+        <div><div class="story-index">01 / THE FIELD</div><div class="story-title">Water changes<br>the story<br>beneath the crop.</div><div class="story-copy">Rice production depends on water, but prolonged flooding creates conditions that can increase methane emissions. Alternate Wetting and Drying introduces deliberate dry-down periods between irrigation events.</div></div>
+        <div class="orbit"><div class="orbit-core"></div><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="label l1">FLOODED</div><div class="label l2">DRYING</div><div class="label l3">REWETTING</div><div class="label l4">OBSERVATION</div></div>
+      </div></div></section>
+
+      <div class="signal-line"></div>
+
+      <section class="narrative olive"><div class="wrap"><div class="story-grid reverse">
+        <div class="tech-visual"><div class="tech-map">{cells}</div><div class="tech-scan"></div><div class="tech-pin"></div><div class="tech-label">SENTINEL‑1 / RELATIVE WETNESS PROXY</div></div>
+        <div><div class="story-index">02 / THE SIGNAL</div><div class="story-title">The field cannot always be visited.<br><em>So we observe from above.</em></div><div class="story-copy">Synthetic Aperture Radar (SAR) can repeatedly observe the land surface. In the prototype, Sentinel‑1 VV and VH backscatter are evidence inputs to a relative wetness layer—not a direct “moisture = −VV” conversion.</div>
+          <div class="tiles" style="grid-template-columns:1fr 1fr;margin-top:2rem"><div class="tile"><div class="num">VV</div><h3>−17.60 dB</h3><p>Example prototype signal.</p></div><div class="tile"><div class="num">VH</div><h3>−23.80 dB</h3><p>Example prototype signal.</p></div></div>
+        </div>
+      </div></div></section>
+
+      <section class="evidence-stage"><div class="wrap"><div class="stage-grid">
+        <div><div class="eyebrow">03 / DIGITAL MRV</div><div class="story-title">Evidence should be<br><span style="color:#91c9a0">traceable.</span></div><div class="story-copy" style="color:#a9bdb0">A digital MRV layer ties a field boundary, farmer observations, satellite signals, timestamps and assumptions together. The goal is not a black-box number—it is an inspectable evidence chain.</div>
+          <div class="data-rail"><div class="data-chip"><strong>FIELD</strong><small>Boundary + water observations</small></div><div class="data-chip"><strong>SAR</strong><small>VV + VH evidence</small></div><div class="data-chip"><strong>MODEL</strong><small>Methane → CO₂e scenario</small></div><div class="data-chip"><strong>MRV</strong><small>Provenance + verification path</small></div></div>
+        </div>
+        <div class="metric-cinema"><div class="eyebrow">FROM SIGNAL TO SCENARIO</div><div class="metric-big">31.8<span>%</span></div><p>Relative wetness in the prototype demonstration. It is an illustrative model input, not a direct field measurement or a carbon-credit verification result.</p><div class="data-rail"><div class="data-chip"><strong>WET</strong><small>Water regime state</small></div><div class="data-chip"><strong>AWD</strong><small>Practice context</small></div></div></div>
+      </div></div></section>
+
+      <section class="narrative"><div class="wrap"><div class="story-grid">
+        <div><div class="story-index">04 / THE SCIENCE</div><div class="story-title">Measure the gas.<br>Calibrate the model.<br><em>Then scale the signal.</em></div><div class="story-copy">Satellite observations and models can support monitoring at scale, while chambers and laboratory gas chromatography provide direct methane evidence for calibration and validation. Code4Nature keeps these layers conceptually distinct.</div></div>
+        <div><div class="tiles" style="grid-template-columns:1fr;margin-top:0"><div class="tile"><div class="num">01 / FIELD MEASUREMENT</div><h3>Chamber sampling</h3><p>Capture gas from a defined plot at controlled intervals.</p></div><div class="tile"><div class="num">02 / LAB</div><h3>Gas chromatography</h3><p>Quantify methane concentration in collected samples.</p></div><div class="tile"><div class="num">03 / DIGITAL</div><h3>Calibration + validation</h3><p>Use measured evidence to test and improve remote-sensing and model assumptions.</p></div></div></div>
+      </div></div></section>
+
+      <section class="c4n-values"><div class="wrap"><div class="value-grid">
+        <div><div class="story-index">05 / FROM IMPACT TO VALUE</div><div class="story-title">A climate outcome becomes useful when the economics are visible.</div><div class="story-copy">The platform can translate an illustrative methane-abatement scenario into CO₂e and carbon-value scenarios, while keeping farmer/FPO share and assumptions explicit.</div>
+          <div class="value-list"><div class="value-card"><strong>28×</strong><span>Global-warming-potential factor used in the prototype conversion.</span><small>Illustrative model assumption</small></div><div class="value-card"><strong>65%</strong><span>Example farmer/FPO share in the current economics prototype.</span><small>Configurable scenario</small></div></div>
+        </div>
+        <div class="value-card" style="padding:34px;background:#123124;border-color:rgba(145,201,160,.12)"><div class="num" style="color:#9bc7a5">CARBON ECONOMICS</div><strong style="font-size:clamp(3.2rem,7vw,7rem);color:#eff7ee">$15–20</strong><span style="color:#b5c6b9">Example carbon-price range used for project scenarios; market prices vary and actual credit value depends on methodology, verification and market conditions.</span><small style="color:#8fa699">Scenario range · USD / tCO₂e</small></div>
+      </div></div></section>
+
+      <section class="timeline"><div class="wrap"><div class="eyebrow">06 / ONE CONTINUOUS STORY</div><div class="story-title">From the paddy field<br>to measurable impact.</div>
+        <div class="timeline-list">
+          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">01 / PRACTICE</div><h3>AWD</h3><p>Controlled flooding and dry-down create the intervention context.</p></div>
+          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">02 / OBSERVE</div><h3>FIELD DATA</h3><p>Boundary, water level and crop-stage observations anchor the story.</p></div>
+          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">03 / SEE</div><h3>SAR</h3><p>VV/VH signals add repeatable Earth-observation evidence.</p></div>
+          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">04 / VERIFY</div><h3>MRV</h3><p>Measured and modelled evidence are connected with provenance.</p></div>
+          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">05 / VALUE</div><h3>CO₂e + CARBON</h3><p>Scenario outputs become transparent climate and economics indicators.</p></div>
+        </div>
+      </section>
+
+      <section class="final-cta"><div class="wrap" style="position:relative;z-index:2"><div class="eyebrow" style="color:#9bc7a5">CODE4NATURE / NEXT STEP</div><h2>Make the field<br><span>measurable.</span></h2><p>Explore a rice-field scenario, inspect the technology stack, or open the Digital MRV workflow.</p></div></section>
+    </div>
+    """, unsafe_allow_html=True)
+
+    cols = st.columns([1.1, 1.1, 1.1, 4.7])
+    with cols[0]:
+        if st.button("Start simulator →", key="home_start", type="primary"):
+            st.switch_page(_PAGE_ROUTES["simulator"])
+    with cols[1]:
+        if st.button("Technology", key="home_tech"):
+            st.switch_page(_PAGE_ROUTES["technology"])
+    with cols[2]:
+        if st.button("Digital MRV", key="home_mrv"):
+            st.switch_page(_PAGE_ROUTES.get("mrv", _PAGE_ROUTES["technology"]))
+    st.markdown('<div style="margin-top:1.5rem;padding:0 0 1rem;color:#6f7f76;font-size:.68rem;line-height:1.65">Prototype demonstration only. Water states, wetness values, methane reductions, CO₂e, carbon quantities, prices and financial outcomes are illustrative unless independently measured and verified.</div>', unsafe_allow_html=True)
+
 def climate_smart_rice():
     shell()
     frame("CLIMATE-SMART RICE","The farming practice is the climate intervention.","Alternate Wetting and Drying (AWD) introduces controlled dry-down periods between irrigations. The prototype focuses on making that field process observable and explainable.")
@@ -313,7 +417,7 @@ def climate_smart_rice():
     st.markdown('<div class="band"><div class="eyebrow">FARMER-FIRST</div><h2>Make the field measurable.</h2><div class="section-copy">Farmers supply the practice, FPOs help aggregate and coordinate, and the MRV layer organises evidence for the project team.</div></div>',unsafe_allow_html=True)
 
 def technology():
-    st.set_page_config(page_title="Technology | Asterisk Climos", layout="wide"); shell()
+    shell()
     frame("OUR TECHNOLOGY","Soil to sky. One evidence chain.","Field observations, satellite signals, methane measurement and transparent modelling are combined into one workflow for rice climate projects.")
     tiles([
         ("01","GROUND DATA","Water level, irrigation and crop-stage observations."),
@@ -517,7 +621,7 @@ def about():
     )
 
 def insights():
-    st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
+    shell()
     frame(
         "INSIGHTS / CLIMATE INTELLIGENCE",
         "Rice. Water. Methane. Earth observation.",
@@ -664,7 +768,7 @@ def insights():
     )
 
 def contact():
-    st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
+    shell()
     frame(
         "PARTNER WITH US",
         "Build the evidence chain with us.",
