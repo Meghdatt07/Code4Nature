@@ -137,32 +137,436 @@ def tiles(items, four=False):
 
 def home():
     st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide")
-    shell(); init_state()
-    st.markdown('''<section class="hero">
-      <div class="eyebrow">CODE4NATURE / RICE CLIMATE INTELLIGENCE</div>
-      <h1>Measure. Optimize.<br><span>Reduce. Value.</span></h1>
-      <p>Transform rice-field water management into measurable climate impact through field data, transparent modelling and carbon-economics simulation.</p>
-      <div class="hero-actions"></div>
-    </section>''', unsafe_allow_html=True)
-    link_cols = st.columns([1.15, 1.1, 5.75])
-    with link_cols[0]:
+
+    st.markdown("""
+    <style>
+      .cinematic-page{
+        position:relative;
+        min-height:calc(100vh - 90px);
+        margin:-1.1rem -3rem -4rem;
+        padding:1.6rem 3rem 3rem;
+        overflow:hidden;
+        background:#07120f;
+      }
+      .cinematic-bg{
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(90deg,rgba(3,12,9,.78) 0%,rgba(3,12,9,.44) 42%,rgba(3,12,9,.56) 100%),
+          linear-gradient(180deg,rgba(5,17,12,.20) 0%,rgba(5,17,12,.32) 100%),
+          url("https://images.unsplash.com/photo-1685023620455-574f7051ffb7?auto=format&fit=crop&fm=jpg&q=82&w=2400");
+        background-size:cover;
+        background-position:center 54%;
+        transform:scale(1.045);
+        animation:heroZoom 6s cubic-bezier(.22,.61,.36,1) forwards;
+      }
+      .cinematic-page:after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:radial-gradient(circle at 48% 34%,transparent 0%,rgba(0,0,0,.10) 42%,rgba(0,0,0,.42) 100%);
+        pointer-events:none;
+      }
+      .cinematic-frame{
+        position:relative;
+        z-index:2;
+        min-height:calc(100vh - 125px);
+        border:1px solid rgba(232,247,239,.45);
+        border-radius:24px;
+        overflow:hidden;
+        box-shadow:0 24px 80px rgba(0,0,0,.35);
+        animation:frameReveal 1.2s ease-out both;
+      }
+      .cinematic-frame:before,
+      .cinematic-frame:after{
+        content:"";
+        position:absolute;
+        pointer-events:none;
+      }
+      .cinematic-frame:before{
+        inset:0;
+        border-radius:24px;
+        border:1px solid rgba(255,255,255,.09);
+      }
+      .cinematic-frame:after{
+        width:160px;
+        height:1px;
+        right:30%;
+        top:-1px;
+        background:rgba(235,248,241,.42);
+        box-shadow:220px 0 0 rgba(235,248,241,.08),-220px 0 0 rgba(235,248,241,.08);
+      }
+      .cinematic-content{
+        min-height:calc(100vh - 125px);
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        padding:1.05rem 1.1rem 1.2rem;
+        color:#f2f8f4;
+      }
+      .cin-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:1rem;
+      }
+      .cin-brand{
+        display:flex;
+        align-items:center;
+        gap:.55rem;
+        font-size:.72rem;
+        font-weight:900;
+        letter-spacing:.09em;
+      }
+      .brand-dot{
+        width:9px;height:9px;border-radius:50%;
+        background:#f0b84a;
+        box-shadow:0 0 14px rgba(240,184,74,.48);
+      }
+      .cin-nav{
+        display:flex;
+        gap:1.2rem;
+        align-items:center;
+        font-size:.55rem;
+        letter-spacing:.07em;
+        color:rgba(236,248,241,.73);
+        text-transform:uppercase;
+      }
+      .cin-nav span{white-space:nowrap}
+      .cin-nav .active{color:#fff}
+      .cin-tag{
+        padding:.42rem .62rem;
+        border-radius:8px;
+        background:rgba(248,252,250,.92);
+        color:#102119;
+        font-size:.55rem;
+        font-weight:900;
+        letter-spacing:.03em;
+      }
+      .cin-main{
+        display:grid;
+        grid-template-columns:minmax(0,1.15fr) minmax(260px,.48fr);
+        align-items:end;
+        gap:2rem;
+        padding:2rem 1rem .8rem;
+      }
+      .cin-kicker{
+        font-size:.59rem;
+        letter-spacing:.18em;
+        color:rgba(241,250,245,.74);
+        text-transform:uppercase;
+        font-weight:900;
+        margin-bottom:1rem;
+      }
+      .cin-title{
+        margin:0;
+        max-width:820px;
+        font-size:clamp(3.9rem,7.8vw,8.5rem);
+        line-height:.84;
+        letter-spacing:-.065em;
+        font-weight:500;
+        color:#f5faf7;
+      }
+      .cin-title .soft{
+        color:rgba(237,247,242,.64);
+      }
+      .cin-title .accent{
+        color:#dff0e7;
+      }
+      .cin-copy{
+        max-width:570px;
+        margin:1.5rem 0 0;
+        color:rgba(238,248,243,.79);
+        font-size:.84rem;
+        line-height:1.7;
+      }
+      .cin-panel{
+        justify-self:end;
+        width:min(100%,300px);
+        padding:1rem;
+        border-radius:16px;
+        border:1px solid rgba(239,250,244,.22);
+        background:linear-gradient(145deg,rgba(10,22,17,.54),rgba(10,18,15,.32));
+        backdrop-filter:blur(16px);
+        -webkit-backdrop-filter:blur(16px);
+      }
+      .panel-top{
+        display:flex;
+        justify-content:space-between;
+        gap:1rem;
+        color:rgba(239,249,244,.62);
+        font-size:.52rem;
+        letter-spacing:.10em;
+        font-weight:900;
+      }
+      .panel-title{
+        margin:.9rem 0 .85rem;
+        font-size:1.0rem;
+        line-height:1.1;
+        color:#f4faf7;
+        font-weight:800;
+      }
+      .panel-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:.5rem;
+      }
+      .panel-metric{
+        padding:.7rem;
+        border-radius:10px;
+        background:rgba(255,255,255,.055);
+        border:1px solid rgba(255,255,255,.075);
+      }
+      .panel-metric .v{
+        color:#fff;
+        font-weight:900;
+        font-size:.94rem;
+      }
+      .panel-metric .l{
+        margin-top:.15rem;
+        color:rgba(231,243,237,.55);
+        font-size:.49rem;
+        letter-spacing:.09em;
+        text-transform:uppercase;
+      }
+      .panel-note{
+        margin-top:.65rem;
+        color:rgba(234,245,240,.56);
+        font-size:.52rem;
+        line-height:1.55;
+      }
+      .cin-bottom{
+        display:grid;
+        grid-template-columns:1fr auto;
+        gap:1rem;
+        align-items:end;
+        padding:0 1rem;
+      }
+      .cin-foot-copy{
+        max-width:490px;
+        color:rgba(236,247,241,.60);
+        font-size:.53rem;
+        line-height:1.55;
+      }
+      .cin-signal{
+        display:flex;
+        align-items:center;
+        gap:.55rem;
+        color:rgba(239,249,244,.70);
+        font-size:.53rem;
+        letter-spacing:.09em;
+        text-transform:uppercase;
+        white-space:nowrap;
+      }
+      .signal-line{
+        width:55px;
+        height:1px;
+        background:rgba(239,249,244,.44);
+      }
+      .measure-overlay{
+        position:absolute;
+        inset:0;
+        z-index:5;
+        pointer-events:none;
+        background:rgba(4,13,10,.62);
+        animation:overlayFade 5.7s ease forwards;
+      }
+      .measure-rule{
+        position:absolute;
+        left:3.5%;
+        right:3.5%;
+        bottom:7.4%;
+        height:1px;
+        background:linear-gradient(90deg,rgba(239,249,244,.0),rgba(239,249,244,.42),rgba(239,249,244,.0));
+      }
+      .measure-percent{
+        position:absolute;
+        left:3.5%;
+        bottom:9%;
+        font-size:clamp(3.5rem,8vw,8rem);
+        line-height:.8;
+        letter-spacing:-.065em;
+        color:rgba(243,250,246,.62);
+        font-weight:300;
+        min-width:230px;
+        height:1em;
+        overflow:hidden;
+      }
+      .measure-percent span{
+        position:absolute;
+        inset:0;
+        opacity:0;
+        animation:percentSwap 5.2s linear forwards;
+      }
+      .measure-percent span:nth-child(1){animation-delay:0s}
+      .measure-percent span:nth-child(2){animation-delay:1.1s}
+      .measure-percent span:nth-child(3){animation-delay:2.1s}
+      .measure-percent span:nth-child(4){animation-delay:3.1s}
+      .measure-percent span:nth-child(5){animation-delay:4.0s}
+      @keyframes heroZoom{to{transform:scale(1)}}
+      @keyframes frameReveal{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+      @keyframes overlayFade{
+        0%,78%{opacity:1}
+        100%{opacity:0}
+      }
+      @keyframes percentSwap{
+        0%,17%{opacity:1}
+        19%,100%{opacity:0}
+      }
+      .home-actions{
+        display:flex;
+        gap:.6rem;
+        flex-wrap:wrap;
+        position:relative;
+        z-index:7;
+        margin-top:1rem;
+      }
+      div.st-key-home_run_sim button,
+      div.st-key-home_explore_tech button{
+        border-radius:9px!important;
+        min-height:0!important;
+        height:auto!important;
+        padding:.62rem .9rem!important;
+        font-size:.68rem!important;
+        font-weight:800!important;
+        box-shadow:none!important;
+        backdrop-filter:blur(8px)!important;
+      }
+      div.st-key-home_run_sim button{
+        background:rgba(235,250,242,.92)!important;
+        border:1px solid rgba(255,255,255,.8)!important;
+        color:#12231b!important;
+      }
+      div.st-key-home_explore_tech button{
+        background:rgba(6,15,11,.38)!important;
+        border:1px solid rgba(239,249,244,.32)!important;
+        color:#edf8f2!important;
+      }
+      @media(max-width:900px){
+        .cinematic-page{margin:-1rem -1.2rem -3rem;padding:1rem 1.2rem 2rem;}
+        .cinematic-frame,.cinematic-content{min-height:calc(100vh - 100px);}
+        .cin-main{grid-template-columns:1fr;}
+        .cin-panel{justify-self:start;width:min(100%,360px);}
+        .cin-nav{gap:.6rem;}
+        .cin-nav span:nth-child(2),.cin-nav span:nth-child(3){display:none;}
+        .cin-title{font-size:4.15rem;}
+        .cin-bottom{grid-template-columns:1fr;}
+        .cin-signal{justify-self:start;}
+      }
+      @media(max-width:560px){
+        .cinematic-frame{border-radius:18px;}
+        .cin-nav{display:none;}
+        .cin-title{font-size:3.35rem;}
+        .cin-panel{width:100%;}
+        .measure-percent{font-size:4.6rem;}
+      }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="cinematic-page">
+      <div class="cinematic-bg"></div>
+
+      <div class="cinematic-frame">
+        <div class="measure-overlay">
+          <div class="measure-rule"></div>
+          <div class="measure-percent" aria-hidden="true">
+            <span>0%</span>
+            <span>31%</span>
+            <span>72%</span>
+            <span>97%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <div class="cinematic-content">
+          <div class="cin-top">
+            <div class="cin-brand">
+              <span class="brand-dot"></span>
+              <span>ASTERISK CLIMOS</span>
+            </div>
+            <div class="cin-nav">
+              <span class="active">Climate-smart rice</span>
+              <span>Technology</span>
+              <span>Digital MRV</span>
+              <span>Carbon economics</span>
+              <span class="cin-tag">Explore project</span>
+            </div>
+          </div>
+
+          <div class="cin-main">
+            <div>
+              <div class="cin-kicker">Code4Nature / Rice climate intelligence</div>
+              <h1 class="cin-title">
+                Every field.<br>
+                <span class="soft">Every cycle.</span><br>
+                <span class="accent">Measured.</span>
+              </h1>
+              <p class="cin-copy">
+                Connect rice-field water management with Earth observation, field evidence and
+                transparent climate modelling. Code4Nature makes the path from AWD practice
+                to measurable impact easier to inspect.
+              </p>
+            </div>
+
+            <div class="cin-panel">
+              <div class="panel-top">
+                <span>DEMO FIELD 047</span>
+                <span>AWD</span>
+              </div>
+              <div class="panel-title">Field intelligence</div>
+              <div class="panel-grid">
+                <div class="panel-metric">
+                  <div class="v">31.8%</div>
+                  <div class="l">Relative wetness</div>
+                </div>
+                <div class="panel-metric">
+                  <div class="v">−17.60</div>
+                  <div class="l">VV mean · dB</div>
+                </div>
+                <div class="panel-metric">
+                  <div class="v">−23.80</div>
+                  <div class="l">VH mean · dB</div>
+                </div>
+                <div class="panel-metric">
+                  <div class="v">SAR</div>
+                  <div class="l">Observation layer</div>
+                </div>
+              </div>
+              <div class="panel-note">
+                Demonstration values. Satellite signals support the evidence layer; they do not by themselves
+                represent measured methane emissions.
+              </div>
+            </div>
+          </div>
+
+          <div class="cin-bottom">
+            <div class="cin-foot-copy">
+              Water practice → satellite observation → MRV scenario → carbon economics.
+              A transparent workflow for climate-smart rice.
+            </div>
+            <div class="cin-signal">
+              <span class="signal-line"></span>
+              <span>FIELD SIGNAL / READY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="home-actions">', unsafe_allow_html=True)
+    action_cols = st.columns([1.05,1.15,7])
+    with action_cols[0]:
         if st.button("Run Farm Simulation →", key="home_run_sim", type="primary"):
             st.switch_page(_PAGE_ROUTES["simulator"])
-    with link_cols[1]:
+    with action_cols[1]:
         if st.button("Explore Technology", key="home_explore_tech", type="secondary"):
             st.switch_page(_PAGE_ROUTES["technology"])
-    cols=st.columns(4)
-    flow=[("01","Farm data","Field boundary and water observations"),("02","Satellite","SAR wetness evidence"),("03","MRV","Methane → CO₂e scenario"),("04","Value","Farmer/FPO + company economics")]
-    for col,(n,t,b) in zip(cols,flow):
-        with col: st.markdown(f'<div class="card"><div class="num">{n}</div><b>{t}</b><div class="muted" style="font-size:.8rem;margin-top:.4rem">{b}</div></div>',unsafe_allow_html=True)
-    frame("THE LOGIC","From water management to climate value","The prototype keeps the full pathway visible: practice → evidence → emissions scenario → carbon economics.")
-    tiles([("01","Climate-smart rice","Make controlled wetting and drying visible at field scale."),("02","Digital MRV","Connect ground observations, satellite evidence and transparent calculations."),("03","Carbon economics","Explore illustrative farmer/FPO and company value from the same scenario.")])
-    st.markdown('<div class="band"><div class="eyebrow">EVIDENCE STACK</div><h2>Ground truth → satellite → model → evidence.</h2><div class="section-copy">A carbon number is only useful when the assumptions and evidence pathway behind it remain inspectable.</div></div>',unsafe_allow_html=True)
-    frame("DISCOVER","One workflow, separate pages","Use the application navigation to open the simulator, MRV, research, policy and partner workflows.")
-    tiles([("01","Farm simulator","Move the farm and draw a boundary."),("02","Digital MRV","Inspect field and SAR evidence."),("03","Carbon economics","Change price, area and farmer share."),("04","Research","Read the scientific framing and limitations.")],True)
-    st.markdown('<div class="footer-note">Prototype demonstration only. Water savings, methane reductions, carbon quantities, prices and financial outcomes are illustrative unless independently measured and verified.</div>',unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def climate_smart_rice():
+
     st.set_page_config(page_title="Climate-smart Rice | Asterisk Climos", layout="wide"); shell()
     frame("CLIMATE-SMART RICE","The farming practice is the climate intervention.","Alternate Wetting and Drying (AWD) introduces controlled dry-down periods between irrigations. The prototype focuses on making that field process observable and explainable.")
     tiles([("01","WET","Flooded state and irrigation event."),("02","DRYING","Controlled drawdown toward the target threshold."),("03","REWET","Reflood when the field reaches the operating threshold.")])
