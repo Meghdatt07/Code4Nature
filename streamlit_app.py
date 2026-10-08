@@ -2,7 +2,6 @@ from pathlib import Path
 
 import streamlit as st
 
-from app.intro import render_intro
 from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
 
 
@@ -28,8 +27,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-render_intro()
-
 st.markdown("""<style>
 html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important;color:#edf7f2!important}
 [data-testid="stHeader"]{background:rgba(7,18,15,.88)!important}
