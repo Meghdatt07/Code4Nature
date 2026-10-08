@@ -375,64 +375,58 @@ def about():
 def insights():
     st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
     frame(
-        "INSIGHTS / FIELD INTELLIGENCE",
-        "Rice, methane, water and the evidence in between.",
-        "Explore the current rice-climate themes covered by the reference Insights archive, with source imagery and concise summaries."
+        "INSIGHTS / CLIMATE INTELLIGENCE",
+        "Rice. Water. Methane. Earth observation.",
+        "Research, field evidence and emerging technologies shaping climate-smart rice and digital MRV. These insights are sourced from scientific literature and public institutions rather than company marketing."
     )
 
     articles = [
-        ("01","Aug 5, 2026","Mitti Labs raises $9.5M to build water resilience in Asia's rice fields",
-         "Scaling climate-smart rice and water resilience across Asia.",
-         "https://framerusercontent.com/images/ox87vh4KJgar1GBdMbhHxGXpA.jpg?height=388&width=640",
-         "https://www.mittilabs.earth/insights/mitti-labs-raises-9.5m-to-build-water-resilience-in-asia-s-rice-ields"),
-        ("02","Jul 28, 2026","Sylvera issues an 'A' Rating for Mitti Labs' carbon credits based on rice methane",
-         "Remote sensing, field evidence and carbon-credit integrity.",
-         "https://framerusercontent.com/images/KBPj8j0Lffivecp1wu3rmMm3yrk.png?height=441&width=600",
-         "https://www.mittilabs.earth/insights/sylvera-rating"),
-        ("03","Jul 15, 2026","Leveraging technology for traceable impact: our first carbon credit issuance",
-         "Technology and evidence behind traceable carbon-credit issuance.",
-         "https://framerusercontent.com/images/gXpIvePI8FNZiKhtgNf4XGLE.png?height=662&width=1587",
-         "https://www.mittilabs.earth/insights/leveraging-technology-for-trackeable-impact"),
-        ("04","Jun 19, 2026","Beyond CO₂: Carbon Direct X Mitti Labs",
-         "Methane and other short-lived climate pollutants beyond CO₂.",
-         "https://framerusercontent.com/images/PHSFrlTkzH1j6EZRqevIza4z8A.png?height=904&width=2240",
-         "https://www.mittilabs.earth/insights/carbon-direct-x-mitti-labs-beyond-co2-webinar"),
-        ("05","May 18, 2026","The other half of global warming, and what we can do about it",
-         "Why methane matters in the wider climate-action picture.",
-         "https://framerusercontent.com/images/hOqc3RKzRg0p9V9a3aBKOSYI.png?height=910&width=2224",
-         "https://www.mittilabs.earth/insights/the-other-half-of-global-warming-%E2%80%94-and-what-we-can-do-about-it"),
-        ("06","May 13, 2026","Cool Effect and Mitti Labs: partnering on a world first",
-         "Superpollutant credits based on rice methane reduction.",
-         "https://framerusercontent.com/images/ULUMYH42UmrhRPAgrn4Dg6Gm4I.png?height=1080&width=1920",
-         "https://www.mittilabs.earth/insights/cool-effect-and-mitti-labs-partnering-on-a-world-first"),
-        ("07","Mar 27, 2026","An update from ICVCM: Rice methane gets its Core Carbon Principles label",
-         "Rice methane projects and carbon-market integrity.",
-         "https://framerusercontent.com/images/SJ9R3bayFImfIvT6U61ZnEoUFQc.jpg?height=3944&width=5916",
-         "https://www.mittilabs.earth/insights/an-update-from-icvcm-rice-methane-gets-its-core-carbon-principle-label"),
-        ("08","Feb 10, 2026","Mitti Labs partners with ICAR-IARI",
-         "Field sampling, laboratory measurement and satellite remote sensing.",
-         "https://framerusercontent.com/images/THHB3FbAFczZ99q7fgclT9Lrwhk.png?height=627&width=1200",
-         "https://www.mittilabs.earth/insights/mitti-labs-and-icar-iari-partner-on-ground-breaking-research-to-quantify-methane-emissions-from-rice-farming"),
-        ("09","Dec 3, 2025","ACCESS and Mitti Labs: a partnership to transform rice farming in India",
-         "Implementation, partnerships and climate-smart rice adoption.",
-         "https://framerusercontent.com/images/J9ZyQITtbxd9MN0j5Zl3MfMyY.png?height=580&width=900",
-         "https://www.mittilabs.earth/insights/mitti-labs-and-access-are-transforming-rice-farming-in-india"),
+        ("01","Mar 19, 2026","India's water security is becoming an agricultural priority",
+         "India has 18% of the world's population but only 4% of its water resources. Agriculture consumes roughly 80–90% of India's water, making efficient irrigation, groundwater monitoring and digital water intelligence central to climate-resilient rice.",
+         "WORLD BANK / WATER FOR FOOD",
+         "https://www.worldbank.org/en/brief/2026/03/19/how-india-is-addressing-its-water-needs"),
+        ("02","2026","Optimized rice water management could cut global rice GHG emissions by 39.17%",
+         "A global study using 15,458 field observations and machine-learning scenario simulations estimated that optimized water management could reduce rice greenhouse-gas emissions by 39.17% (340.46 Mt CO₂e) while increasing simulated yields by 3.55%. This is a modeled potential, not a guaranteed field outcome.",
+         "RESEARCH / GLOBAL RICE",
+         "https://agris.fao.org/search/en/providers/122413/records/699588e4e6c33ba92ad5780d"),
+        ("03","2026","Smart irrigation is moving toward real-time field monitoring",
+         "Recent Indian agricultural-engineering research is combining automated Alternate Wetting and Drying with sensors, controllers and digital monitoring. Reported water savings are experimental results, so field performance still depends on soil, climate, crop and irrigation conditions.",
+         "FIELD STUDY / TECHNOLOGY",
+         "https://agris.fao.org/search/en/providers/124598/records/69959e8ce6c33ba92ad640e7"),
+        ("04","2026","Sentinel-1 can help us see rice-field water conditions through clouds",
+         "Sentinel-1 radar provides repeat observations independent of daylight and can support monitoring of waterlogged ground, soil moisture and crop structure. For Asterisk Climos, SAR is an observation layer that complements—not replaces—field measurements and methane MRV.",
+         "EARTH OBSERVATION / ESA",
+         "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/10_ways_Sentinel-1_data_lets_us_see_our_world"),
+        ("05","Apr 2026","Indian rice research is pushing genetic and ecosystem-level innovation",
+         "ICAR-CRRI's 61st Annual Rice Group Meetings highlighted genetic gain, pre-breeding and genome-editing research across rainfed and irrigated ecosystems. Climate-smart rice therefore extends beyond irrigation: varieties, agronomy and ecosystem adaptation matter too.",
+         "INDIA / ICAR",
+         "https://www.icar.gov.in/en/61st-annual-rice-group-meetings-inaugurated-icar-crri-cuttack"),
+        ("06","Mar 2026","AI, drones and digital advisory are entering rice agriculture",
+         "ICAR-CRRI has highlighted AI-based precision agriculture, drone applications, digital advisory through RiceXpert, methane-reduction research and nitrogen-efficient technologies. The direction is clear: farm decisions are increasingly supported by connected data and field intelligence.",
+         "TECHNOLOGY / ICAR",
+         "https://www.icar.gov.in/en/journalists-uttarakhand-visits-icar-crri-cuttack-understand-research-and-development-initiatives"),
+        ("07","2026","AWD is powerful—but methane MRV needs more than a dry/wet label",
+         "Field research shows that methane response to AWD can vary with timing, crop-residue management and other conditions, while nitrous oxide can also change. A credible MRV system therefore needs water regime, crop stage, residues, weather, nutrients and measured evidence—not a single proxy.",
+         "MRV / FIELD EVIDENCE",
+         "https://agris.fao.org/search/en/providers/122535/records/65df83da4c5aef494fe31e25"),
+        ("08","Jun 11, 2026","Direct-seeded rice is part of India's water-efficiency transition",
+         "A World Bank feature on Uttar Pradesh describes direct-seeded rice as a pathway being used to reduce water use, emissions and production costs. It reinforces a broader point for climate-smart rice: practice change has to work agronomically and economically at farm scale.",
+         "INDIA / WATER EFFICIENCY",
+         "https://www.worldbank.org/en/news/feature/2026/06/11/farming-is-building-a-stronger-rural-economy-in-uttar-pradesh-india"),
     ]
 
     cards = '<div class="insight-grid">'
-    for num, date, title, body, image, url in articles:
+    for num, date, title, body, source, url in articles:
         cards += f'''<article class="insight-card">
-          <a href="{url}" target="_blank" rel="noopener noreferrer">
-            <div class="insight-image-wrap">
-              <img src="{image}" alt="{title}" loading="lazy">
-            </div>
-            <div class="insight-content">
-              <div class="num">{num} / {date}</div>
-              <h3>{title}</h3>
-              <p>{body}</p>
-              <span class="insight-link">Read source article →</span>
-            </div>
-          </a>
+          <div class="insight-top">
+            <div class="num">{num} / {date}</div>
+            <div class="insight-source">{source}</div>
+          </div>
+          <div class="insight-content">
+            <h3>{title}</h3>
+            <p>{body}</p>
+            <a class="insight-link" href="{url}" target="_blank" rel="noopener noreferrer">Read source →</a>
+          </div>
         </article>'''
     cards += "</div>"
 
@@ -450,58 +444,78 @@ def insights():
         border-radius:20px;
         background:rgba(255,255,255,.035);
         transition:transform .18s ease,border-color .18s ease;
+        min-height:300px;
+        display:flex;
+        flex-direction:column;
       }
       .insight-card:hover{
         transform:translateY(-3px);
         border-color:rgba(126,226,177,.38);
       }
-      .insight-card a{display:block;color:inherit;text-decoration:none;}
-      .insight-image-wrap{
-        height:210px;
-        overflow:hidden;
-        background:#06110d;
+      .insight-top{
+        min-height:82px;
+        padding:1.15rem 1.25rem;
+        background:linear-gradient(135deg,rgba(126,226,177,.10),rgba(102,183,215,.07));
         border-bottom:1px solid rgba(126,226,177,.10);
+        display:flex;
+        justify-content:space-between;
+        gap:1rem;
+        align-items:flex-start;
       }
-      .insight-image-wrap img{
-        width:100%;
-        height:100%;
-        object-fit:cover;
-        display:block;
+      .insight-source{
+        color:#7d998c;
+        font-size:.58rem;
+        line-height:1.35;
+        letter-spacing:.10em;
+        font-weight:900;
+        text-align:right;
+        max-width:48%;
       }
-      .insight-content{padding:1.25rem;}
+      .insight-content{
+        padding:1.25rem;
+        display:flex;
+        flex-direction:column;
+        flex:1;
+      }
       .insight-content h3{
-        margin:.7rem 0 .55rem;
+        margin:.2rem 0 .7rem;
         color:#edf7f2;
-        font-size:1.05rem;
-        line-height:1.25;
+        font-size:1.08rem;
+        line-height:1.28;
       }
       .insight-content p{
         margin:0;
         color:#91aa9e;
-        line-height:1.6;
+        line-height:1.65;
         font-size:.86rem;
-        min-height:2.75rem;
       }
       .insight-link{
         display:inline-block;
-        margin-top:1rem;
+        margin-top:auto;
+        padding-top:1.1rem;
         color:#7ee2b1;
         font-size:.78rem;
         font-weight:800;
+        text-decoration:none;
       }
+      .insight-link:hover{text-decoration:underline;}
       @media(max-width:1000px){.insight-grid{grid-template-columns:1fr 1fr;}}
-      @media(max-width:620px){.insight-grid{grid-template-columns:1fr;}.insight-image-wrap{height:230px;}}
+      @media(max-width:620px){
+        .insight-grid{grid-template-columns:1fr;}
+        .insight-card{min-height:0;}
+        .insight-top{min-height:74px;}
+      }
     </style>
     """, unsafe_allow_html=True)
 
     st.markdown(cards, unsafe_allow_html=True)
 
     st.markdown(
-        '<div class="band"><div class="eyebrow">THE EVIDENCE CHAIN</div><h2>From field practice → satellite → MRV → carbon value.</h2><div class="section-copy">AWD, farmer implementation, satellite and field evidence, methane measurement, digital monitoring and carbon-market integrity are connected parts of one system.</div></div>',
+        '<div class="band"><div class="eyebrow">THE ASTERISK CLIMOS EVIDENCE CHAIN</div><h2>Practice → observation → measurement → MRV → value.</h2><div class="section-copy">Climate-smart rice is not one number. We connect farmer practice, Earth observation, field measurement, transparent modelling and carbon economics while keeping assumptions and uncertainty visible.</div></div>',
         unsafe_allow_html=True
     )
     st.markdown(
-        '<div class="footer-note">Images are displayed from the public image assets referenced by the Mitti Labs Insights page. Article titles and links point to the original publisher; summaries are concise paraphrases rather than copied article text.</div>',
+        '<div class="footer-note">Sources: World Bank, FAO AGRIS-indexed research, ESA Copernicus/Sentinel-1 and ICAR. All insight summaries are paraphrased from the linked sources. Modeled or experimental results are presented as study findings, not universal guarantees.</div>',
         unsafe_allow_html=True
     )
 
