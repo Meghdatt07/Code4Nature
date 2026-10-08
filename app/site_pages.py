@@ -17,252 +17,91 @@ def set_page_routes(routes):
 
 def inject_site_css():
     st.markdown("""<style>
-:root{
-  --ink:#12251d;--forest:#0a1d16;--forest-2:#10291f;--sage:#a9cfb2;
-  --mint:#cfe5d3;--cream:#f4f0e6;--paper:#fffdf7;--line:rgba(18,37,29,.13);
-  --muted:#607168;--accent:#91c9a0;--blue:#8db9c8;
+:root{--bg:#07120f;--panel:#0d1d18;--line:#244137;--text:#edf7f2;--muted:#9ab3a8;--accent:#7ee2b1;--water:#66b7d7}
+.stApp{background:radial-gradient(circle at 78% 0%,#15382d 0,#07120f 42%);color:var(--text)}
+[data-testid="stHeader"]{background:rgba(7,18,15,.88)}
+[data-testid="stSidebar"]{background:#091713}
+.block-container{max-width:1400px!important;padding:1.25rem 3rem 4rem!important}
+.site-head{display:flex;justify-content:space-between;align-items:center;min-height:112px;border-bottom:1px solid var(--line);padding:.35rem 0 .8rem;margin-bottom:1.2rem}
+.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}.brand-logo{width:96px;height:96px;object-fit:contain;object-position:center;display:block}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#07120f;display:grid;place-items:center;font-weight:900}
+.brand small{display:block;color:#668276;font-size:.55rem;letter-spacing:.18em;font-weight:700;margin-top:.15rem}
+.status{font-size:.62rem;letter-spacing:.14em;color:#7d998c}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#48e39a;box-shadow:0 0 12px #48e39a;margin-right:.4rem}
+.hero{border:1px solid #234537;border-radius:28px;padding:4.3rem 3.5rem;background:radial-gradient(circle at 8% 20%,rgba(48,147,105,.22),transparent 32%),radial-gradient(circle at 92% 12%,rgba(77,120,173,.16),transparent 28%),#0a1914;overflow:hidden;position:relative}
+.eyebrow{color:var(--accent);font-size:.72rem;letter-spacing:.17em;font-weight:900;text-transform:uppercase}
+.hero h1{font-size:clamp(3.5rem,7.5vw,7.8rem);line-height:.9;letter-spacing:-.065em;margin:1.35rem 0;color:#edf7f2;max-width:1050px}
+.hero h1 span{color:var(--accent)}
+.hero p{max-width:780px;color:#abc0b5;font-size:1.07rem;line-height:1.75}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+.a-btn{display:inline-block;padding:.8rem 1.1rem;border-radius:12px;text-decoration:none;font-weight:800;font-size:.82rem}
+.a-btn.primary{background:var(--accent);color:#07120f}.a-btn.secondary{border:1px solid #315949;color:#e8f2ed}
+.home-action-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+div.st-key-home_run_sim button,
+div.st-key-home_explore_tech button{
+  border-radius:12px!important;
+  padding:.8rem 1.1rem!important;
+  min-height:0!important;
+  height:auto!important;
+  font-size:.82rem!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  text-decoration:none!important;
+  box-shadow:none!important;
 }
-.stApp{background:var(--cream)!important;color:var(--ink)!important}
-[data-testid="stHeader"]{background:rgba(244,240,230,.82)!important;backdrop-filter:blur(18px);border-bottom:1px solid rgba(18,37,29,.08)}
-[data-testid="stSidebar"]{display:none!important}
-.block-container{max-width:1480px!important;padding:0 3rem 4rem!important}
+div.st-key-home_run_sim button{
+  background:var(--accent)!important;
+  border:1px solid var(--accent)!important;
+  color:#07120f!important;
+}
+div.st-key-home_run_sim button:hover{
+  background:#8de8bd!important;
+  border-color:#8de8bd!important;
+}
+div.st-key-home_explore_tech button{
+  background:transparent!important;
+  border:1px solid #315949!important;
+  color:#e8f2ed!important;
+}
+div.st-key-home_explore_tech button:hover{
+  background:rgba(126,226,177,.06)!important;
+  border-color:#4d7b68!important;
+}
+div.st-key-home_run_sim button p,
+div.st-key-home_explore_tech button p{
+  margin:0!important;
+  text-decoration:none!important;
+}
 
-/* quiet Streamlit chrome */
-.stAppViewContainer .main{background:var(--cream)!important}
-.stMarkdownContainer h1 a,.stMarkdownContainer h2 a,.stMarkdownContainer h3 a,
-.stMarkdownContainer h4 a,.stMarkdownContainer h5 a,.stMarkdownContainer h6 a,
-[data-testid="stHeading"] a,.stHeadingWithActionElements a,
-[data-testid="stHeaderActionElements"],[data-testid="StyledLinkIconContainer"]{
-  display:none!important;visibility:hidden!important;pointer-events:none!important
-}
-
-/* shared editorial system */
-.site-head{
-  display:flex;justify-content:space-between;align-items:center;min-height:82px;
-  border-bottom:1px solid rgba(18,37,29,.10);padding:.35rem 0 .55rem;margin-bottom:0
-}
-.brand{display:flex;align-items:center;gap:.65rem;font-weight:900;letter-spacing:.08em}
-.brand-logo{width:82px;height:82px;object-fit:contain;display:block}
-.status{font-size:.58rem;letter-spacing:.14em;color:#557064}
-.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ca66a;box-shadow:0 0 10px rgba(76,166,106,.75);margin-right:.4rem}
-.eyebrow{
-  color:#557c61;font-size:.64rem;letter-spacing:.20em;font-weight:900;text-transform:uppercase
-}
-.section{padding:6.2rem 0}
-.section h2{
-  font-size:clamp(2.8rem,6vw,6.6rem);line-height:.90;letter-spacing:-.065em;
-  margin:.7rem 0 1.2rem;color:var(--ink);font-weight:900
-}
-.section h2 em{color:#477a58;font-style:normal}
-.section-copy{color:var(--muted);line-height:1.85;max-width:820px;font-size:1rem}
-.band{
-  background:var(--forest);color:#edf6ef;border-radius:28px;border:1px solid rgba(145,201,160,.14);
-  padding:5rem 4rem;margin:1.5rem 0
-}
-.band h2{font-size:clamp(2.5rem,5.5vw,5.4rem);line-height:.92;letter-spacing:-.06em;color:#edf6ef;margin:.7rem 0 1rem}
-.band .section-copy{color:#a9beb0}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.3rem}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:1rem}
+.card,.metric-card{background:rgba(255,255,255,.035);border:1px solid rgba(126,226,177,.12);border-radius:18px;padding:1.15rem;min-height:150px}
+.card b,.metric-card b{font-size:1.05rem}.num{color:var(--accent);font-size:.72rem;font-weight:900;letter-spacing:.15em}
+.muted{color:var(--muted)}
+.section{padding:4.3rem 0}.section h2{font-size:clamp(2.2rem,4.5vw,4.4rem);line-height:.95;letter-spacing:-.055em;margin:.7rem 0 1rem;color:#edf7f2}
+.section-copy{color:#9fb6aa;line-height:1.75;max-width:800px}
+.band{background:#091713;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4.5rem 0;margin:1rem -3rem;padding-left:3rem;padding-right:3rem}
+.band h2{font-size:clamp(2.4rem,5vw,5rem);line-height:.94;letter-spacing:-.06em;margin:.7rem 0;color:#edf7f2}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:2rem}
 .tiles.four{grid-template-columns:repeat(4,1fr)}
-.tile{
-  position:relative;overflow:hidden;background:rgba(255,253,247,.78);border:1px solid var(--line);
-  border-radius:24px;padding:1.6rem;min-height:210px;
-  box-shadow:0 8px 40px rgba(24,45,33,.045);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .45s
-}
-.tile:after{
-  content:"";position:absolute;inset:auto -35% -55% auto;width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(111,164,123,.16),transparent 68%);pointer-events:none
-}
-.tile:hover{transform:translateY(-8px);box-shadow:0 22px 60px rgba(24,45,33,.10);border-color:rgba(71,122,88,.30)}
-.tile h3{margin:.8rem 0 .45rem;color:var(--ink);font-size:1.38rem;letter-spacing:-.025em}
-.tile p{margin:0;color:#66776d;line-height:1.72;font-size:.90rem}
-.num{color:#5b7f65;font-size:.64rem;font-weight:900;letter-spacing:.16em}
-.muted{color:#697a70}
-.footer-note{border-top:1px solid rgba(18,37,29,.13);padding-top:1.25rem;color:#718177;font-size:.72rem;line-height:1.65}
+.tile{background:rgba(255,255,255,.035);border:1px solid rgba(126,226,177,.11);border-radius:18px;padding:1.4rem;min-height:190px}
+.tile h3{margin:.75rem 0 .35rem;color:#edf7f2}.tile p{margin:0;color:#91aa9e;line-height:1.65;font-size:.88rem}
+.glass{background:rgba(13,29,24,.82);border:1px solid var(--line);border-radius:20px;padding:1.2rem}
+.footer-note{border-top:1px solid var(--line);padding-top:1.25rem;color:#789286;font-size:.72rem;line-height:1.6}
+@media(max-width:900px){.block-container{padding:1rem 1.2rem 3rem!important}.site-head{min-height:96px}.brand-logo{width:82px;height:82px}.flow,.tiles,.tiles.four{grid-template-columns:1fr 1fr}.hero{padding:3rem 1.5rem}.hero h1{font-size:3.7rem}.band{margin:1rem -1.2rem;padding-left:1.2rem;padding-right:1.2rem}}
+@media(max-width:560px){.flow,.tiles,.tiles.four{grid-template-columns:1fr}}
 
-/* immersive homepage */
-.c4n-experience{margin:0 -3rem -4rem;overflow:hidden;background:var(--cream);color:var(--ink)}
-.c4n-experience .wrap{width:min(1240px,calc(100% - 56px));margin:0 auto}
-.c4n-hero{
-  min-height:calc(100vh - 42px);position:relative;overflow:hidden;display:flex;align-items:flex-end;
-  background:#07150f;color:#f5f8f2
-}
-.c4n-hero .hero-scene{position:absolute;inset:0;width:100%;height:100%}
-.c4n-hero .scene-glow{position:absolute;inset:0;background:
-  radial-gradient(circle at 74% 18%,rgba(206,222,171,.22),transparent 13%),
-  linear-gradient(180deg,rgba(4,15,10,.18),rgba(4,15,10,.28) 35%,rgba(4,15,10,.90) 100%),
-  linear-gradient(90deg,rgba(4,15,10,.72),transparent 68%)
-}
-.c4n-hero .sun{animation:c4nFloat 8s ease-in-out infinite;transform-origin:center}
-.c4n-hero .wind{animation:c4nWind 9s ease-in-out infinite}
-.c4n-hero .scan{animation:c4nScan 5s linear infinite}
-.c4n-hero .grain{opacity:.16;mix-blend-mode:screen}
-@keyframes c4nFloat{0%,100%{transform:translateY(0) scale(1);opacity:.85}50%{transform:translateY(-7px) scale(1.035);opacity:1}}
-@keyframes c4nWind{0%,100%{transform:translateX(-20px);opacity:.10}50%{transform:translateX(22px);opacity:.36}}
-@keyframes c4nScan{0%{transform:translateX(-18%);opacity:0}18%{opacity:.45}80%{opacity:.28}100%{transform:translateX(118%);opacity:0}}
-.c4n-hero .hero-copy{position:relative;z-index:3;padding-bottom:3.2rem;width:100%}
-.c4n-hero .micro{
-  display:flex;justify-content:space-between;gap:1rem;align-items:center;margin-bottom:1.4rem;
-  color:#b6cfbb;font-size:.58rem;letter-spacing:.17em;font-weight:900;text-transform:uppercase
-}
-.c4n-hero h1{
-  max-width:1120px;margin:0;font-size:clamp(4rem,9.3vw,10.6rem);line-height:.83;letter-spacing:-.072em;font-weight:900;
-  color:#fbfcf8
-}
-.c4n-hero h1 span{display:block;color:#a5d3ae}
-.c4n-hero .lede{max-width:680px;margin:1.6rem 0 2.2rem;color:#c9d9cc;font-size:1rem;line-height:1.75}
-.hero-pills{display:flex;gap:.7rem;flex-wrap:wrap}
-.hero-pill{
-  border:1px solid rgba(228,243,229,.16);background:rgba(5,19,13,.42);backdrop-filter:blur(12px);
-  border-radius:999px;padding:.7rem .85rem;color:#d7e5d8;font-size:.68rem;letter-spacing:.06em
-}
-.hero-radar{
-  position:absolute;right:10%;top:18%;width:190px;height:190px;border:1px solid rgba(165,211,174,.28);
-  border-radius:50%;z-index:2;box-shadow:0 0 0 36px rgba(165,211,174,.035),0 0 0 74px rgba(165,211,174,.022);
-  animation:c4nRadar 4s ease-out infinite
-}
-.hero-radar:before{content:"";position:absolute;left:50%;top:50%;width:1px;height:74px;background:#a5d3ae;transform-origin:bottom;animation:c4nRadarArm 3s linear infinite}
-.hero-radar:after{
-  content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;transform:translate(-50%,-50%);
-  border-radius:50%;background:#c6e8c9;box-shadow:0 0 0 8px rgba(198,232,201,.10),0 0 24px rgba(198,232,201,.32)
-}
-@keyframes c4nRadar{0%{transform:scale(.72);opacity:.8}75%,100%{transform:scale(1.08);opacity:0}}
-@keyframes c4nRadarArm{to{transform:rotate(360deg)}}
-.hero-readout{
-  position:absolute;right:4.5%;bottom:10%;z-index:3;padding:15px 16px;min-width:182px;
-  border-radius:16px;border:1px solid rgba(196,229,201,.16);background:rgba(5,18,13,.56);backdrop-filter:blur(16px)
-}
-.hero-readout small{display:block;color:#91ad99;font-size:.55rem;letter-spacing:.14em;font-weight:900}
-.hero-readout strong{display:block;color:#f4f9f1;margin-top:6px;font-size:1.28rem;letter-spacing:-.035em}
-.hero-readout span{display:block;margin-top:4px;color:#a8bbaa;font-size:.63rem}
-.c4n-scroll{
-  position:absolute;right:2.2rem;bottom:2rem;z-index:4;color:#b8ccb9;font-size:.55rem;letter-spacing:.18em;
-  text-transform:uppercase;writing-mode:vertical-rl;display:flex;gap:.6rem;align-items:center
-}
-.c4n-scroll:after{content:"";display:block;width:1px;height:54px;background:linear-gradient(#b8ccb9,transparent)}
+/* Remove Streamlit's automatic heading/link anchor icon. Keep normal page/navigation links visible. */
+.stMarkdownContainer h1 a,
+.stMarkdownContainer h2 a,
+.stMarkdownContainer h3 a,
+.stMarkdownContainer h4 a,
+.stMarkdownContainer h5 a,
+.stMarkdownContainer h6 a,
+[data-testid="stHeading"] a,
+.stHeadingWithActionElements a { display:none !important; visibility:hidden !important; pointer-events:none !important; }
 
-.narrative{
-  position:relative;padding:8rem 0;background:var(--paper);overflow:hidden
-}
-.narrative.dark{background:var(--forest);color:#edf6ef}
-.narrative.olive{background:#dfe9de}
-.story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:7vw;align-items:center}
-.story-grid.reverse{grid-template-columns:1.15fr .85fr}
-.story-title{font-size:clamp(2.7rem,5.5vw,6rem);line-height:.90;letter-spacing:-.065em;font-weight:900;margin:.75rem 0 1.3rem;color:inherit}
-.story-copy{max-width:640px;color:#63736a;font-size:1rem;line-height:1.85}
-.dark .story-copy{color:#a9bdb0}
-.story-index{font-size:.58rem;letter-spacing:.2em;font-weight:900;color:#63806b}
-.orbit{
-  position:relative;min-height:470px;border-radius:34px;overflow:hidden;background:#0c2118;
-  border:1px solid rgba(18,37,29,.10);box-shadow:0 30px 90px rgba(24,45,33,.10)
-}
-.orbit .orbit-core{
-  position:absolute;left:50%;top:50%;width:104px;height:104px;transform:translate(-50%,-50%);
-  border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9ecbf,#8dbd8c 38%,#477557 72%,#183b29);
-  box-shadow:0 0 0 25px rgba(169,207,178,.08),0 0 0 70px rgba(169,207,178,.035)
-}
-.orbit .ring{position:absolute;left:50%;top:50%;border:1px solid rgba(169,207,178,.20);border-radius:50%;transform:translate(-50%,-50%);animation:c4nRing 7s linear infinite}
-.orbit .r1{width:240px;height:240px}.orbit .r2{width:350px;height:350px;animation-duration:11s}.orbit .r3{width:470px;height:470px;animation-duration:17s}
-.orbit .label{
-  position:absolute;padding:9px 11px;border-radius:10px;background:rgba(6,20,14,.76);border:1px solid rgba(169,207,178,.15);
-  color:#d7e6d8;font-size:.60rem;letter-spacing:.1em;font-weight:900
-}
-.orbit .l1{left:8%;top:18%}.orbit .l2{right:8%;top:28%}.orbit .l3{left:16%;bottom:14%}.orbit .l4{right:13%;bottom:20%}
-@keyframes c4nRing{to{transform:translate(-50%,-50%) rotate(360deg)}}
-
-.signal-line{
-  width:1px;height:110px;background:linear-gradient(var(--accent),transparent);margin:0 auto;position:relative
-}
-.signal-line:before{content:"";position:absolute;top:0;left:50%;width:8px;height:8px;transform:translate(-50%,-4px);border-radius:50%;background:#76ad83;box-shadow:0 0 0 8px rgba(118,173,131,.09)}
-
-.evidence-stage{background:#0a1d16;color:#edf6ef;padding:8rem 0}
-.stage-grid{display:grid;grid-template-columns:.74fr 1.26fr;gap:4vw;align-items:center}
-.metric-cinema{
-  border:1px solid rgba(169,207,178,.13);border-radius:28px;padding:2rem;background:
-  radial-gradient(circle at 78% 18%,rgba(141,185,200,.15),transparent 20%),rgba(255,255,255,.025)
-}
-.metric-cinema .eyebrow{color:#9bc4a4}
-.metric-big{font-size:clamp(4rem,9vw,9rem);line-height:.8;letter-spacing:-.07em;font-weight:900;color:#f3f7ef}
-.metric-big span{color:#91c9a0}
-.metric-cinema p{max-width:430px;color:#9db2a5;line-height:1.7}
-.data-rail{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:25px}
-.data-chip{padding:17px;border:1px solid rgba(169,207,178,.10);border-radius:17px;background:rgba(255,255,255,.025)}
-.data-chip strong{display:block;font-size:1.45rem;letter-spacing:-.035em;color:#eff7ef}
-.data-chip small{display:block;margin-top:6px;color:#7f9589;line-height:1.4}
-
-.tech-visual{
-  min-height:470px;border-radius:34px;position:relative;overflow:hidden;background:#10271d;
-  border:1px solid rgba(169,207,178,.12)
-}
-.tech-map{
-  position:absolute;inset:12% 10%;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(5,1fr);gap:6px;transform:rotate(-6deg) scale(1.12)
-}
-.tech-map i{border-radius:6px;background:linear-gradient(145deg,rgba(169,207,178,.54),rgba(50,89,67,.23));border:1px solid rgba(255,255,255,.06)}
-.tech-map i:nth-child(2n){background:linear-gradient(145deg,rgba(111,175,192,.55),rgba(44,79,88,.25))}
-.tech-map i:nth-child(3n){background:linear-gradient(145deg,rgba(202,213,137,.50),rgba(76,100,66,.23))}
-.tech-map i:nth-child(5n){background:linear-gradient(145deg,rgba(112,145,110,.52),rgba(48,76,57,.24))}
-.tech-scan{position:absolute;left:6%;right:6%;height:2px;top:18%;background:#a5d3ae;box-shadow:0 0 22px rgba(165,211,174,.50);animation:c4nScanY 5s ease-in-out infinite}
-@keyframes c4nScanY{0%,100%{transform:translateY(0);opacity:.15}50%{transform:translateY(290px);opacity:.65}}
-.tech-pin{position:absolute;left:53%;top:53%;width:18px;height:18px;border-radius:50%;background:#cfe9ca;border:4px solid rgba(8,29,20,.78);box-shadow:0 0 0 9px rgba(207,233,202,.10),0 0 28px rgba(207,233,202,.30)}
-.tech-label{position:absolute;left:16px;bottom:16px;padding:8px 10px;border-radius:10px;background:rgba(5,18,13,.80);border:1px solid rgba(169,207,178,.14);color:#d9e9dc;font-size:.58rem;font-weight:900;letter-spacing:.1em}
-
-.c4n-values{background:#dfe9de;padding:8rem 0}
-.value-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:5vw;align-items:end}
-.value-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:2rem}
-.value-card{padding:22px;background:rgba(255,253,247,.58);border:1px solid rgba(18,37,29,.10);border-radius:20px}
-.value-card strong{display:block;font-size:2.8rem;line-height:1;letter-spacing:-.06em;color:#153224}
-.value-card span{display:block;margin-top:7px;color:#566a5e;font-size:.78rem;line-height:1.45}
-.value-card small{display:block;margin-top:8px;color:#7d8e84;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:900}
-
-.timeline{background:var(--paper);padding:8rem 0}
-.timeline-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:3.5rem;border-top:1px solid rgba(18,37,29,.12)}
-.timeline-step{position:relative;padding:30px 18px 10px;border-right:1px solid rgba(18,37,29,.10);min-height:210px}
-.timeline-step:last-child{border-right:0}
-.timeline-dot{position:absolute;left:18px;top:-5px;width:10px;height:10px;border-radius:50%;background:#76ad83;box-shadow:0 0 0 7px rgba(118,173,131,.10)}
-.timeline-step .num{color:#65806c}
-.timeline-step h3{font-size:1.28rem;margin:25px 0 8px;letter-spacing:-.025em}
-.timeline-step p{font-size:.80rem;line-height:1.65;color:#69786f;margin:0}
-
-.final-cta{
-  margin:0;background:#08160f;color:#f3f7ef;padding:8rem 0 7rem;position:relative;overflow:hidden
-}
-.final-cta:before{
-  content:"";position:absolute;width:560px;height:560px;border-radius:50%;right:-170px;top:-220px;
-  background:radial-gradient(circle,rgba(145,201,160,.18),transparent 68%)
-}
-.final-cta h2{max-width:1000px;font-size:clamp(3.4rem,7.3vw,8rem);line-height:.84;letter-spacing:-.07em;margin:.8rem 0 1.5rem;color:#f3f7ef}
-.final-cta h2 span{color:#91c9a0}
-.final-cta p{max-width:640px;color:#a6b9ac;line-height:1.8}
-.final-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2rem}
-
-div.st-key-home_start button,div.st-key-home_tech button,div.st-key-home_mrv button{
-  border-radius:999px!important;padding:.78rem 1.15rem!important;height:auto!important;min-height:0!important;font-weight:900!important;
-}
-div.st-key-home_start button{background:#91c9a0!important;border:1px solid #91c9a0!important;color:#08160f!important}
-div.st-key-home_tech button,div.st-key-home_mrv button{background:transparent!important;border:1px solid rgba(243,247,239,.24)!important;color:#f3f7ef!important}
-div.st-key-home_start button:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(145,201,160,.18)!important}
-div.st-key-home_tech button:hover,div.st-key-home_mrv button:hover{background:rgba(243,247,239,.06)!important}
-div.st-key-home_start button p,div.st-key-home_tech button p,div.st-key-home_mrv button p{margin:0!important}
-
-@media(max-width:1000px){
- .block-container{padding:0 1.2rem 3rem!important}
- .c4n-experience{margin:0 -1.2rem -3rem}
- .c4n-experience .wrap{width:min(100% - 32px,1240px)}
- .story-grid,.story-grid.reverse,.stage-grid,.value-grid{grid-template-columns:1fr}
- .tiles,.tiles.four{grid-template-columns:1fr 1fr}
- .timeline-list{grid-template-columns:1fr 1fr}
- .timeline-step{border-right:0;border-bottom:1px solid rgba(18,37,29,.10)}
-}
-@media(max-width:620px){
- .c4n-hero{min-height:760px}
- .c4n-hero h1{font-size:4.0rem}
- .hero-radar{width:130px;height:130px;right:7%;top:17%}
- .hero-readout{right:4%;bottom:13%;min-width:150px}
- .tiles,.tiles.four,.data-rail,.value-list,.timeline-list{grid-template-columns:1fr}
- .band{padding:3rem 1.4rem;border-radius:22px}
- .section,.narrative,.evidence-stage,.c4n-values,.timeline{padding:5rem 0}
- .story-title{font-size:3.2rem}
- .tech-visual,.orbit{min-height:340px}
-}
+/* Hide Streamlit's automatic heading anchor/link icon. */
+[data-testid="stHeaderActionElements"],
+[data-testid="StyledLinkIconContainer"] { display:none !important; }
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
@@ -281,22 +120,12 @@ def shell():
     inject_site_css()
     logo = _logo_data()
     st.markdown(
-        f'''<div class="site-head">
-          <div class="brand"><img class="brand-logo" src="{logo}" alt="Asterisk Climos logo"></div>
-          <div class="status"><span class="dot"></span>FIELD → SIGNAL → IMPACT</div>
-        </div>''',
+        f'<div class="site-head"><div class="brand"><img class="brand-logo" src="{logo}" alt="Asterisk Climos logo"></div><div class="status"><span class="dot"></span>SYSTEM ONLINE</div></div>',
         unsafe_allow_html=True
     )
 
 def frame(eyebrow,title,text):
-    st.markdown(
-        f'''<section class="section">
-          <div class="eyebrow">{eyebrow}</div>
-          <h2>{title}</h2>
-          <div class="section-copy">{text}</div>
-        </section>''',
-        unsafe_allow_html=True
-    )
+    st.markdown(f'<section class="section"><div class="eyebrow">{eyebrow}</div><h2>{title}</h2><div class="section-copy">{text}</div></section>', unsafe_allow_html=True)
 
 def tiles(items, four=False):
     cls='tiles four' if four else 'tiles'
@@ -304,120 +133,43 @@ def tiles(items, four=False):
     for num,title,body in items:
         html+=f'<div class="tile"><div class="num">{num}</div><h3>{title}</h3><p>{body}</p></div>'
     html+='</div>'
-    st.markdown(html,unsafe_allow_html=True)
-
+    st.markdown(html, unsafe_allow_html=True)
 
 def home():
+    st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide")
     shell(); init_state()
-    cells = "".join("<i></i>" for _ in range(35))
-    st.markdown(f"""
-    <div class="c4n-experience">
-      <section class="c4n-hero">
-        <svg class="hero-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="c4sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0c2a20"/><stop offset="58%" stop-color="#214f38"/><stop offset="100%" stop-color="#0a2117"/></linearGradient>
-            <linearGradient id="c4field" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#4d835b"/><stop offset="48%" stop-color="#244f36"/><stop offset="100%" stop-color="#0e2a1c"/></linearGradient>
-            <radialGradient id="c4sun"><stop offset="0%" stop-color="#f1e9bd" stop-opacity=".98"/><stop offset="32%" stop-color="#e7d98c" stop-opacity=".48"/><stop offset="100%" stop-color="#e7d98c" stop-opacity="0"/></radialGradient>
-            <pattern id="c4rows" width="150" height="44" patternUnits="userSpaceOnUse" patternTransform="skewX(-22)">
-              <path d="M0 3 H150 M0 30 H150" stroke="#b6d29c" stroke-opacity=".18" stroke-width="2"/>
-              <path d="M20 0 V44 M86 0 V44" stroke="#b6d29c" stroke-opacity=".10"/>
-            </pattern>
-            <filter id="c4blur"><feGaussianBlur stdDeviation="30"/></filter>
-          </defs>
-          <rect width="1600" height="900" fill="url(#c4sky)"/>
-          <circle class="sun" cx="1180" cy="170" r="170" fill="url(#c4sun)"/>
-          <g class="wind" filter="url(#c4blur)" fill="none" stroke="#d3e5be" stroke-opacity=".16" stroke-width="5">
-            <path d="M110 470 C430 370 620 520 890 420 S1310 310 1550 430"/>
-            <path d="M40 530 C380 420 650 610 1010 480 S1390 410 1620 500"/>
-          </g>
-          <path d="M0 492 C260 420 540 470 770 400 C1040 319 1320 392 1600 310 V900 H0 Z" fill="url(#c4field)"/>
-          <path d="M0 520 C330 430 550 500 800 430 C1090 347 1380 415 1600 345 V900 H0 Z" fill="url(#c4rows)" opacity=".95"/>
-          <path d="M0 625 C260 548 530 610 800 545 C1040 484 1350 530 1600 462 V900 H0 Z" fill="url(#c4rows)" opacity=".55"/>
-          <g opacity=".28" stroke="#e6f0d8" stroke-width="2"><path d="M0 705 C290 610 520 735 820 650 S1330 600 1600 555"/><path d="M0 770 C300 680 560 790 850 725 S1320 690 1600 650"/></g>
-          <g class="grain"><circle cx="90" cy="160" r="2" fill="#fff"/><circle cx="270" cy="240" r="2" fill="#fff"/><circle cx="470" cy="130" r="2" fill="#fff"/><circle cx="740" cy="200" r="2" fill="#fff"/><circle cx="970" cy="100" r="2" fill="#fff"/><circle cx="1360" cy="250" r="2" fill="#fff"/></g>
-          <g class="scan"><rect x="-120" y="115" width="3" height="670" fill="#c5e8c8" opacity=".34"/></g>
-        </svg>
-        <div class="scene-glow"></div>
-        <div class="wrap">
-          <div class="hero-radar"></div>
-          <div class="hero-readout"><small>FIELD SIGNAL / PROTOTYPE</small><strong>31.8% wetness</strong><span>VV −17.60 dB · VH −23.80 dB</span></div>
-          <div class="c4n-scroll">Scroll to enter the field</div>
-          <div class="hero-copy">
-            <div class="micro"><span>ASTERISK CLIMOS / CODE4NATURE</span><span>RICE · WATER · CLIMATE INTELLIGENCE</span></div>
-            <h1>Every field<br><span>leaves a signal.</span></h1>
-            <p class="lede">We connect what happens in the rice field with what a satellite can see—and turn that evidence into a transparent climate-impact story.</p>
-            <div class="hero-pills"><span class="hero-pill">ALTERNATE WETTING & DRYING</span><span class="hero-pill">SENTINEL‑1 SAR</span><span class="hero-pill">DIGITAL MRV</span><span class="hero-pill">CARBON ECONOMICS</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="narrative"><div class="wrap"><div class="story-grid">
-        <div><div class="story-index">01 / THE FIELD</div><div class="story-title">Water changes<br>the story<br>beneath the crop.</div><div class="story-copy">Rice production depends on water, but prolonged flooding creates conditions that can increase methane emissions. Alternate Wetting and Drying introduces deliberate dry-down periods between irrigation events.</div></div>
-        <div class="orbit"><div class="orbit-core"></div><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="label l1">FLOODED</div><div class="label l2">DRYING</div><div class="label l3">REWETTING</div><div class="label l4">OBSERVATION</div></div>
-      </div></div></section>
-
-      <div class="signal-line"></div>
-
-      <section class="narrative olive"><div class="wrap"><div class="story-grid reverse">
-        <div class="tech-visual"><div class="tech-map">{cells}</div><div class="tech-scan"></div><div class="tech-pin"></div><div class="tech-label">SENTINEL‑1 / RELATIVE WETNESS PROXY</div></div>
-        <div><div class="story-index">02 / THE SIGNAL</div><div class="story-title">The field cannot always be visited.<br><em>So we observe from above.</em></div><div class="story-copy">Synthetic Aperture Radar (SAR) can repeatedly observe the land surface. In the prototype, Sentinel‑1 VV and VH backscatter are evidence inputs to a relative wetness layer—not a direct “moisture = −VV” conversion.</div>
-          <div class="tiles" style="grid-template-columns:1fr 1fr;margin-top:2rem"><div class="tile"><div class="num">VV</div><h3>−17.60 dB</h3><p>Example prototype signal.</p></div><div class="tile"><div class="num">VH</div><h3>−23.80 dB</h3><p>Example prototype signal.</p></div></div>
-        </div>
-      </div></div></section>
-
-      <section class="evidence-stage"><div class="wrap"><div class="stage-grid">
-        <div><div class="eyebrow">03 / DIGITAL MRV</div><div class="story-title">Evidence should be<br><span style="color:#91c9a0">traceable.</span></div><div class="story-copy" style="color:#a9bdb0">A digital MRV layer ties a field boundary, farmer observations, satellite signals, timestamps and assumptions together. The goal is not a black-box number—it is an inspectable evidence chain.</div>
-          <div class="data-rail"><div class="data-chip"><strong>FIELD</strong><small>Boundary + water observations</small></div><div class="data-chip"><strong>SAR</strong><small>VV + VH evidence</small></div><div class="data-chip"><strong>MODEL</strong><small>Methane → CO₂e scenario</small></div><div class="data-chip"><strong>MRV</strong><small>Provenance + verification path</small></div></div>
-        </div>
-        <div class="metric-cinema"><div class="eyebrow">FROM SIGNAL TO SCENARIO</div><div class="metric-big">31.8<span>%</span></div><p>Relative wetness in the prototype demonstration. It is an illustrative model input, not a direct field measurement or a carbon-credit verification result.</p><div class="data-rail"><div class="data-chip"><strong>WET</strong><small>Water regime state</small></div><div class="data-chip"><strong>AWD</strong><small>Practice context</small></div></div></div>
-      </div></div></section>
-
-      <section class="narrative"><div class="wrap"><div class="story-grid">
-        <div><div class="story-index">04 / THE SCIENCE</div><div class="story-title">Measure the gas.<br>Calibrate the model.<br><em>Then scale the signal.</em></div><div class="story-copy">Satellite observations and models can support monitoring at scale, while chambers and laboratory gas chromatography provide direct methane evidence for calibration and validation. Code4Nature keeps these layers conceptually distinct.</div></div>
-        <div><div class="tiles" style="grid-template-columns:1fr;margin-top:0"><div class="tile"><div class="num">01 / FIELD MEASUREMENT</div><h3>Chamber sampling</h3><p>Capture gas from a defined plot at controlled intervals.</p></div><div class="tile"><div class="num">02 / LAB</div><h3>Gas chromatography</h3><p>Quantify methane concentration in collected samples.</p></div><div class="tile"><div class="num">03 / DIGITAL</div><h3>Calibration + validation</h3><p>Use measured evidence to test and improve remote-sensing and model assumptions.</p></div></div></div>
-      </div></div></section>
-
-      <section class="c4n-values"><div class="wrap"><div class="value-grid">
-        <div><div class="story-index">05 / FROM IMPACT TO VALUE</div><div class="story-title">A climate outcome becomes useful when the economics are visible.</div><div class="story-copy">The platform can translate an illustrative methane-abatement scenario into CO₂e and carbon-value scenarios, while keeping farmer/FPO share and assumptions explicit.</div>
-          <div class="value-list"><div class="value-card"><strong>28×</strong><span>Global-warming-potential factor used in the prototype conversion.</span><small>Illustrative model assumption</small></div><div class="value-card"><strong>65%</strong><span>Example farmer/FPO share in the current economics prototype.</span><small>Configurable scenario</small></div></div>
-        </div>
-        <div class="value-card" style="padding:34px;background:#123124;border-color:rgba(145,201,160,.12)"><div class="num" style="color:#9bc7a5">CARBON ECONOMICS</div><strong style="font-size:clamp(3.2rem,7vw,7rem);color:#eff7ee">$15–20</strong><span style="color:#b5c6b9">Example carbon-price range used for project scenarios; market prices vary and actual credit value depends on methodology, verification and market conditions.</span><small style="color:#8fa699">Scenario range · USD / tCO₂e</small></div>
-      </div></div></section>
-
-      <section class="timeline"><div class="wrap"><div class="eyebrow">06 / ONE CONTINUOUS STORY</div><div class="story-title">From the paddy field<br>to measurable impact.</div>
-        <div class="timeline-list">
-          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">01 / PRACTICE</div><h3>AWD</h3><p>Controlled flooding and dry-down create the intervention context.</p></div>
-          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">02 / OBSERVE</div><h3>FIELD DATA</h3><p>Boundary, water level and crop-stage observations anchor the story.</p></div>
-          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">03 / SEE</div><h3>SAR</h3><p>VV/VH signals add repeatable Earth-observation evidence.</p></div>
-          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">04 / VERIFY</div><h3>MRV</h3><p>Measured and modelled evidence are connected with provenance.</p></div>
-          <div class="timeline-step"><div class="timeline-dot"></div><div class="num">05 / VALUE</div><h3>CO₂e + CARBON</h3><p>Scenario outputs become transparent climate and economics indicators.</p></div>
-        </div>
-      </section>
-
-      <section class="final-cta"><div class="wrap" style="position:relative;z-index:2"><div class="eyebrow" style="color:#9bc7a5">CODE4NATURE / NEXT STEP</div><h2>Make the field<br><span>measurable.</span></h2><p>Explore a rice-field scenario, inspect the technology stack, or open the Digital MRV workflow.</p></div></section>
-    </div>
-    """, unsafe_allow_html=True)
-
-    cols = st.columns([1.1, 1.1, 1.1, 4.7])
-    with cols[0]:
-        if st.button("Start simulator →", key="home_start", type="primary"):
+    st.markdown('''<section class="hero">
+      <div class="eyebrow">CODE4NATURE / RICE CLIMATE INTELLIGENCE</div>
+      <h1>Measure. Optimize.<br><span>Reduce. Value.</span></h1>
+      <p>Transform rice-field water management into measurable climate impact through field data, transparent modelling and carbon-economics simulation.</p>
+      <div class="hero-actions"></div>
+    </section>''', unsafe_allow_html=True)
+    link_cols = st.columns([1.15, 1.1, 5.75])
+    with link_cols[0]:
+        if st.button("Run Farm Simulation →", key="home_run_sim", type="primary"):
             st.switch_page(_PAGE_ROUTES["simulator"])
-    with cols[1]:
-        if st.button("Technology", key="home_tech"):
+    with link_cols[1]:
+        if st.button("Explore Technology", key="home_explore_tech", type="secondary"):
             st.switch_page(_PAGE_ROUTES["technology"])
-    with cols[2]:
-        if st.button("Digital MRV", key="home_mrv"):
-            st.switch_page(_PAGE_ROUTES.get("mrv", _PAGE_ROUTES["technology"]))
-    st.markdown('<div style="margin-top:1.5rem;padding:0 0 1rem;color:#6f7f76;font-size:.68rem;line-height:1.65">Prototype demonstration only. Water states, wetness values, methane reductions, CO₂e, carbon quantities, prices and financial outcomes are illustrative unless independently measured and verified.</div>', unsafe_allow_html=True)
+    cols=st.columns(4)
+    flow=[("01","Farm data","Field boundary and water observations"),("02","Satellite","SAR wetness evidence"),("03","MRV","Methane → CO₂e scenario"),("04","Value","Farmer/FPO + company economics")]
+    for col,(n,t,b) in zip(cols,flow):
+        with col: st.markdown(f'<div class="card"><div class="num">{n}</div><b>{t}</b><div class="muted" style="font-size:.8rem;margin-top:.4rem">{b}</div></div>',unsafe_allow_html=True)
+    frame("THE LOGIC","From water management to climate value","The prototype keeps the full pathway visible: practice → evidence → emissions scenario → carbon economics.")
+    tiles([("01","Climate-smart rice","Make controlled wetting and drying visible at field scale."),("02","Digital MRV","Connect ground observations, satellite evidence and transparent calculations."),("03","Carbon economics","Explore illustrative farmer/FPO and company value from the same scenario.")])
+    st.markdown('<div class="band"><div class="eyebrow">EVIDENCE STACK</div><h2>Ground truth → satellite → model → evidence.</h2><div class="section-copy">A carbon number is only useful when the assumptions and evidence pathway behind it remain inspectable.</div></div>',unsafe_allow_html=True)
+    frame("DISCOVER","One workflow, separate pages","Use the application navigation to open the simulator, MRV, research, policy and partner workflows.")
+    tiles([("01","Farm simulator","Move the farm and draw a boundary."),("02","Digital MRV","Inspect field and SAR evidence."),("03","Carbon economics","Change price, area and farmer share."),("04","Research","Read the scientific framing and limitations.")],True)
+    st.markdown('<div class="footer-note">Prototype demonstration only. Water savings, methane reductions, carbon quantities, prices and financial outcomes are illustrative unless independently measured and verified.</div>',unsafe_allow_html=True)
 
 def climate_smart_rice():
-    shell()
+    st.set_page_config(page_title="Climate-smart Rice | Asterisk Climos", layout="wide"); shell()
     frame("CLIMATE-SMART RICE","The farming practice is the climate intervention.","Alternate Wetting and Drying (AWD) introduces controlled dry-down periods between irrigations. The prototype focuses on making that field process observable and explainable.")
     tiles([("01","WET","Flooded state and irrigation event."),("02","DRYING","Controlled drawdown toward the target threshold."),("03","REWET","Reflood when the field reaches the operating threshold.")])
     st.markdown('<div class="band"><div class="eyebrow">FARMER-FIRST</div><h2>Make the field measurable.</h2><div class="section-copy">Farmers supply the practice, FPOs help aggregate and coordinate, and the MRV layer organises evidence for the project team.</div></div>',unsafe_allow_html=True)
 
 def technology():
-    shell()
+    st.set_page_config(page_title="Technology | Asterisk Climos", layout="wide"); shell()
     frame("OUR TECHNOLOGY","Soil to sky. One evidence chain.","Field observations, satellite signals, methane measurement and transparent modelling are combined into one workflow for rice climate projects.")
     tiles([
         ("01","GROUND DATA","Water level, irrigation and crop-stage observations."),
@@ -503,27 +255,27 @@ def technology():
 
 
 def simulator():
-    shell(); init_state()
+    st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell(); init_state()
     frame("FARM SIMULATOR","Explore a rice-field scenario.","Use this page for scenario modelling. Map your farm and change assumptions without running satellite/MRV retrieval.")
     render_farm_simulator()
 
 def carbon():
-    shell(); init_state()
+    st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell(); init_state()
     frame("CARBON ECONOMICS","See the economics behind the scenario.","Change the area, abatement, carbon price and farmer/FPO share to inspect illustrative USD and INR outcomes.")
     render_market(); render_economics()
 
 def mrv():
-    shell(); init_state()
+    st.set_page_config(page_title="Digital MRV | Asterisk Climos", layout="wide"); shell(); init_state()
     frame("DIGITAL MRV","Field evidence and satellite intelligence.","Use this page for SAR retrieval, relative wetness, VV/VH backscatter and AWD telemetry/MRV evidence.")
     render_mrv()
 
 def policy():
-    shell()
+    st.set_page_config(page_title="Policy & FPO | Asterisk Climos", layout="wide"); shell()
     frame("POLICY / FPO","Connect implementation with the enablement layer.","Keep agricultural support, FPO aggregation and carbon-market methodology as distinct pieces of the project architecture.")
     render_policy()
 
 def about():
-    shell()
+    st.set_page_config(page_title="About | Asterisk Climos", layout="wide"); shell()
 
     frame(
         "ABOUT / OUR DIRECTION",
@@ -621,7 +373,7 @@ def about():
     )
 
 def insights():
-    shell()
+    st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
     frame(
         "INSIGHTS / CLIMATE INTELLIGENCE",
         "Rice. Water. Methane. Earth observation.",
@@ -768,7 +520,7 @@ def insights():
     )
 
 def contact():
-    shell()
+    st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
     frame(
         "PARTNER WITH US",
         "Build the evidence chain with us.",
