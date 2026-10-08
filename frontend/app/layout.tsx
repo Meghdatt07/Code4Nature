@@ -1,4 +1,5 @@
 import './globals.css'
+import './home.css'
 import { Navbar } from '@/components/shared/navbar'
 
 export const metadata = {
