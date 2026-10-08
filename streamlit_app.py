@@ -3,7 +3,6 @@ from pathlib import Path
 import streamlit as st
 
 from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
-from app.ui_theme import inject_ui_theme
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -44,7 +43,7 @@ html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important
 [data-testid="stHeading"] a,
 .stHeadingWithActionElements a { display:none !important; visibility:hidden !important; pointer-events:none !important; }
 
-/* Hide Streamlit's automatic heading anchor/link icon. */
+/* Hide Streamlit's automatic heading/link anchor icon. */
 [data-testid="stHeaderActionElements"],
 [data-testid="StyledLinkIconContainer"] { display:none !important; }
 </style>""", unsafe_allow_html=True)
@@ -124,7 +123,3 @@ div.st-key-site_nav button {
 """, unsafe_allow_html=True)
 
 current_page.run()
-
-# Apply the final visual layer after the page renders so it can restyle
-# every existing page component without changing page content or logic.
-inject_ui_theme()
