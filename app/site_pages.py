@@ -172,6 +172,92 @@ div.st-key-home_explore_tech button p{
  .stApp:has(.c4n-page-contact) iframe { animation:none !important; }
 }
 
+
+/* CINEMATIC PASS: still, quiet homepage chrome; scroll-driven field journey. */
+.stApp:has(.c4n-page-home)::before { animation:none !important; background-position:center !important; opacity:.025 !important; }
+.stApp:has(.c4n-page-home) .hero { animation:none !important; }
+.stApp:has(.c4n-page-home) .hero::after { animation:none !important; opacity:.12 !important; }
+.stApp:has(.c4n-page-home) .card,
+.stApp:has(.c4n-page-home) .metric-card,
+.stApp:has(.c4n-page-home) .tile { animation:none !important; }
+.stApp:has(.c4n-page-home) .card:hover,
+.stApp:has(.c4n-page-home) .metric-card:hover,
+.stApp:has(.c4n-page-home) .tile:hover { transform:none !important; }
+.story-scroll { gap:1.5rem !important; margin:2.5rem 0 4rem !important; }
+.story-scene {
+  min-height:min(76vh,760px) !important;
+  border-radius:28px !important;
+  background:#06110c !important;
+  scroll-margin-top:2rem;
+  animation:story-enter linear both !important;
+  animation-timeline:view(block) !important;
+  animation-range:entry 0% cover 42% !important;
+}
+.story-scene::before {
+  background-size:cover !important;
+  animation:story-zoom linear both !important;
+  animation-timeline:view(block) !important;
+  animation-range:entry 0% exit 100% !important;
+  will-change:transform,background-position,filter;
+}
+.story-scene::after {
+  background:linear-gradient(90deg,rgba(2,11,7,.93) 0%,rgba(2,11,7,.66) 46%,rgba(2,11,7,.12) 100%) !important;
+}
+.story-scene .story-copy {
+  padding:clamp(1rem,2vw,2rem);
+  border-left:2px solid var(--scene-accent);
+  backdrop-filter:blur(2px);
+}
+.story-scene .story-index { background:rgba(3,14,9,.68); }
+.story-scene h3 { max-width:680px !important; }
+.story-scene p { text-shadow:0 2px 14px rgba(0,0,0,.45); }
+.story-satellite::before {
+  background-image:url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=90") !important;
+}
+.story-rice::before {
+  background-image:url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=90") !important;
+}
+.story-methane::before {
+  background-image:url("https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=2200&q=90") !important;
+}
+.story-carbon::before {
+  background-image:url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=90") !important;
+}
+@keyframes story-zoom {
+  0% { transform:scale(1.02) translate3d(0,2%,0); background-position:50% 10%; filter:saturate(.8) brightness(.75); }
+  35% { transform:scale(1.12) translate3d(0,0,0); background-position:50% 45%; filter:saturate(1) brightness(.92); }
+  100% { transform:scale(1.28) translate3d(0,-2%,0); background-position:50% 90%; filter:saturate(1.12) brightness(.85); }
+}
+/* Per-page "live UI" motion stays off the homepage. */
+.stApp:has(.c4n-page-climate-rice):not(:has(.c4n-page-home)) .tile {
+  background-size:100% 100%,100% 100% !important;
+  animation:c4n-rice-wave 5.5s ease-in-out infinite !important;
+}
+.stApp:has(.c4n-page-technology):not(:has(.c4n-page-home)) .tile::after { animation:c4n-radar 10s linear infinite !important; }
+.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home)) .glass,
+.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home)) .metric-card { animation:c4n-map-pulse 3.8s ease-in-out infinite !important; }
+.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home)) .metric-card,
+.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home)) .tile { animation:c4n-carbon-glow 4.5s ease-in-out infinite !important; }
+.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home)) .tile,
+.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home)) .glass { animation:c4n-scan 5s linear infinite !important; }
+.stApp:has(.c4n-page-policy):not(:has(.c4n-page-home)) .tile { animation:c4n-leaf-float 5s ease-in-out infinite !important; }
+.stApp:has(.c4n-page-insights):not(:has(.c4n-page-home)) .insight-card { animation:c4n-reading .7s ease both !important; }
+.stApp:has(.c4n-page-about):not(:has(.c4n-page-home)) .band::after { animation:c4n-orbit 20s linear infinite !important; }
+.stApp:has(.c4n-page-contact):not(:has(.c4n-page-home)) iframe { animation:c4n-contact-pulse 5s ease-in-out infinite !important; }
+@media(max-width:700px) {
+  .story-scene { min-height:72vh !important; }
+  .story-scene::after { background:linear-gradient(0deg,rgba(2,11,7,.94),rgba(2,11,7,.48)) !important; }
+  .story-scene .story-copy { padding:.85rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home) .hero,.stApp:has(.c4n-page-home) .hero::after { animation:none !important; }
+ .story-scene,.story-scene::before,.stApp:has(.c4n-page-climate-rice) .tile,
+ .stApp:has(.c4n-page-technology) .tile::after,.stApp:has(.c4n-page-simulator) .glass,
+ .stApp:has(.c4n-page-carbon) .metric-card,.stApp:has(.c4n-page-mrv) .tile,
+ .stApp:has(.c4n-page-policy) .tile,.stApp:has(.c4n-page-insights) .insight-card,
+ .stApp:has(.c4n-page-about) .band::after,.stApp:has(.c4n-page-contact) iframe { animation:none !important; }
+}
+
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
