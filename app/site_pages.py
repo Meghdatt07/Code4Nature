@@ -211,17 +211,16 @@ div.st-key-home_explore_tech button p{
   z-index:1;
   background-color:transparent!important;
 }
-@supports (animation-timeline:scroll(root block)) {
-  .stApp:has(.c4n-page-home)::before {
-    animation:home-orbit-scroll linear both;
-    animation-timeline:scroll(root block);
-    animation-range:0% 100%;
-  }
-  .stApp:has(.c4n-page-home)::after {
-    animation:home-farm-scroll linear both;
-    animation-timeline:scroll(root block);
-    animation-range:0% 100%;
-  }
+/* Apply the scroll timeline directly instead of hiding it behind a brittle supports gate. */
+.stApp:has(.c4n-page-home)::before {
+  animation:home-orbit-scroll linear both;
+  animation-timeline:scroll();
+  animation-range:0% 100%;
+}
+.stApp:has(.c4n-page-home)::after {
+  animation:home-farm-scroll linear both;
+  animation-timeline:scroll();
+  animation-range:0% 100%;
 }
 @keyframes home-orbit-scroll {
   0% {opacity:1;transform:scale(1.04) translateY(0);filter:saturate(.82) brightness(.84);background-position:center,50% 0%}
