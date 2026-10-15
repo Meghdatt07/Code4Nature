@@ -228,3 +228,8 @@
 @keyframes hv-satellite-exit{0%{opacity:1;transform:translate3d(0,0,0) scale(1)}20%{opacity:1;transform:translate3d(8%,-5%,0) scale(.8)}38%,100%{opacity:0;transform:translate3d(20%,-20%,0) scale(.35)}}
 @media(max-width:640px){.hv-descent-satellite{top:10%;right:12%;transform:scale(.78)}.hv-descent-shade{background:linear-gradient(180deg,rgba(3,12,20,.38),rgba(3,12,20,.16) 55%,rgba(3,12,20,.5))}}
 @media(prefers-reduced-motion:reduce){.hv-descent-layer,.hv-descent-atmosphere,.hv-descent-satellite{animation:none!important}.hv-descent-orbit{opacity:.3}.hv-descent-earth{opacity:.2}.hv-descent-farm{opacity:.35}}
+
+/* Keep the orbital-to-farm camera as the homepage's only decorative motion. */
+.hv-root .hv-marquee-track,.hv-root .hv-sun,.hv-root .hv-glint{animation:none!important}
+.hv-root .c4n-cta{background:rgba(9,26,18,.9)}
+.hv-root footer{background:rgba(7,18,15,.9)}
