@@ -3,7 +3,6 @@ import { ArrowRight, Droplets, Eye, Globe2, Leaf, Play, ShieldCheck, Sprout } fr
 import { ButtonLink, CTA, Kicker, Newsletter, Reveal } from '@/components/marketing/marketing';
 import { ScrollDescent, TechTabs, VideoGallery } from '@/components/marketing/home';
 import { Footer } from '@/components/shared/footer';
-import { HERO_POSTER, HERO_VIDEO } from '@/lib/videos';
 
 const pillars = [
   {
@@ -42,8 +41,8 @@ const journeys = [
 export default function Home() {
   return (
     <main className="c4n-root hv-root">
+      <ScrollDescent />
       <section className="hv-hero">
-        <HeroBackdrop src={HERO_VIDEO} poster={HERO_POSTER} />
         <div className="c4n-container hv-hero-inner">
           <Reveal><Kicker>RICE CARBON CREDITS · METHANE INTELLIGENCE</Kicker></Reveal>
           <Reveal delay={0.06}>
