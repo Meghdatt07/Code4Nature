@@ -258,6 +258,64 @@ div.st-key-home_explore_tech button p{
  .stApp:has(.c4n-page-about) .band::after,.stApp:has(.c4n-page-contact) iframe { animation:none !important; }
 }
 
+
+/* Scroll-driven visual descent: orbital view, landscape, then farm-scale detail. */
+.story-descent { --scene-accent:#a8ddf4; }
+.story-satellite::before { background-image:url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90") !important; }
+.story-descent::before { background-image:url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2400&q=90") !important; }
+.story-rice::before { background-image:url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90") !important; }
+.story-satellite { min-height:82vh !important; }
+.story-descent { min-height:82vh !important; }
+.story-rice { min-height:82vh !important; }
+.story-satellite::after { background:linear-gradient(90deg,rgba(2,8,18,.91),rgba(2,8,18,.48) 48%,rgba(2,8,18,.08)) !important; }
+.story-descent::after { background:linear-gradient(90deg,rgba(3,12,13,.91),rgba(3,12,13,.56) 48%,rgba(3,12,13,.12)) !important; }
+/* Moving, page-specific environmental backdrops on every non-home route. */
+.stApp:has(.c4n-page-climate-rice):not(:has(.c4n-page-home))::before {
+ opacity:.25 !important;
+ background-image:linear-gradient(90deg,rgba(5,17,12,.78),rgba(5,17,12,.50)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 18s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-technology):not(:has(.c4n-page-home))::before {
+ opacity:.24 !important;
+ background-image:linear-gradient(90deg,rgba(3,13,20,.82),rgba(3,13,20,.52)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 24s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home))::before {
+ opacity:.23 !important;
+ background-image:linear-gradient(90deg,rgba(3,18,16,.82),rgba(3,18,16,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 15s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home))::before {
+ opacity:.22 !important;
+ background-image:linear-gradient(90deg,rgba(7,18,12,.82),rgba(7,18,12,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 21s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home))::before {
+ opacity:.24 !important;
+ background-image:linear-gradient(90deg,rgba(3,15,20,.82),rgba(3,15,20,.50)),url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 17s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-policy):not(:has(.c4n-page-home))::before {
+ opacity:.23 !important;
+ background-image:linear-gradient(90deg,rgba(5,18,12,.82),rgba(5,18,12,.50)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 26s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-insights):not(:has(.c4n-page-home))::before {
+ opacity:.22 !important;
+ background-image:linear-gradient(90deg,rgba(4,14,18,.84),rgba(4,14,18,.54)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 20s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-about):not(:has(.c4n-page-home))::before {
+ opacity:.23 !important;
+ background-image:linear-gradient(90deg,rgba(5,18,12,.82),rgba(5,18,12,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 25s ease-in-out infinite alternate !important;
+}
+.stApp:has(.c4n-page-contact):not(:has(.c4n-page-home))::before {
+ opacity:.20 !important;
+ background-image:linear-gradient(90deg,rgba(4,18,12,.86),rgba(4,18,12,.56)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
+ animation:ambient-drift 22s ease-in-out infinite alternate !important;
+}
+
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
@@ -316,41 +374,48 @@ def home():
 
     # A scroll-led visual narrative connects practice, observation, measurement and value.
     st.markdown("""
-    <div class="story-scroll" aria-label="From rice field to climate impact">
-      <article class="story-scene story-rice">
-        <div class="story-copy">
-          <span class="story-index">01 / THE FIELD</span>
-          <div class="story-kicker">Start with farming practice</div>
-          <h3>Every climate story begins in the field.</h3>
-          <p>Alternate Wetting and Drying changes how water moves through a rice plot. First understand the field, its boundary and irrigation practice—not assume every farm behaves the same way.</p>
-        </div>
-      </article>
+    <div class="story-scroll" aria-label="A journey from satellite orbit down to a rice field">
       <article class="story-scene story-satellite">
         <div class="story-copy">
-          <span class="story-index">02 / OBSERVE</span>
-          <div class="story-kicker">Satellite monitoring</div>
-          <h3>Turn the landscape into a signal.</h3>
-          <p>Radar observations can help track relative wetness and field conditions across time. Satellite signals add scale, while remaining a proxy that needs context and ground validation.</p>
+          <span class="story-index">01 / ORBIT</span>
+          <div class="story-kicker">Begin above the planet</div>
+          <h3>Start in orbit. Look back at Earth.</h3>
+          <p>Earth observation starts from a distance. Satellite radar gives us repeat views of the landscape, helping us ask where field conditions may be changing before we zoom into the farm itself.</p>
+        </div>
+      </article>
+      <article class="story-scene story-descent">
+        <div class="story-copy">
+          <span class="story-index">02 / DESCENT</span>
+          <div class="story-kicker">Move closer to the land</div>
+          <h3>From a planetary signal to a living landscape.</h3>
+          <p>As the view moves closer, broad land patterns become individual agricultural regions. Satellite observations are useful at scale, but they remain signals that need local context and ground validation.</p>
+        </div>
+      </article>
+      <article class="story-scene story-rice">
+        <div class="story-copy">
+          <span class="story-index">03 / THE FIELD</span>
+          <div class="story-kicker">Arrive at the rice plot</div>
+          <h3>Now get close enough to see the water.</h3>
+          <p>At field level, irrigation timing and Alternate Wetting and Drying become the story. The farm boundary, water observations and crop stage provide the context needed to interpret the satellite signal.</p>
         </div>
       </article>
       <article class="story-scene story-methane">
         <div class="story-copy">
-          <span class="story-index">03 / MEASURE</span>
+          <span class="story-index">04 / MEASURE</span>
           <div class="story-kicker">Methane evidence</div>
-          <h3>Move from a modelled signal to measured evidence.</h3>
+          <h3>Connect the field to measured evidence.</h3>
           <p>Field observations, chamber sampling and laboratory analysis help establish what is happening at the source. Transparent modelling keeps assumptions visible and separates estimates from measured outcomes.</p>
         </div>
       </article>
       <article class="story-scene story-carbon">
         <div class="story-copy">
-          <span class="story-index">04 / VALUE</span>
+          <span class="story-index">05 / VALUE</span>
           <div class="story-kicker">Carbon and farmer impact</div>
-          <h3>Make the impact traceable—and the value understandable.</h3>
+          <h3>Make impact traceable—and value understandable.</h3>
           <p>After the practice, evidence and emissions pathway are clear, a scenario can connect to illustrative carbon economics and potential farmer/FPO value. Real outcomes require project-specific validation and verification.</p>
         </div>
       </article>
-    </div>
-    """, unsafe_allow_html=True)
+    </div>    """, unsafe_allow_html=True)
 
     st.markdown('<div class="band"><div class="eyebrow">EVIDENCE STACK</div><h2>Ground truth → satellite → model → evidence.</h2><div class="section-copy">A carbon number is only useful when the assumptions and evidence pathway behind it remain inspectable.</div></div>',unsafe_allow_html=True)
     frame("DISCOVER","One workflow, separate pages","Use the application navigation to open the simulator, MRV, research, policy and partner workflows.")
