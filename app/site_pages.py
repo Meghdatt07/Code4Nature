@@ -172,150 +172,6 @@ div.st-key-home_explore_tech button p{
  .stApp:has(.c4n-page-contact) iframe { animation:none !important; }
 }
 
-
-/* CINEMATIC PASS: still, quiet homepage chrome; scroll-driven field journey. */
-.stApp:has(.c4n-page-home)::before { animation:none !important; background-position:center !important; opacity:.025 !important; }
-.stApp:has(.c4n-page-home) .hero { animation:none !important; }
-.stApp:has(.c4n-page-home) .hero::after { animation:none !important; opacity:.12 !important; }
-.stApp:has(.c4n-page-home) .card,
-.stApp:has(.c4n-page-home) .metric-card,
-.stApp:has(.c4n-page-home) .tile { animation:none !important; }
-.stApp:has(.c4n-page-home) .card:hover,
-.stApp:has(.c4n-page-home) .metric-card:hover,
-.stApp:has(.c4n-page-home) .tile:hover { transform:none !important; }
-.story-scroll { gap:1.5rem !important; margin:2.5rem 0 4rem !important; }
-.story-scene {
-  min-height:min(76vh,760px) !important;
-  border-radius:28px !important;
-  background:#06110c !important;
-  scroll-margin-top:2rem;
-  animation:story-enter linear both !important;
-  animation-timeline:view(block) !important;
-  animation-range:entry 0% cover 42% !important;
-}
-.story-scene::before {
-  background-size:cover !important;
-  animation:story-zoom linear both !important;
-  animation-timeline:view(block) !important;
-  animation-range:entry 0% exit 100% !important;
-  will-change:transform,background-position,filter;
-}
-.story-scene::after {
-  background:linear-gradient(90deg,rgba(2,11,7,.93) 0%,rgba(2,11,7,.66) 46%,rgba(2,11,7,.12) 100%) !important;
-}
-.story-scene .story-copy {
-  padding:clamp(1rem,2vw,2rem);
-  border-left:2px solid var(--scene-accent);
-  backdrop-filter:blur(2px);
-}
-.story-scene .story-index { background:rgba(3,14,9,.68); }
-.story-scene h3 { max-width:680px !important; }
-.story-scene p { text-shadow:0 2px 14px rgba(0,0,0,.45); }
-.story-satellite::before {
-  background-image:url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=90") !important;
-}
-.story-rice::before {
-  background-image:url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=90") !important;
-}
-.story-methane::before {
-  background-image:url("https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=2200&q=90") !important;
-}
-.story-carbon::before {
-  background-image:url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=90") !important;
-}
-@keyframes story-zoom {
-  0% { transform:scale(1.02) translate3d(0,2%,0); background-position:50% 10%; filter:saturate(.8) brightness(.75); }
-  35% { transform:scale(1.12) translate3d(0,0,0); background-position:50% 45%; filter:saturate(1) brightness(.92); }
-  100% { transform:scale(1.28) translate3d(0,-2%,0); background-position:50% 90%; filter:saturate(1.12) brightness(.85); }
-}
-/* Per-page "live UI" motion stays off the homepage. */
-.stApp:has(.c4n-page-climate-rice):not(:has(.c4n-page-home)) .tile {
-  background-size:100% 100%,100% 100% !important;
-  animation:c4n-rice-wave 5.5s ease-in-out infinite !important;
-}
-.stApp:has(.c4n-page-technology):not(:has(.c4n-page-home)) .tile::after { animation:c4n-radar 10s linear infinite !important; }
-.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home)) .glass,
-.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home)) .metric-card { animation:c4n-map-pulse 3.8s ease-in-out infinite !important; }
-.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home)) .metric-card,
-.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home)) .tile { animation:c4n-carbon-glow 4.5s ease-in-out infinite !important; }
-.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home)) .tile,
-.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home)) .glass { animation:c4n-scan 5s linear infinite !important; }
-.stApp:has(.c4n-page-policy):not(:has(.c4n-page-home)) .tile { animation:c4n-leaf-float 5s ease-in-out infinite !important; }
-.stApp:has(.c4n-page-insights):not(:has(.c4n-page-home)) .insight-card { animation:c4n-reading .7s ease both !important; }
-.stApp:has(.c4n-page-about):not(:has(.c4n-page-home)) .band::after { animation:c4n-orbit 20s linear infinite !important; }
-.stApp:has(.c4n-page-contact):not(:has(.c4n-page-home)) iframe { animation:c4n-contact-pulse 5s ease-in-out infinite !important; }
-@media(max-width:700px) {
-  .story-scene { min-height:72vh !important; }
-  .story-scene::after { background:linear-gradient(0deg,rgba(2,11,7,.94),rgba(2,11,7,.48)) !important; }
-  .story-scene .story-copy { padding:.85rem; }
-}
-@media(prefers-reduced-motion:reduce) {
- .stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home) .hero,.stApp:has(.c4n-page-home) .hero::after { animation:none !important; }
- .story-scene,.story-scene::before,.stApp:has(.c4n-page-climate-rice) .tile,
- .stApp:has(.c4n-page-technology) .tile::after,.stApp:has(.c4n-page-simulator) .glass,
- .stApp:has(.c4n-page-carbon) .metric-card,.stApp:has(.c4n-page-mrv) .tile,
- .stApp:has(.c4n-page-policy) .tile,.stApp:has(.c4n-page-insights) .insight-card,
- .stApp:has(.c4n-page-about) .band::after,.stApp:has(.c4n-page-contact) iframe { animation:none !important; }
-}
-
-
-/* Scroll-driven visual descent: orbital view, landscape, then farm-scale detail. */
-.story-descent { --scene-accent:#a8ddf4; }
-.story-satellite::before { background-image:url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90") !important; }
-.story-descent::before { background-image:url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2400&q=90") !important; }
-.story-rice::before { background-image:url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90") !important; }
-.story-satellite { min-height:82vh !important; }
-.story-descent { min-height:82vh !important; }
-.story-rice { min-height:82vh !important; }
-.story-satellite::after { background:linear-gradient(90deg,rgba(2,8,18,.91),rgba(2,8,18,.48) 48%,rgba(2,8,18,.08)) !important; }
-.story-descent::after { background:linear-gradient(90deg,rgba(3,12,13,.91),rgba(3,12,13,.56) 48%,rgba(3,12,13,.12)) !important; }
-/* Moving, page-specific environmental backdrops on every non-home route. */
-.stApp:has(.c4n-page-climate-rice):not(:has(.c4n-page-home))::before {
- opacity:.25 !important;
- background-image:linear-gradient(90deg,rgba(5,17,12,.78),rgba(5,17,12,.50)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 18s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-technology):not(:has(.c4n-page-home))::before {
- opacity:.24 !important;
- background-image:linear-gradient(90deg,rgba(3,13,20,.82),rgba(3,13,20,.52)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 24s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-simulator):not(:has(.c4n-page-home))::before {
- opacity:.23 !important;
- background-image:linear-gradient(90deg,rgba(3,18,16,.82),rgba(3,18,16,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 15s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-carbon):not(:has(.c4n-page-home))::before {
- opacity:.22 !important;
- background-image:linear-gradient(90deg,rgba(7,18,12,.82),rgba(7,18,12,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 21s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-mrv):not(:has(.c4n-page-home))::before {
- opacity:.24 !important;
- background-image:linear-gradient(90deg,rgba(3,15,20,.82),rgba(3,15,20,.50)),url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 17s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-policy):not(:has(.c4n-page-home))::before {
- opacity:.23 !important;
- background-image:linear-gradient(90deg,rgba(5,18,12,.82),rgba(5,18,12,.50)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 26s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-insights):not(:has(.c4n-page-home))::before {
- opacity:.22 !important;
- background-image:linear-gradient(90deg,rgba(4,14,18,.84),rgba(4,14,18,.54)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 20s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-about):not(:has(.c4n-page-home))::before {
- opacity:.23 !important;
- background-image:linear-gradient(90deg,rgba(5,18,12,.82),rgba(5,18,12,.50)),url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 25s ease-in-out infinite alternate !important;
-}
-.stApp:has(.c4n-page-contact):not(:has(.c4n-page-home))::before {
- opacity:.20 !important;
- background-image:linear-gradient(90deg,rgba(4,18,12,.86),rgba(4,18,12,.56)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
- animation:ambient-drift 22s ease-in-out infinite alternate !important;
-}
-
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
@@ -374,48 +230,41 @@ def home():
 
     # A scroll-led visual narrative connects practice, observation, measurement and value.
     st.markdown("""
-    <div class="story-scroll" aria-label="A journey from satellite orbit down to a rice field">
-      <article class="story-scene story-satellite">
-        <div class="story-copy">
-          <span class="story-index">01 / ORBIT</span>
-          <div class="story-kicker">Begin above the planet</div>
-          <h3>Start in orbit. Look back at Earth.</h3>
-          <p>Earth observation starts from a distance. Satellite radar gives us repeat views of the landscape, helping us ask where field conditions may be changing before we zoom into the farm itself.</p>
-        </div>
-      </article>
-      <article class="story-scene story-descent">
-        <div class="story-copy">
-          <span class="story-index">02 / DESCENT</span>
-          <div class="story-kicker">Move closer to the land</div>
-          <h3>From a planetary signal to a living landscape.</h3>
-          <p>As the view moves closer, broad land patterns become individual agricultural regions. Satellite observations are useful at scale, but they remain signals that need local context and ground validation.</p>
-        </div>
-      </article>
+    <div class="story-scroll" aria-label="From rice field to climate impact">
       <article class="story-scene story-rice">
         <div class="story-copy">
-          <span class="story-index">03 / THE FIELD</span>
-          <div class="story-kicker">Arrive at the rice plot</div>
-          <h3>Now get close enough to see the water.</h3>
-          <p>At field level, irrigation timing and Alternate Wetting and Drying become the story. The farm boundary, water observations and crop stage provide the context needed to interpret the satellite signal.</p>
+          <span class="story-index">01 / THE FIELD</span>
+          <div class="story-kicker">Start with farming practice</div>
+          <h3>Every climate story begins in the field.</h3>
+          <p>Alternate Wetting and Drying changes how water moves through a rice plot. First understand the field, its boundary and irrigation practice—not assume every farm behaves the same way.</p>
+        </div>
+      </article>
+      <article class="story-scene story-satellite">
+        <div class="story-copy">
+          <span class="story-index">02 / OBSERVE</span>
+          <div class="story-kicker">Satellite monitoring</div>
+          <h3>Turn the landscape into a signal.</h3>
+          <p>Radar observations can help track relative wetness and field conditions across time. Satellite signals add scale, while remaining a proxy that needs context and ground validation.</p>
         </div>
       </article>
       <article class="story-scene story-methane">
         <div class="story-copy">
-          <span class="story-index">04 / MEASURE</span>
+          <span class="story-index">03 / MEASURE</span>
           <div class="story-kicker">Methane evidence</div>
-          <h3>Connect the field to measured evidence.</h3>
+          <h3>Move from a modelled signal to measured evidence.</h3>
           <p>Field observations, chamber sampling and laboratory analysis help establish what is happening at the source. Transparent modelling keeps assumptions visible and separates estimates from measured outcomes.</p>
         </div>
       </article>
       <article class="story-scene story-carbon">
         <div class="story-copy">
-          <span class="story-index">05 / VALUE</span>
+          <span class="story-index">04 / VALUE</span>
           <div class="story-kicker">Carbon and farmer impact</div>
-          <h3>Make impact traceable—and value understandable.</h3>
+          <h3>Make the impact traceable—and the value understandable.</h3>
           <p>After the practice, evidence and emissions pathway are clear, a scenario can connect to illustrative carbon economics and potential farmer/FPO value. Real outcomes require project-specific validation and verification.</p>
         </div>
       </article>
-    </div>    """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown('<div class="band"><div class="eyebrow">EVIDENCE STACK</div><h2>Ground truth → satellite → model → evidence.</h2><div class="section-copy">A carbon number is only useful when the assumptions and evidence pathway behind it remain inspectable.</div></div>',unsafe_allow_html=True)
     frame("DISCOVER","One workflow, separate pages","Use the application navigation to open the simulator, MRV, research, policy and partner workflows.")
