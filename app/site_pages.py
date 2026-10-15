@@ -173,39 +173,26 @@ div.st-key-home_explore_tech button p{
 }
 
 
-/* Homepage background camera controlled by a real scroll listener (not CSS scroll-timeline support). */
-.stApp:has(.c4n-page-home){position:relative;isolation:isolate;background:#07120f!important}
-.stApp:has(.c4n-page-home)::before,
-.stApp:has(.c4n-page-home)::after{
- content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
- background-size:cover;background-repeat:no-repeat;background-position:center;
- will-change:transform,opacity,filter;transform-origin:center center;
+/* Homepage background: scroll-linked camera; layers stay behind page content. */
+.stApp:has(.c4n-page-home){position:relative;isolation:isolate;background:transparent!important}
+.stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home)::after{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-size:cover;background-repeat:no-repeat;background-position:center;transform-origin:center center;will-change:transform,opacity,filter;
 }
-.stApp:has(.c4n-page-home)::before{
- opacity:var(--c4n-orbit-opacity,1);
- background-image:linear-gradient(180deg,rgba(3,12,20,.24),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90");
- transform:scale(var(--c4n-orbit-scale,1.04)) translateY(var(--c4n-orbit-y,0%));
- filter:saturate(var(--c4n-orbit-sat,.85)) brightness(.84);
+.stApp:has(.c4n-page-home)::before{opacity:1;transform:scale(1.04);background-image:linear-gradient(180deg,rgba(3,12,20,.24),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90")}
+.stApp:has(.c4n-page-home)::after{opacity:0;transform:scale(1.04);background-image:linear-gradient(180deg,rgba(3,12,20,.18),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90")}
+.stApp:has(.c4n-page-home) [data-testid="stAppViewContainer"],.stApp:has(.c4n-page-home) [data-testid="stHeader"],.stApp:has(.c4n-page-home) [data-testid="stSidebar"],.stApp:has(.c4n-page-home) .block-container{position:relative;z-index:1;background:transparent!important}
+.stApp:has(.c4n-page-home) section.main{background:transparent!important}
+@supports (animation-timeline:scroll(root block)){
+ .stApp:has(.c4n-page-home)::before{animation:home-orbit-scroll linear both;animation-timeline:scroll(root block);animation-range:0% 100%}
+ .stApp:has(.c4n-page-home)::after{animation:home-farm-scroll linear both;animation-timeline:scroll(root block);animation-range:0% 100%}
 }
-.stApp:has(.c4n-page-home)::after{
- opacity:var(--c4n-farm-opacity,0);
- background-image:linear-gradient(180deg,rgba(3,12,20,.18),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90");
- transform:scale(var(--c4n-farm-scale,1.04)) translateY(var(--c4n-farm-y,0%));
-}
-.stApp:has(.c4n-page-home) .stAppViewContainer,
-.stApp:has(.c4n-page-home) [data-testid="stAppViewContainer"],
-.stApp:has(.c4n-page-home) section.main,
-.stApp:has(.c4n-page-home) .block-container{background:transparent!important}
-.stApp:has(.c4n-page-home) .hero,
-.stApp:has(.c4n-page-home) .section,
-.stApp:has(.c4n-page-home) .band,
-.stApp:has(.c4n-page-home) .story-scene{background-color:rgba(5,17,13,.25)!important}
+@keyframes home-orbit-scroll{0%{opacity:1;transform:scale(1.04) translateY(0);filter:saturate(.82) brightness(.84);background-position:center,50% 0%}24%{opacity:1;transform:scale(1.2) translateY(1%);filter:saturate(.9) brightness(.9);background-position:center,50% 28%}52%{opacity:.48;transform:scale(1.48) translateY(4%);filter:saturate(1) brightness(.86);background-position:center,50% 68%}72%{opacity:.06;transform:scale(1.72) translateY(7%);filter:saturate(1.08) brightness(.82);background-position:center,50% 100%}100%{opacity:0;transform:scale(1.82) translateY(8%);filter:saturate(1.08) brightness(.8);background-position:center,50% 100%}}
+@keyframes home-farm-scroll{0%,28%{opacity:0;transform:scale(1.04) translateY(-2%);background-position:center,50% 0%}48%{opacity:.12;transform:scale(1.14) translateY(-1%);background-position:center,50% 25%}68%{opacity:.62;transform:scale(1.3) translateY(1%);background-position:center,50% 65%}84%{opacity:.88;transform:scale(1.44) translateY(3%);background-position:center,50% 88%}100%{opacity:1;transform:scale(1.58) translateY(5%);background-position:center,50% 100%}}
+.stApp:has(.c4n-page-home) .hero,.stApp:has(.c4n-page-home) .section,.stApp:has(.c4n-page-home) .band,.stApp:has(.c4n-page-home) .story-scene{background-color:rgba(5,17,13,.24)!important}
 .stApp:has(.c4n-page-home) .hero::after{animation:none!important}
 .stApp:has(.c4n-page-home) .story-scene::before{animation:none!important;opacity:.12!important}
 @media(max-width:700px){.stApp:has(.c4n-page-home) .block-container{padding-left:1.2rem!important;padding-right:1.2rem!important}}
-@media(prefers-reduced-motion:reduce){
- .stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home)::after{transition:none!important}
-}
+@media(prefers-reduced-motion:reduce){.stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home)::after{animation:none!important}.stApp:has(.c4n-page-home)::after{opacity:.3}}
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
@@ -248,52 +235,6 @@ def home():
       <p>Transform rice-field water management into measurable climate impact through field data, transparent modelling and carbon-economics simulation.</p>
       <div class="hero-actions"></div>
     </section>''', unsafe_allow_html=True)
-    # Scroll progress updates the fixed background layers behind the entire homepage.
-    components.html("""
-    <script>
-    (() => {
-      const w = window.parent;
-      const d = w.document;
-      const app = d.querySelector('.stApp');
-      if (!app || app.dataset.c4nScrollCamera === 'ready') return;
-      app.dataset.c4nScrollCamera = 'ready';
-      const findScroller = () => {
-        const candidates = [
-          d.querySelector('[data-testid="stAppViewContainer"]'),
-          d.querySelector('section.main'),
-          d.querySelector('.main'),
-          d.scrollingElement,
-          d.documentElement,
-          d.body
-        ].filter(Boolean);
-        return candidates.find(el => el.scrollHeight > el.clientHeight + 20 && getComputedStyle(el).overflowY !== 'hidden') || d.scrollingElement || d.documentElement;
-      };
-      let scroller = findScroller();
-      const update = () => {
-        const max = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
-        const p = Math.min(1, Math.max(0, scroller.scrollTop / max));
-        const orbitOpacity = p < .25 ? 1 : p < .62 ? 1 - ((p - .25) / .37) : 0;
-        const farmOpacity = p < .28 ? 0 : Math.min(1, (p - .28) / .48);
-        app.style.setProperty('--c4n-orbit-opacity', orbitOpacity.toFixed(3));
-        app.style.setProperty('--c4n-orbit-scale', (1.04 + p * .82).toFixed(3));
-        app.style.setProperty('--c4n-orbit-y', (p * 8).toFixed(2) + '%');
-        app.style.setProperty('--c4n-orbit-sat', (.82 + p * .25).toFixed(3));
-        app.style.setProperty('--c4n-farm-opacity', farmOpacity.toFixed(3));
-        app.style.setProperty('--c4n-farm-scale', (1.04 + p * .55).toFixed(3));
-        app.style.setProperty('--c4n-farm-y', (-2 + p * 7).toFixed(2) + '%');
-      };
-      const attach = () => {
-        scroller = findScroller();
-        scroller.addEventListener('scroll', update, {passive:true});
-        w.addEventListener('scroll', update, {passive:true});
-        update();
-      };
-      attach();
-      w.setTimeout(() => { attach(); update(); }, 500);
-      w.addEventListener('resize', update, {passive:true});
-    })();
-    </script>
-    """, height=0, scrolling=False)
     link_cols = st.columns([1.15, 1.1, 5.75])
     with link_cols[0]:
         if st.button("Run Farm Simulation →", key="home_run_sim", type="primary"):
