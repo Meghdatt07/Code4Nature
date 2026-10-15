@@ -174,14 +174,14 @@ div.st-key-home_explore_tech button p{
 
 
 /* Homepage scroll transition: bind to Streamlit's main scrolling section. */
-.stApp:has(.c4n-page-home) { position:relative; isolation:isolate; background:transparent!important; timeline-scope:--home-scroll; }
-.stApp:has(.c4n-page-home) section[data-testid="stMain"] { scroll-timeline-name:--home-scroll; scroll-timeline-axis:block; background:transparent!important; }
+.stApp:has(.c4n-page-home) { position:relative; isolation:isolate; background:transparent!important; }
+.stApp:has(.c4n-page-home) [data-testid="stMain"] { background:transparent!important; }
 .stApp:has(.c4n-page-home)::before,.stApp:has(.c4n-page-home)::after { content:""; position:fixed; inset:0; pointer-events:none; z-index:0; background-size:cover; background-repeat:no-repeat; background-position:center; transform-origin:center center; will-change:transform,opacity,filter; }
 .stApp:has(.c4n-page-home)::before { opacity:1; transform:scale(1.04); background-image:linear-gradient(180deg,rgba(3,12,20,.24),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90"); }
 .stApp:has(.c4n-page-home)::after { opacity:0; transform:scale(1.04); background-image:linear-gradient(180deg,rgba(3,12,20,.18),rgba(3,12,20,.08) 48%,rgba(3,12,20,.45)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90"); }
 .stApp:has(.c4n-page-home) [data-testid="stAppViewContainer"],.stApp:has(.c4n-page-home) [data-testid="stHeader"],.stApp:has(.c4n-page-home) [data-testid="stSidebar"],.stApp:has(.c4n-page-home) .block-container,.stApp:has(.c4n-page-home) section[data-testid="stMain"] > * { position:relative; z-index:1; background-color:transparent!important; }
-.stApp:has(.c4n-page-home)::before { animation:home-orbit-scroll linear both; animation-timeline:--home-scroll; animation-range:0% 100%; }
-.stApp:has(.c4n-page-home)::after { animation:home-farm-scroll linear both; animation-timeline:--home-scroll; animation-range:0% 100%; }
+.stApp:has(.c4n-page-home)::before { animation:home-orbit-scroll 1ms linear both; animation-timeline:scroll(root block); }
+.stApp:has(.c4n-page-home)::after { animation:home-farm-scroll 1ms linear both; animation-timeline:scroll(root block); }
 @keyframes home-orbit-scroll { 0%{opacity:1;transform:scale(1.04) translateY(0);filter:saturate(.82) brightness(.84);background-position:center,50% 0%} 24%{opacity:1;transform:scale(1.2) translateY(1%);filter:saturate(.9) brightness(.9);background-position:center,50% 28%} 52%{opacity:.48;transform:scale(1.48) translateY(4%);filter:saturate(1) brightness(.86);background-position:center,50% 68%} 72%{opacity:.06;transform:scale(1.72) translateY(7%);filter:saturate(1.08) brightness(.82);background-position:center,50% 100%} 100%{opacity:0;transform:scale(1.82) translateY(8%);filter:saturate(1.08) brightness(.8);background-position:center,50% 100%} }
 @keyframes home-farm-scroll { 0%,28%{opacity:0;transform:scale(1.04) translateY(-2%);background-position:center,50% 0%} 48%{opacity:.12;transform:scale(1.14) translateY(-1%);background-position:center,50% 25%} 68%{opacity:.62;transform:scale(1.3) translateY(1%);background-position:center,50% 65%} 84%{opacity:.88;transform:scale(1.44) translateY(3%);background-position:center,50% 88%} 100%{opacity:1;transform:scale(1.58) translateY(5%);background-position:center,50% 100%} }
 .stApp:has(.c4n-page-home) .hero,.stApp:has(.c4n-page-home) .section,.stApp:has(.c4n-page-home) .band,.stApp:has(.c4n-page-home) .card,.stApp:has(.c4n-page-home) .tile,.stApp:has(.c4n-page-home) .footer-note { position:relative;z-index:1; }
