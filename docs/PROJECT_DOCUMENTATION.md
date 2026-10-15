@@ -1,8 +1,8 @@
 # Asterisk Climos (CarbonAWD) — Project Documentation
 
 **Code4Nature Challenge 2026 · Final submission**
-**Team:** [Team Name] · Indian Institute of Technology Gandhinagar
-**Team leader:** [Name, Email] · **Members:** [Names, Roles] · **Mentor:** [Name]
+**Team:** Asterisk Climos · Indian Institute of Technology Gandhinagar
+**Members:** Naimishranjan Srivastav · Meghdatt Thakkar · Anirudh Kalyani
 **Live website:** https://code4nature.streamlit.app/
 **Source code:** https://github.com/Meghdatt07/Code4Nature
 **License:** Creative Commons Attribution-NonCommercial 4.0 International (CC-BY-NC 4.0)
