@@ -5,6 +5,18 @@ import { Play, Satellite, MapPinned, Gauge, Radio, Check, CircleDot } from 'luci
 import { EvidenceVisual, Reveal } from '@/components/marketing/marketing';
 import { VideoItem, isPlayable, videos } from '@/lib/videos';
 
+
+export function ScrollDescent() {
+  return <div className="hv-scroll-descent" aria-hidden="true">
+    <div className="hv-descent-layer hv-descent-orbit" />
+    <div className="hv-descent-layer hv-descent-earth" />
+    <div className="hv-descent-layer hv-descent-farm" />
+    <div className="hv-descent-atmosphere" />
+    <div className="hv-descent-satellite"><Satellite size={38} strokeWidth={1.35} /></div>
+    <div className="hv-descent-shade" />
+  </div>;
+}
+
 export function HeroBackdrop({ src, poster }: { src?: string; poster?: string }) {
   const [failed, setFailed] = useState(false);
   const [ready, setReady] = useState(false);
