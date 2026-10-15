@@ -233,3 +233,5 @@
 .hv-root .hv-marquee-track,.hv-root .hv-sun,.hv-root .hv-glint{animation:none!important}
 .hv-root .c4n-cta{background:rgba(9,26,18,.9)}
 .hv-root footer{background:rgba(7,18,15,.9)}
+
+.hv-root>.hv-scroll-descent{position:fixed;z-index:0}
