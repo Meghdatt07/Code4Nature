@@ -364,3 +364,46 @@ input[type="range"]{
   .c4n-feature-source,.c4n-source-band{padding:64px 0}
   .c4n-source-feature-copy h2{font-size:38px}
 }
+
+
+/* Asterisk Climos visual refresh — primary Next.js app, shared across routes */
+:root{
+  --accent:#b6ef75;
+  --accent-strong:#c8fa83;
+  --muted:#b3c8bd;
+  --line-soft:rgba(163,210,183,.22);
+}
+body{position:relative;isolation:isolate}
+body::before{
+  content:"";position:fixed;inset:-8vh -4vw;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(115deg,rgba(5,18,12,.86),rgba(5,18,12,.52)),
+    url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") center/cover;
+  opacity:.28;transform:translate3d(0,0,0) scale(1.04);will-change:transform;
+  animation:climos-atmosphere 24s ease-in-out infinite alternate;
+}
+@keyframes climos-atmosphere{from{transform:translate3d(-.5%, -1%,0) scale(1.04)}to{transform:translate3d(.5%, 1%,0) scale(1.09)}}
+@supports (animation-timeline:scroll()){
+  body::before{animation:climos-scroll-bg linear both;animation-timeline:scroll(root block);animation-range:0% 100%}
+  @keyframes climos-scroll-bg{from{transform:translate3d(0,-1.5%,0) scale(1.04);background-position:50% 0}to{transform:translate3d(0,1.5%,0) scale(1.12);background-position:50% 100%}}
+}
+.status-pill{border-color:rgba(182,239,117,.38);background:rgba(182,239,117,.12);color:#e0ffc1}
+.status-dot{background:#b6ef75;box-shadow:0 0 0 4px rgba(182,239,117,.14)}
+.number-chip{border-color:rgba(182,239,117,.28);color:#d4e6db}
+.c4n-button-dark,.c4n-button-lime{background:#b6ef75;color:#101b11;box-shadow:0 8px 26px rgba(182,239,117,.14)}
+.c4n-button-dark:hover,.c4n-button-lime:hover{background:#c8fa83;box-shadow:0 12px 32px rgba(182,239,117,.22)}
+.c4n-button-light{border-color:rgba(182,239,117,.3)}
+.c4n-scroll-cue{color:#50685b}
+.c4n-section-intro{color:#4e6257}
+.c4n-section-dark .c4n-section-intro{color:#b3c8bd}
+.c4n-pillar p,.c4n-article p{color:#53675b}
+.c4n-stat span{color:#b3c8bd}
+.c4n-stat small{color:#9eb8aa}
+.c4n-newsletter p{color:#b3c8bd}
+.c4n-hero-glow{background:radial-gradient(circle,rgba(182,239,117,.25),transparent 68%)}
+.c4n-scene{box-shadow:0 30px 80px rgba(0,0,0,.24);border-color:rgba(182,239,117,.22)}
+.c4n-field-scan{background:linear-gradient(180deg,transparent,#b6ef75,transparent)}
+.c4n-radar-ring{border-color:rgba(182,239,117,.32)}
+.c4n-pillar:hover{border-color:rgba(89,137,75,.48);box-shadow:0 22px 48px rgba(35,59,47,.13)}
+.c4n-cta{background:radial-gradient(ellipse at 85% 20%,rgba(182,239,117,.16),transparent 34%),#091a12}
+@media(prefers-reduced-motion:reduce){body::before{animation:none!important}}
