@@ -173,63 +173,69 @@ div.st-key-home_explore_tech button p{
 }
 
 
-/* Homepage: visible, scroll-linked camera descent from orbit to farmland.
-   Background layers sit above the app canvas and below all page content. */
-.stApp:has(.c4n-page-home) .block-container{
- position:relative;isolation:isolate;background:transparent!important;
+/* Homepage scroll camera: a real sticky scene whose progress follows the scene's scroll-through. */
+.stApp:has(.c4n-page-home) .camera-track{
+ position:relative;height:230vh;margin:2rem -3rem 3rem;view-timeline-name:--camera-progress;view-timeline-axis:block;
 }
-.stApp:has(.c4n-page-home) .block-container > *{position:relative;z-index:1}
-.stApp:has(.c4n-page-home) .block-container::before,
-.stApp:has(.c4n-page-home) .block-container::after{
- content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
- background-size:cover;background-repeat:no-repeat;background-position:center;
- transform-origin:center center;will-change:transform,opacity,background-position,filter;
+.stApp:has(.c4n-page-home) .camera-stage{
+ position:sticky;top:0;height:100vh;min-height:560px;overflow:hidden;isolation:isolate;
+ background:#07120f;border-top:1px solid rgba(126,226,177,.25);border-bottom:1px solid rgba(126,226,177,.25);
 }
-.stApp:has(.c4n-page-home) .block-container::before{
- opacity:1;
- background-image:linear-gradient(180deg,rgba(3,12,20,.20),rgba(3,12,20,.05) 45%,rgba(3,12,20,.38)),
-  url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90");
- background-position:center,50% 0%;transform:scale(1.02);
+.stApp:has(.c4n-page-home) .camera-layer{
+ position:absolute;inset:-5%;background-size:cover;background-position:center;will-change:transform,opacity,filter;
 }
-.stApp:has(.c4n-page-home) .block-container::after{
- opacity:0;
- background-image:linear-gradient(180deg,rgba(3,12,20,.20),rgba(3,12,20,.08) 45%,rgba(3,12,20,.34)),
-  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90");
- background-position:center,50% 0%;transform:scale(1.04);
+.stApp:has(.c4n-page-home) .camera-orbit{
+ z-index:-1;opacity:1;background-image:linear-gradient(180deg,rgba(3,12,20,.1),rgba(3,12,20,.16) 55%,rgba(3,12,20,.52)),url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90");
+ transform:scale(1.02);
 }
-/* Scroll progress, not elapsed time: moving down the page advances the camera. */
-@supports (animation-timeline:scroll(root block)){
- .stApp:has(.c4n-page-home) .block-container::before{
-  animation:home-orbit-camera 1s linear both;animation-timeline:scroll(root block);animation-range:0% 100%;
+.stApp:has(.c4n-page-home) .camera-farm{
+ z-index:-1;opacity:0;background-image:linear-gradient(180deg,rgba(3,12,20,.08),rgba(3,12,20,.12) 55%,rgba(3,12,20,.50)),url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90);
+ transform:scale(1.05);
+}
+.stApp:has(.c4n-page-home) .camera-overlay{
+ position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
+ padding:clamp(1.5rem,6vw,5rem);background:linear-gradient(90deg,rgba(3,12,20,.74),rgba(3,12,20,.12) 100%);
+}
+.stApp:has(.c4n-page-home) .camera-overlay .eyebrow{color:#c8f58a}
+.stApp:has(.c4n-page-home) .camera-overlay h2{font-size:clamp(2.5rem,7vw,6.5rem);line-height:.92;letter-spacing:-.06em;color:#f2faf4;max-width:850px;margin:.8rem 0}
+.stApp:has(.c4n-page-home) .camera-overlay p{max-width:620px;color:#d1e2d6;line-height:1.75;font-size:1.05rem}
+@supports (animation-timeline:view(block)){
+ .stApp:has(.c4n-page-home) .camera-orbit{
+  animation:camera-orbit-scroll 1s linear both;animation-timeline:--camera-progress;animation-range:entry 0% exit 100%;
  }
- .stApp:has(.c4n-page-home) .block-container::after{
-  animation:home-farm-camera 1s linear both;animation-timeline:scroll(root block);animation-range:0% 100%;
+ .stApp:has(.c4n-page-home) .camera-farm{
+  animation:camera-farm-scroll 1s linear both;animation-timeline:--camera-progress;animation-range:entry 0% exit 100%;
+ }
+ .stApp:has(.c4n-page-home) .camera-overlay{
+  animation:camera-copy-scroll 1s linear both;animation-timeline:--camera-progress;animation-range:entry 0% exit 100%;
  }
 }
-@keyframes home-orbit-camera{
- 0%{opacity:1;transform:scale(1.02) translateY(0);background-position:center,50% 0%;filter:saturate(.78) brightness(.8)}
- 22%{opacity:1;transform:scale(1.2) translateY(1%);background-position:center,50% 28%;filter:saturate(.9) brightness(.9)}
- 50%{opacity:.48;transform:scale(1.48) translateY(4%);background-position:center,50% 68%;filter:saturate(1) brightness(.86)}
- 72%{opacity:.08;transform:scale(1.72) translateY(7%);background-position:center,50% 100%;filter:saturate(1.08) brightness(.82)}
- 100%{opacity:0;transform:scale(1.8) translateY(8%);background-position:center,50% 100%;filter:saturate(1.08) brightness(.8)}
+@keyframes camera-orbit-scroll{
+ 0%{opacity:1;transform:scale(1.02) translateY(0);filter:saturate(.78) brightness(.82)}
+ 30%{opacity:1;transform:scale(1.2) translateY(1%);filter:saturate(.9) brightness(.9)}
+ 65%{opacity:.35;transform:scale(1.52) translateY(4%);filter:saturate(1) brightness(.86)}
+ 100%{opacity:0;transform:scale(1.9) translateY(8%);filter:saturate(1.08) brightness(.8)}
 }
-@keyframes home-farm-camera{
- 0%,30%{opacity:0;transform:scale(1.04) translateY(-2%);background-position:center,50% 0%}
- 48%{opacity:.12;transform:scale(1.14) translateY(-1%);background-position:center,50% 25%}
- 68%{opacity:.62;transform:scale(1.28) translateY(1%);background-position:center,50% 65%}
- 84%{opacity:.88;transform:scale(1.42) translateY(3%);background-position:center,50% 88%}
- 100%{opacity:1;transform:scale(1.58) translateY(5%);background-position:center,50% 100%}
+@keyframes camera-farm-scroll{
+ 0%,28%{opacity:0;transform:scale(1.04) translateY(-2%)}
+ 48%{opacity:.12;transform:scale(1.14) translateY(-1%)}
+ 70%{opacity:.72;transform:scale(1.34) translateY(2%)}
+ 100%{opacity:1;transform:scale(1.62) translateY(5%)}
 }
-.stApp:has(.c4n-page-home) .hero,
-.stApp:has(.c4n-page-home) .section,
-.stApp:has(.c4n-page-home) .band,
-.stApp:has(.c4n-page-home) .story-scene{background-color:rgba(5,17,13,.20)!important}
-.stApp:has(.c4n-page-home) .story-scene{border-color:rgba(220,246,225,.14)!important;backdrop-filter:blur(1px)}
-.stApp:has(.c4n-page-home) .hero::after{animation:none!important}
-.stApp:has(.c4n-page-home) .story-scene::before{animation:none!important;opacity:.12!important}
+@keyframes camera-copy-scroll{
+ 0%{opacity:1;transform:translateY(0)}
+ 35%{opacity:1;transform:translateY(-2%)}
+ 68%{opacity:.45;transform:translateY(-8%)}
+ 100%{opacity:1;transform:translateY(0)}
+}
+@media(max-width:700px){
+ .stApp:has(.c4n-page-home) .camera-track{margin-left:-1.2rem;margin-right:-1.2rem;height:200vh}
+ .stApp:has(.c4n-page-home) .camera-stage{min-height:520px}
+}
 @media(prefers-reduced-motion:reduce){
- .stApp:has(.c4n-page-home) .block-container::before,.stApp:has(.c4n-page-home) .block-container::after{animation:none!important}
- .stApp:has(.c4n-page-home) .block-container::after{opacity:.25}
+ .stApp:has(.c4n-page-home) .camera-orbit{animation:none!important;opacity:.2}
+ .stApp:has(.c4n-page-home) .camera-farm{animation:none!important;opacity:.8}
+ .stApp:has(.c4n-page-home) .camera-overlay{animation:none!important}
 }
 </style>""", unsafe_allow_html=True)
 
@@ -273,6 +279,19 @@ def home():
       <p>Transform rice-field water management into measurable climate impact through field data, transparent modelling and carbon-economics simulation.</p>
       <div class="hero-actions"></div>
     </section>''', unsafe_allow_html=True)
+    st.markdown("""
+    <section class="camera-track" aria-label="Scroll-driven satellite-to-farm transition">
+      <div class="camera-stage">
+        <div class="camera-layer camera-orbit"></div>
+        <div class="camera-layer camera-farm"></div>
+        <div class="camera-overlay">
+          <div class="eyebrow">FROM SATELLITE TO SOIL</div>
+          <h2>Zoom in on the change that matters.</h2>
+          <p>Keep scrolling: descend from the orbital view into the rice-growing landscape, connecting Earth observation to field-level climate action.</p>
+        </div>
+      </div>
+    </section>
+    """, unsafe_allow_html=True)
     link_cols = st.columns([1.15, 1.1, 5.75])
     with link_cols[0]:
         if st.button("Run Farm Simulation →", key="home_run_sim", type="primary"):
