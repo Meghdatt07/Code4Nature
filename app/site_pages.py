@@ -172,6 +172,57 @@ div.st-key-home_explore_tech button p{
  .stApp:has(.c4n-page-contact) iframe { animation:none !important; }
 }
 
+
+/* Homepage's single continuous orbital-to-farm camera, tied to document scroll. */
+.stApp:has(.c4n-page-home) .block-container{position:relative;isolation:isolate}
+.stApp:has(.c4n-page-home) .block-container::before{
+ content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+ background-image:
+  linear-gradient(180deg,rgba(3,12,20,.28),rgba(3,12,20,.08) 45%,rgba(3,12,20,.46)),
+  url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=90");
+ background-position:center,50% 0%;background-size:cover,cover;background-repeat:no-repeat;
+ transform:scale(1.04);will-change:transform,background-position,filter;
+}
+.stApp:has(.c4n-page-home) .block-container::after{
+ content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;
+ background:
+  linear-gradient(180deg,rgba(3,12,20,.26),rgba(3,12,20,.12) 45%,rgba(3,12,20,.42)),
+  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90") center/cover no-repeat;
+ transform:scale(1.05);will-change:transform,opacity,background-position;
+}
+@supports (animation-timeline:scroll(root block)){
+ .stApp:has(.c4n-page-home) .block-container::before{
+  animation:home-orbit-camera linear both;animation-timeline:scroll(root block);animation-range:0% 100%;
+ }
+ .stApp:has(.c4n-page-home) .block-container::after{
+  animation:home-farm-camera linear both;animation-timeline:scroll(root block);animation-range:0% 100%;
+ }
+}
+@keyframes home-orbit-camera{
+ 0%{opacity:1;transform:scale(1.02) translateY(0);background-position:center,50% 0%;filter:saturate(.78) brightness(.8)}
+ 24%{opacity:1;transform:scale(1.18) translateY(1%);background-position:center,50% 30%;filter:saturate(.9) brightness(.9)}
+ 52%{opacity:.22;transform:scale(1.46) translateY(4%);background-position:center,50% 68%;filter:saturate(1) brightness(.84)}
+ 100%{opacity:0;transform:scale(1.75) translateY(8%);background-position:center,50% 100%;filter:saturate(1.08) brightness(.8)}
+}
+@keyframes home-farm-camera{
+ 0%,38%{opacity:0;transform:scale(1.04) translateY(-2%);background-position:50% 0%}
+ 58%{opacity:.2;transform:scale(1.16) translateY(0);background-position:50% 40%}
+ 78%{opacity:.75;transform:scale(1.3) translateY(2%);background-position:50% 75%}
+ 100%{opacity:1;transform:scale(1.46) translateY(4%);background-position:50% 100%}
+}
+.stApp:has(.c4n-page-home) .hero,
+.stApp:has(.c4n-page-home) .section,
+.stApp:has(.c4n-page-home) .band,
+.stApp:has(.c4n-page-home) .story-scene{background-color:rgba(5,17,13,.28)!important}
+.stApp:has(.c4n-page-home) .story-scene{border-color:rgba(220,246,225,.14)!important;backdrop-filter:blur(1px)}
+.stApp:has(.c4n-page-home) .hero::after{animation:none!important}
+.stApp:has(.c4n-page-home) .story-scene::before{animation:none!important;opacity:.12!important}
+@media(prefers-reduced-motion:reduce){
+ .stApp:has(.c4n-page-home) .block-container::before,
+ .stApp:has(.c4n-page-home) .block-container::after{animation:none!important}
+ .stApp:has(.c4n-page-home) .block-container::after{opacity:.25}
+}
+
 </style>""", unsafe_allow_html=True)
 
 def _logo_data():
