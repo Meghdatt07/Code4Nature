@@ -173,19 +173,11 @@ div.st-key-home_explore_tech button p{
 }
 
 
-/* Homepage background: viewport-fixed layers, driven by the main page scroll timeline. */
+/* Homepage background: fixed viewport layers tied to the document's real scroll progress. */
 .stApp:has(.c4n-page-home) {
   position:relative;
   isolation:isolate;
   background:transparent!important;
-  timeline-scope:--home-scroll;
-}
-.stApp:has(.c4n-page-home) section.main {
-  background:transparent!important;
-  border:0!important;
-  outline:0!important;
-  scroll-timeline-name:--home-scroll;
-  scroll-timeline-axis:block;
 }
 .stApp:has(.c4n-page-home)::before,
 .stApp:has(.c4n-page-home)::after {
@@ -219,15 +211,15 @@ div.st-key-home_explore_tech button p{
   z-index:1;
   background-color:transparent!important;
 }
-@supports (animation-timeline:--home-scroll) {
+@supports (animation-timeline:scroll(root block)) {
   .stApp:has(.c4n-page-home)::before {
     animation:home-orbit-scroll linear both;
-    animation-timeline:--home-scroll;
+    animation-timeline:scroll(root block);
     animation-range:0% 100%;
   }
   .stApp:has(.c4n-page-home)::after {
     animation:home-farm-scroll linear both;
-    animation-timeline:--home-scroll;
+    animation-timeline:scroll(root block);
     animation-range:0% 100%;
   }
 }
