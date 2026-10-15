@@ -119,6 +119,71 @@ div.st-key-site_nav button {
         width: 100%;
     }
 }
+
+/* LIVE STREAMLIT THEME: slow, visible rice-field ambience on every route. */
+@keyframes c4n-field-drift {
+  0% { background-position: 0 0, 46% 18%; }
+  50% { background-position: 0 0, 52% 55%; }
+  100% { background-position: 0 0, 58% 90%; }
+}
+.stApp {
+  background-image:
+    linear-gradient(180deg, rgba(5,17,12,.94) 0%, rgba(5,17,12,.84) 46%, rgba(5,17,12,.96) 100%),
+    url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85") !important;
+  background-size: auto, cover !important;
+  background-position: 0 0, 48% 0 !important;
+  background-attachment: fixed, fixed !important;
+  animation: c4n-field-drift 34s ease-in-out infinite alternate !important;
+}
+[data-testid="stAppViewContainer"] {
+  background: transparent !important;
+}
+[data-testid="stHeader"] {
+  background: rgba(5,17,12,.72) !important;
+  backdrop-filter: blur(18px) !important;
+  border-bottom: 1px solid rgba(182,239,117,.16) !important;
+}
+.block-container {
+  position: relative;
+}
+.hero {
+  border-color: rgba(182,239,117,.42) !important;
+  box-shadow: 0 24px 90px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.025) !important;
+  background-image:
+    linear-gradient(100deg, rgba(4,17,11,.97) 0%, rgba(4,17,11,.91) 52%, rgba(4,17,11,.60) 100%),
+    url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2000&q=90") !important;
+  background-size: cover !important;
+  background-position: center 45% !important;
+}
+.hero h1, .section h2, .band h2 {
+  text-shadow: 0 2px 28px rgba(0,0,0,.28);
+}
+.eyebrow, .num {
+  color: #c8f58a !important;
+}
+.card, .tile, .metric-card, .glass {
+  background: linear-gradient(145deg, rgba(17,43,31,.96), rgba(7,24,17,.94)) !important;
+  border-color: rgba(182,239,117,.24) !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,.22) !important;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease !important;
+}
+.card:hover, .tile:hover, .metric-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(200,245,138,.72) !important;
+  box-shadow: 0 18px 42px rgba(0,0,0,.3) !important;
+}
+.section-copy, .muted, .tile p, .hero p {
+  color: #d0e0d5 !important;
+}
+div.st-key-site_nav button {
+  border: 1px solid rgba(200,245,138,.36) !important;
+  background: rgba(14,38,26,.94) !important;
+  color: #edf7f2 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stApp { animation: none !important; }
+  *, *::before, *::after { transition-duration: .01ms !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 
