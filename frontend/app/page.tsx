@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Droplets, Eye, Globe2, Leaf, Play, ShieldCheck, Sprout } from 'lucide-react';
 import { ButtonLink, CTA, Kicker, Newsletter, Reveal } from '@/components/marketing/marketing';
-import { HeroBackdrop, TechTabs, VideoGallery } from '@/components/marketing/home';
+import { ScrollDescent, TechTabs, VideoGallery } from '@/components/marketing/home';
 import { Footer } from '@/components/shared/footer';
 import { HERO_POSTER, HERO_VIDEO } from '@/lib/videos';
 
