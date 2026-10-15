@@ -186,11 +186,11 @@ def _logo_data():
     encoded = base64.b64encode(svg.encode("utf-8")).decode("ascii")
     return "data:image/svg+xml;base64," + encoded
 
-def shell():
+def shell(page="default"):
     inject_site_css()
     logo = _logo_data()
     st.markdown(
-        f'<div class="site-head"><div class="brand"><img class="brand-logo" src="{logo}" alt="Asterisk Climos logo"></div><div class="status"><span class="dot"></span>SYSTEM ONLINE</div></div>',
+        f'<div class="site-head"><div class="brand"><img class="brand-logo" src="{logo}" alt="Asterisk Climos logo"></div><div class="status"><span class="dot"></span>SYSTEM ONLINE</div></div><div class="c4n-page-marker c4n-page-{page}" aria-hidden="true"></div>',
         unsafe_allow_html=True
     )
 
@@ -207,7 +207,7 @@ def tiles(items, four=False):
 
 def home():
     st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide")
-    shell(); init_state()
+    shell("home"); init_state()
     st.markdown('''<section class="hero">
       <div class="eyebrow">CODE4NATURE / RICE CLIMATE INTELLIGENCE</div>
       <h1>Measure. Optimize.<br><span>Reduce. Value.</span></h1>
@@ -227,19 +227,58 @@ def home():
         with col: st.markdown(f'<div class="card"><div class="num">{n}</div><b>{t}</b><div class="muted" style="font-size:.8rem;margin-top:.4rem">{b}</div></div>',unsafe_allow_html=True)
     frame("THE LOGIC","From water management to climate value","The prototype keeps the full pathway visible: practice → evidence → emissions scenario → carbon economics.")
     tiles([("01","Climate-smart rice","Make controlled wetting and drying visible at field scale."),("02","Digital MRV","Connect ground observations, satellite evidence and transparent calculations."),("03","Carbon economics","Explore illustrative farmer/FPO and company value from the same scenario.")])
+
+    # A scroll-led visual narrative connects practice, observation, measurement and value.
+    st.markdown("""
+    <div class="story-scroll" aria-label="From rice field to climate impact">
+      <article class="story-scene story-rice">
+        <div class="story-copy">
+          <span class="story-index">01 / THE FIELD</span>
+          <div class="story-kicker">Start with farming practice</div>
+          <h3>Every climate story begins in the field.</h3>
+          <p>Alternate Wetting and Drying changes how water moves through a rice plot. First understand the field, its boundary and irrigation practice—not assume every farm behaves the same way.</p>
+        </div>
+      </article>
+      <article class="story-scene story-satellite">
+        <div class="story-copy">
+          <span class="story-index">02 / OBSERVE</span>
+          <div class="story-kicker">Satellite monitoring</div>
+          <h3>Turn the landscape into a signal.</h3>
+          <p>Radar observations can help track relative wetness and field conditions across time. Satellite signals add scale, while remaining a proxy that needs context and ground validation.</p>
+        </div>
+      </article>
+      <article class="story-scene story-methane">
+        <div class="story-copy">
+          <span class="story-index">03 / MEASURE</span>
+          <div class="story-kicker">Methane evidence</div>
+          <h3>Move from a modelled signal to measured evidence.</h3>
+          <p>Field observations, chamber sampling and laboratory analysis help establish what is happening at the source. Transparent modelling keeps assumptions visible and separates estimates from measured outcomes.</p>
+        </div>
+      </article>
+      <article class="story-scene story-carbon">
+        <div class="story-copy">
+          <span class="story-index">04 / VALUE</span>
+          <div class="story-kicker">Carbon and farmer impact</div>
+          <h3>Make the impact traceable—and the value understandable.</h3>
+          <p>After the practice, evidence and emissions pathway are clear, a scenario can connect to illustrative carbon economics and potential farmer/FPO value. Real outcomes require project-specific validation and verification.</p>
+        </div>
+      </article>
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown('<div class="band"><div class="eyebrow">EVIDENCE STACK</div><h2>Ground truth → satellite → model → evidence.</h2><div class="section-copy">A carbon number is only useful when the assumptions and evidence pathway behind it remain inspectable.</div></div>',unsafe_allow_html=True)
     frame("DISCOVER","One workflow, separate pages","Use the application navigation to open the simulator, MRV, research, policy and partner workflows.")
     tiles([("01","Farm simulator","Move the farm and draw a boundary."),("02","Digital MRV","Inspect field and SAR evidence."),("03","Carbon economics","Change price, area and farmer share."),("04","Research","Read the scientific framing and limitations.")],True)
     st.markdown('<div class="footer-note">Prototype demonstration only. Water savings, methane reductions, carbon quantities, prices and financial outcomes are illustrative unless independently measured and verified.</div>',unsafe_allow_html=True)
 
 def climate_smart_rice():
-    st.set_page_config(page_title="Climate-smart Rice | Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="Climate-smart Rice | Asterisk Climos", layout="wide"); shell("climate-rice")
     frame("CLIMATE-SMART RICE","The farming practice is the climate intervention.","Alternate Wetting and Drying (AWD) introduces controlled dry-down periods between irrigations. The prototype focuses on making that field process observable and explainable.")
     tiles([("01","WET","Flooded state and irrigation event."),("02","DRYING","Controlled drawdown toward the target threshold."),("03","REWET","Reflood when the field reaches the operating threshold.")])
     st.markdown('<div class="band"><div class="eyebrow">FARMER-FIRST</div><h2>Make the field measurable.</h2><div class="section-copy">Farmers supply the practice, FPOs help aggregate and coordinate, and the MRV layer organises evidence for the project team.</div></div>',unsafe_allow_html=True)
 
 def technology():
-    st.set_page_config(page_title="Technology | Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="Technology | Asterisk Climos", layout="wide"); shell("technology")
     frame("OUR TECHNOLOGY","Soil to sky. One evidence chain.","Field observations, satellite signals, methane measurement and transparent modelling are combined into one workflow for rice climate projects.")
     tiles([
         ("01","GROUND DATA","Water level, irrigation and crop-stage observations."),
@@ -325,27 +364,27 @@ def technology():
 
 
 def simulator():
-    st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell(); init_state()
+    st.set_page_config(page_title="Farm Simulator | Asterisk Climos", layout="wide"); shell("simulator"); init_state()
     frame("FARM SIMULATOR","Explore a rice-field scenario.","Use this page for scenario modelling. Map your farm and change assumptions without running satellite/MRV retrieval.")
     render_farm_simulator()
 
 def carbon():
-    st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell(); init_state()
+    st.set_page_config(page_title="Carbon Economics | Asterisk Climos", layout="wide"); shell("carbon"); init_state()
     frame("CARBON ECONOMICS","See the economics behind the scenario.","Change the area, abatement, carbon price and farmer/FPO share to inspect illustrative USD and INR outcomes.")
     render_market(); render_economics()
 
 def mrv():
-    st.set_page_config(page_title="Digital MRV | Asterisk Climos", layout="wide"); shell(); init_state()
+    st.set_page_config(page_title="Digital MRV | Asterisk Climos", layout="wide"); shell("mrv"); init_state()
     frame("DIGITAL MRV","Field evidence and satellite intelligence.","Use this page for SAR retrieval, relative wetness, VV/VH backscatter and AWD telemetry/MRV evidence.")
     render_mrv()
 
 def policy():
-    st.set_page_config(page_title="Policy & FPO | Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="Policy & FPO | Asterisk Climos", layout="wide"); shell("policy")
     frame("POLICY / FPO","Connect implementation with the enablement layer.","Keep agricultural support, FPO aggregation and carbon-market methodology as distinct pieces of the project architecture.")
     render_policy()
 
 def about():
-    st.set_page_config(page_title="About | Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="About | Asterisk Climos", layout="wide"); shell("about")
 
     frame(
         "ABOUT / OUR DIRECTION",
@@ -443,7 +482,7 @@ def about():
     )
 
 def insights():
-    st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="Insights | Asterisk Climos", layout="wide"); shell("insights")
     frame(
         "INSIGHTS / CLIMATE INTELLIGENCE",
         "Rice. Water. Methane. Earth observation.",
@@ -590,7 +629,7 @@ def insights():
     )
 
 def contact():
-    st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell()
+    st.set_page_config(page_title="Partner with Asterisk Climos", layout="wide"); shell("contact")
     frame(
         "PARTNER WITH US",
         "Build the evidence chain with us.",
