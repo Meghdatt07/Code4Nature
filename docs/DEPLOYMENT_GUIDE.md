@@ -5,6 +5,8 @@ License: CC-BY-NC 4.0
 
 This guide explains how to run and deploy the Asterisk Climos rice-MRV prototype from this repository. It covers local development, a one-command Docker deployment, cloud hosting options, configuration and troubleshooting.
 
+> **Live deployment:** https://code4nature.streamlit.app/ (Streamlit Community Cloud, deployed from this repository's `streamlit_app.py`).
+
 > **Scientific limitation.** Every output of this prototype is a deterministic demonstration calculation on synthetic data. It must not be presented as measured agronomic results or certified carbon credits.
 
 ---
@@ -19,7 +21,7 @@ The repository contains four runnable parts. Only the first three are needed for
 | API backend | `backend/` | Python 3.12, FastAPI, SQLAlchemy, Pydantic, Shapely, ReportLab | 8000 | Yes |
 | Database | via Docker | PostgreSQL 16 + PostGIS 3.4 (SQLite fallback for local use) | 5432 | Recommended |
 | Live-data service | `engine/` | FastAPI: Sentinel Hub (Sentinel-1), FX rate and carbon-price lookups | 8000 (set another port) | Optional |
-| Streamlit app | `streamlit_app.py`, `app/` | Streamlit, Folium (earlier version, kept for compatibility) | 8501 | Optional |
+| Streamlit app | `streamlit_app.py`, `app/` | Streamlit, Folium | 8501 | **Live at https://code4nature.streamlit.app/** |
 | Static site | `website/` | Plain HTML/CSS/JS, published to GitHub Pages by CI | — | Optional |
 
 ```
@@ -151,14 +153,12 @@ uvicorn engine.main:app --port 8001
 
 Endpoints: `/health`, `/api/sar?lat=..&lon=..` (Sentinel-1 VV/VH and a relative wetness proxy) and `/api/market` (FX and carbon-price reference).
 
-### 5.4 Optional: Streamlit app
+### 5.4 Streamlit app (the live website)
 
 ```bash
 pip install -r requirements.txt     # from the repository root
 streamlit run streamlit_app.py      # http://localhost:8501
 ```
-
-For Streamlit Community Cloud, set `SH_CLIENT_ID` and `SH_CLIENT_SECRET` under **App settings → Secrets**.
 
 ---
 
@@ -177,6 +177,26 @@ The backend tests check the reference demo case: a 10 ha farm with a 6.0 tCO₂e
 ---
 
 ## 7. Production deployment
+
+### 7.0 Current live deployment: Streamlit Community Cloud
+
+The website is live at **https://code4nature.streamlit.app/**.
+
+To redeploy it, or to deploy your own copy:
+
+1. Push the repository to GitHub.
+2. Sign in at https://share.streamlit.io with GitHub and choose **Create app → Deploy a public app from GitHub**.
+3. Select the repository, the `main` branch and the main file `streamlit_app.py`. Streamlit installs the root `requirements.txt` automatically.
+4. Optional: under **Advanced settings → Secrets** (or later in **App settings → Secrets**), add the Sentinel Hub credentials so the Digital MRV page uses live Sentinel-1 data instead of the simulator:
+
+   ```toml
+   SH_CLIENT_ID = "your-client-id"
+   SH_CLIENT_SECRET = "your-client-secret"
+   ```
+
+5. Choose the app URL (for example `code4nature`) and click **Deploy**. Every push to `main` redeploys the app automatically.
+
+The sections below cover deploying the full-stack version (Next.js + FastAPI + PostGIS) on your own infrastructure.
 
 ### 7.1 Frontend build mode
 

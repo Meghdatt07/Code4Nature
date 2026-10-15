@@ -3,6 +3,8 @@
 **Code4Nature Challenge 2026 · Final submission**
 **Team:** [Team Name] · Indian Institute of Technology Gandhinagar
 **Team leader:** [Name, Email] · **Members:** [Names, Roles] · **Mentor:** [Name]
+**Live website:** https://code4nature.streamlit.app/
+**Source code:** https://github.com/Meghdatt07/Code4Nature
 **License:** Creative Commons Attribution-NonCommercial 4.0 International (CC-BY-NC 4.0)
 
 ---
@@ -236,7 +238,7 @@ All constants are named and adjustable. The reference model version is `demo-v1.
 | MRV logic | Per-reading WET/DRYING/REWETTING drives CH₄ reduction | Versioned scenario models; classifier kept in Streamlit | Scenario models are simpler to audit and test |
 | Methane factor | GWP-100 = 27 (AR6) | GWP-100 = 28 | To be harmonised |
 | Prices | CoinGecko token proxy, open.er-api FX | User-set price scenarios; live feeds optional | Free “live” carbon prices were unreliable proxies |
-| Delivery | Not specified | Docker Compose, GitHub Actions CI, GitHub Pages | Reproducible deployment |
+| Delivery | Not specified | Live on Streamlit Community Cloud (https://code4nature.streamlit.app/); Docker Compose, GitHub Actions CI, GitHub Pages | Free public hosting plus reproducible self-hosting |
 
 ## 13. Testing and quality assurance
 
@@ -286,6 +288,7 @@ All constants are named and adjustable. The reference model version is `demo-v1.
 
 | Item | Location |
 |---|---|
+| Live website | https://code4nature.streamlit.app/ |
 | Presentation | Final presentation deck (link / exported PDF or PPTX in the submission) |
 | Source code | This repository |
 | Deployment guide | `docs/DEPLOYMENT_GUIDE.md` |
