@@ -8,8 +8,8 @@ from app.site_pages import about, carbon, climate_smart_rice, contact, home, ins
 APP_DIR = Path(__file__).resolve().parent
 DARK_LOGO = str(APP_DIR / "assets" / "logo-dark.svg")
 LIGHT_LOGO = str(APP_DIR / "assets" / "logo-light.svg")
-DARK_FAVICON = str(APP_DIR / "assets" / "asterisk-climos-favicon-dark.svg")
-LIGHT_FAVICON = str(APP_DIR / "assets" / "asterisk-climos-favicon-light.svg")
+DARK_FAVICON = str(APP_DIR / "assets" / "asterisk-climos-favicon.png")
+LIGHT_FAVICON = str(APP_DIR / "assets" / "asterisk-climos-favicon.png")
 
 # Streamlit exposes the active light/dark theme to the app. Use the matching
 # Asterisk Climos artwork for both the header logo and browser favicon.
