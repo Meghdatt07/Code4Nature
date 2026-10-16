@@ -14,7 +14,7 @@ if str(REPO_ROOT) not in sys.path:
 from app.site_pages import about, carbon, climate_smart_rice, contact, home, insights, mrv, policy, simulator, technology, set_page_routes
 
 FAVICON = REPO_ROOT / "assets" / "asterisk-climos-favicon-dark.svg"
-st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon=FAVICON.read_text(encoding="utf-8"), layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon=str(FAVICON), layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""<style>html,body,[data-testid="stAppViewContainer"],.stApp{background:#07120f!important;color:#edf7f2!important}[data-testid="stHeader"]{background:rgba(7,18,15,.88)!important}[data-testid="stSidebar"]{display:none!important}.block-container{max-width:1400px!important}
 /* Preloader removed: the deployed Streamlit entrypoint starts directly on the app. */
