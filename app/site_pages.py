@@ -231,7 +231,7 @@ def tiles(items, four=False):
     st.markdown(html, unsafe_allow_html=True)
 
 def home():
-    st.set_page_config(page_title="Asterisk Climos | Code4Nature", page_icon="🌾", layout="wide")
+    st.set_page_config(page_title="Asterisk Climos | Code4Nature", layout="wide")
     shell("home"); init_state()
     st.markdown('''<section class="hero">
       <div class="eyebrow">CODE4NATURE / RICE CLIMATE INTELLIGENCE</div>
