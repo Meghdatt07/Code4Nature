@@ -28,7 +28,7 @@ def branded_page(page_fn):
     def render_page():
         st.set_page_config(
             page_title="Asterisk Climos | Code4Nature",
-            page_icon=FAVICON.read_text(encoding="utf-8"),
+            page_icon=str(FAVICON),
         )
         page_fn()
     return render_page
