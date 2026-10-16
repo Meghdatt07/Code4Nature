@@ -35,16 +35,16 @@ def branded_page(page_fn):
 
 
 pages=[
-st.Page(branded_page(home),title="Home",icon=":material/home:",url_path="",default=True),
-st.Page(branded_page(climate_smart_rice),title="Climate-smart rice",icon=":material/water_drop:",url_path="climate-smart-rice"),
-st.Page(branded_page(technology),title="Technology",icon=":material/satellite_alt:",url_path="technology"),
-st.Page(branded_page(simulator),title="Farm simulator",icon=":material/map:",url_path="simulator"),
-st.Page(branded_page(carbon),title="Carbon economics",icon=":material/eco:",url_path="carbon-economics"),
-st.Page(branded_page(mrv),title="Digital MRV",icon=":material/fact_check:",url_path="mrv"),
-st.Page(branded_page(policy),title="Policy / FPO",icon=":material/account_balance:",url_path="policy"),
-st.Page(branded_page(insights),title="Insights",icon=":material/auto_stories:",url_path="insights"),
-st.Page(branded_page(about),title="About",icon=":material/info:",url_path="about"),
-st.Page(branded_page(contact),title="Partner with us",icon=":material/handshake:",url_path="partner-with-us"),
+st.Page(branded_page(home),title="Home",icon="",url_path="",default=True),
+st.Page(branded_page(climate_smart_rice),title="Climate-smart rice",icon="",url_path="climate-smart-rice"),
+st.Page(branded_page(technology),title="Technology",icon="",url_path="technology"),
+st.Page(branded_page(simulator),title="Farm simulator",icon="",url_path="simulator"),
+st.Page(branded_page(carbon),title="Carbon economics",icon="",url_path="carbon-economics"),
+st.Page(branded_page(mrv),title="Digital MRV",icon="",url_path="mrv"),
+st.Page(branded_page(policy),title="Policy / FPO",icon="",url_path="policy"),
+st.Page(branded_page(insights),title="Insights",icon="",url_path="insights"),
+st.Page(branded_page(about),title="About",icon="",url_path="about"),
+st.Page(branded_page(contact),title="Partner with us",icon="",url_path="partner-with-us"),
 ]
 
 # Give homepage buttons the actual Streamlit Page objects.
