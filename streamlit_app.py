@@ -128,8 +128,9 @@ if not st.session_state.get("asterisk_intro_seen", False):
     }
     #asterisk-intro-overlay .ac-media-credit {
         position: absolute;
+        top: 112px;
         right: 25px;
-        bottom: 25px;
+        max-width: 42vw;
         color: rgba(237,247,242,.68);
         font-size: 9px;
         letter-spacing: .05em;
@@ -358,9 +359,10 @@ if not st.session_state.get("asterisk_intro_seen", False):
         div.st-key-intro_enter { top: auto !important; bottom: 64px !important; left: 23px !important; }
         div.st-key-intro_skip { top: 43px !important; right: 14px !important; }
         #asterisk-intro-overlay .ac-foot { left: 23px; right: 20px; bottom: 20px; font-size: 8px; }
+        #asterisk-intro-overlay .ac-media-credit { top: 108px; right: 16px; max-width: 48vw; font-size: 8px; }
     }
     @media (prefers-reduced-motion: reduce) {
-        #asterisk-intro-overlay::before,
+        #asterisk-intro-overlay::before { animation: none !important; }
         #asterisk-intro-overlay .ac-intro-video { display: none !important; animation: none !important; }
         #asterisk-intro-overlay .ac-orbit,
         #asterisk-intro-overlay .ac-flying-logo,
