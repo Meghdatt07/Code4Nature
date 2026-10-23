@@ -103,13 +103,44 @@ if not st.session_state.get("asterisk_intro_seen", False):
         background-size: cover;
         background-position: 48% 50%;
         transform: scale(1.04);
+    }
+    #asterisk-intro-overlay .ac-intro-video {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        background: #12241b url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90") center / cover no-repeat;
+        transform: scale(1.04);
         animation: ac-field-drift 28s ease-in-out infinite alternate;
+    }
+    #asterisk-intro-overlay .ac-announcement,
+    #asterisk-intro-overlay .ac-nav,
+    #asterisk-intro-overlay .ac-copy,
+    #asterisk-intro-overlay .ac-foot,
+    #asterisk-intro-overlay .ac-orbit,
+    #asterisk-intro-overlay .ac-flying-logo,
+    #asterisk-intro-overlay .ac-media-credit {
+        z-index: 3;
+    }
+    #asterisk-intro-overlay .ac-media-credit {
+        position: absolute;
+        right: 25px;
+        bottom: 25px;
+        color: rgba(237,247,242,.68);
+        font-size: 9px;
+        letter-spacing: .05em;
+        text-align: right;
+        pointer-events: none;
     }
     #asterisk-intro-overlay::after {
         content: "";
         position: absolute;
         inset: 0;
-        z-index: -1;
+        z-index: 2;
         background:
           linear-gradient(90deg, rgba(3,16,9,.91) 0%, rgba(3,16,9,.70) 48%, rgba(3,16,9,.48) 100%),
           linear-gradient(180deg, rgba(3,16,9,.28), rgba(3,16,9,.18) 55%, rgba(3,16,9,.72));
@@ -330,6 +361,7 @@ if not st.session_state.get("asterisk_intro_seen", False):
     }
     @media (prefers-reduced-motion: reduce) {
         #asterisk-intro-overlay::before,
+        #asterisk-intro-overlay .ac-intro-video { display: none !important; animation: none !important; }
         #asterisk-intro-overlay .ac-orbit,
         #asterisk-intro-overlay .ac-flying-logo,
         #asterisk-intro-overlay .ac-flying-logo svg > g,
@@ -346,6 +378,9 @@ if not st.session_state.get("asterisk_intro_seen", False):
 
     st.markdown("""
     <div id="asterisk-intro-overlay" aria-label="Asterisk Climos website introduction">
+      <video class="ac-intro-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" poster="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90">
+        <source src="https://videos.pexels.com/video-files/6981379/6981379-hd_1920_1080_25fps.mp4" type="video/mp4">
+      </video>
       <div class="ac-announcement">Rice methane + water intelligence <span>· Asterisk Climos</span></div>
       <div class="ac-nav">
         <div class="ac-target" aria-hidden="true"></div>
@@ -358,6 +393,7 @@ if not st.session_state.get("asterisk_intro_seen", False):
         <p class="ac-description">Asterisk Climos combines satellite evidence, field science and water intelligence to make methane reductions in rice farming visible, measurable and valuable.</p>
       </div>
       <div class="ac-foot">SATELLITE EVIDENCE · FIELD SCIENCE · WATER INTELLIGENCE</div>
+      <div class="ac-media-credit">Farm footage: Mikhail Nilov / Pexels</div>
       <div class="ac-orbit" aria-hidden="true"></div>
       <div class="ac-flying-logo" aria-hidden="true">__INTRO_LOGO_SVG__</div>
     </div>
