@@ -65,8 +65,10 @@ pages=[
 # button on the top-right, while st.logo owns the top-left brand position.
 current_page = st.navigation(pages, position="hidden")
 
-# First-visit opening screen. The button sets session state and reveals the real Streamlit site.
-if not st.session_state.get("asterisk_intro_seen", False):
+# First-visit opening screen. Add ?intro=1 to force the intro for troubleshooting
+# or to replay it even when this Streamlit session has already seen it.
+force_intro = st.query_params.get("intro") == "1"
+if force_intro or not st.session_state.get("asterisk_intro_seen", False):
     intro_logo_svg = (APP_DIR / "assets" / "logo-dark.svg").read_text(encoding="utf-8")
 
     st.markdown("""
@@ -405,6 +407,9 @@ if not st.session_state.get("asterisk_intro_seen", False):
     enter_site = st.button("Start your methane journey  →", key="intro_enter")
     if skip_intro or enter_site:
         st.session_state["asterisk_intro_seen"] = True
+        # Remove the replay flag before rerunning so the main site opens normally.
+        if force_intro:
+            st.query_params.pop("intro", None)
         st.rerun()
     st.stop()
 
