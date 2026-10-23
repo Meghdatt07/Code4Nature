@@ -231,6 +231,7 @@ if not st.session_state.get("asterisk_intro_seen", False):
         position: absolute;
         top: 50%; left: 50%;
         width: min(600px, 88vw);
+        --dock-scale: .27;
         height: auto;
         opacity: 0;
         transform: translate(-50%,-50%) scale(.78);
@@ -293,7 +294,7 @@ if not st.session_state.get("asterisk_intro_seen", False):
         0% { opacity: 0; transform: translate(-50%,-50%) scale(.78); }
         5% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
         57% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
-        100% { opacity: 1; transform: translate(calc(-50vw + 34px),calc(-50vh + 50px)) scale(.36); }
+        100% { opacity: 1; transform: translate(calc(-50vw + 34px),calc(-50vh + 50px)) scale(var(--dock-scale, .27)); }
     }
     @keyframes ac-mark-rotation {
         0% { transform: rotate(-360deg); }
@@ -322,7 +323,7 @@ if not st.session_state.get("asterisk_intro_seen", False):
         }
         #asterisk-intro-overlay h1 { font-size: clamp(49px, 13vw, 66px); }
         #asterisk-intro-overlay .ac-description { font-size: 13px; line-height: 1.65; }
-        #asterisk-intro-overlay .ac-flying-logo { width: min(390px, 94vw); }
+        #asterisk-intro-overlay .ac-flying-logo { width: min(390px, 94vw); --dock-scale: .32; }
         div.st-key-intro_enter { top: auto !important; bottom: 64px !important; left: 23px !important; }
         div.st-key-intro_skip { top: 43px !important; right: 14px !important; }
         #asterisk-intro-overlay .ac-foot { left: 23px; right: 20px; bottom: 20px; font-size: 8px; }
